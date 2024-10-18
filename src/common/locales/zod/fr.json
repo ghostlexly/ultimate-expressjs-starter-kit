@@ -1,0 +1,112 @@
+{
+  "errors": {
+    "invalid_type": "Type invalide: {{expected}} doit être fourni(e), mais {{received}} a été reçu(e).",
+    "invalid_type_received_undefined": "Ce champ est obligatoire.",
+    "invalid_literal": "La valeur doit être {{expected}}.",
+    "unrecognized_keys": "Une ou plusieurs clé(s) non reconnue(s) dans l'objet: {{- keys}}.",
+    "invalid_union": "Champ invalide.",
+    "invalid_union_discriminator": "La valeur du discriminateur est invalide. Options attendus: {{- options}}.",
+    "invalid_enum_value": "Valeur '{{received}}' n'existe pas dans les options: {{- options}}.",
+    "invalid_arguments": "Fonction a reçu des arguments invalides.",
+    "invalid_return_type": "Fonction a retourné un type invalide.",
+    "invalid_date": "Date invalide.",
+    "custom": "Champ invalide.",
+    "invalid_intersection_types": "Les résultats d'intersection n'ont pas pu être fusionnés.",
+    "not_multiple_of": "Ce champ doit être multiple de {{multipleOf}}.",
+    "not_finite": "Ce champ doit être un nombre fini.",
+    "invalid_string": {
+      "email": "L'adresse e-mail que vous avez fournie est invalide.",
+      "url": "Le lien que vous avez fournie est invalide.",
+      "uuid": "L'UUID que vous avez fournie est invalide.",
+      "cuid": "Le CUID que vous avez fournie est invalide.",
+      "regex": "Le Regex que vous avez fournie est invalide.",
+      "datetime": "La date que vous avez fournie est invalide.",
+      "startsWith": "Ce champ est invalide: doit commencer par \"{{startsWith}}\".",
+      "endsWith": "Ce champ est invalide: doit se terminer par \"{{endsWith}}\"."
+    },
+    "too_small": {
+      "array": {
+        "exact": "Cette liste doit contenir exactement {{minimum}} élément(s).",
+        "inclusive": "Cette liste doit contenir au moins {{minimum}} élément(s).",
+        "not_inclusive": "Cette liste doit contenir plus de {{minimum}} élément(s)."
+      },
+      "string": {
+        "exact": "Ce champ doit contenir exactement {{minimum}} caractère(s).",
+        "inclusive": "Ce champ doit contenir au moins {{minimum}} caractère(s).",
+        "not_inclusive": "Ce champ doit centenir plus de {{minimum}} caractère(s)."
+      },
+      "number": {
+        "exact": "Nombre doit être égale à {{minimum}}.",
+        "inclusive": "Nombre doit être supérieur ou égale à {{minimum}}.",
+        "not_inclusive": "Nombre doit être supérieur à {{minimum}}."
+      },
+      "set": {
+        "exact": "Champ invalide.",
+        "inclusive": "Champ invalide.",
+        "not_inclusive": "Champ invalide."
+      },
+      "date": {
+        "exact": "La date doit être égale à {{- minimum, datetime}}.",
+        "inclusive": "La date doit être supérieure ou égale à {{- minimum, datetime}}.",
+        "not_inclusive": "La date doit être supérieure à {{- minimum, datetime}}."
+      }
+    },
+    "too_big": {
+      "array": {
+        "exact": "La liste doit contenir exactement {{maximum}} élément(s).",
+        "inclusive": "La liste doit contenir au plus {{maximum}} élément(s).",
+        "not_inclusive": "Liste doit contenir moins de {{maximum}} élément(s)."
+      },
+      "string": {
+        "exact": "Ce champ doit contenir exactement {{maximum}} caractère(s).",
+        "inclusive": "Ce champ doit contenir au plus {{maximum}} caractère(s).",
+        "not_inclusive": "Ce champ doit contenir moins de {{maximum}} caractère(s)."
+      },
+      "number": {
+        "exact": "Ce champ doit être égale à {{maximum}}.",
+        "inclusive": "Ce champ doit être inférieur ou égale à {{maximum}}.",
+        "not_inclusive": "Ce champ doit être inférieur à {{maximum}}."
+      },
+      "set": {
+        "exact": "Champ invalide",
+        "inclusive": "Champ invalide",
+        "not_inclusive": "Champ invalide"
+      },
+      "date": {
+        "exact": "La date doit être égale à {{- maximum, datetime}}.",
+        "inclusive": "La date doit être inférieure ou égale à {{- maximum, datetime}}.",
+        "not_inclusive": "La date doit être inférieure à {{- maximum, datetime}}."
+      }
+    }
+  },
+  "validations": {
+    "email": "e-mail",
+    "url": "lien",
+    "uuid": "UUID",
+    "cuid": "CUID",
+    "regex": "expression régulière",
+    "datetime": "horodate"
+  },
+  "types": {
+    "function": "fonction",
+    "number": "nombre",
+    "string": "chaîne de caractères",
+    "nan": "NaN",
+    "integer": "entier",
+    "float": "décimal",
+    "boolean": "booléen",
+    "date": "date",
+    "bigint": "grand entier",
+    "undefined": "undefined",
+    "symbol": "symbole",
+    "null": "null",
+    "array": "liste",
+    "object": "objet",
+    "unknown": "inconnu",
+    "promise": "promise",
+    "void": "void",
+    "never": "never",
+    "map": "map",
+    "set": "ensemble"
+  }
+}

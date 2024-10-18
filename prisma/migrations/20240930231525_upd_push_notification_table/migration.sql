@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `PushNotification` ADD COLUMN `imageUrl` VARCHAR(191) NULL,
+    ADD COLUMN `link` VARCHAR(191) NULL,
+    ADD COLUMN `status` ENUM('PENDING', 'SENT', 'ERROR') NOT NULL DEFAULT 'PENDING';

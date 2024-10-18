@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+
+    "rootDir": "./", // set root dir for source files
+    "baseUrl": "./", // set base url for paths resolvers
+    "outDir": "./dist", // set output dir for build files
+    "paths": {
+      // paths resolvers
+      "@/*": ["*"]
+    },
+
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true, // ignore node_modules
+    "strictNullChecks": true, // allow null checks for Zod infers to work
+    "noImplicitAny": false, // allow any type
+    "strictBindCallApply": false, // allow bind, call and apply to work
+    "forceConsistentCasingInFileNames": false, // allow consistent casing in file names
+    "noFallthroughCasesInSwitch": false, // allow fallthrough cases in switch
+    "resolveJsonModule": true, // allow import json
+    "esModuleInterop": true // allow import es modules
+  }
+}

@@ -1,0 +1,184 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-arm64-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_CONNECTION_URL")
+}
+
+// ------------------------------------------------------
+// Authentications
+// ------------------------------------------------------
+
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+model Account {
+  id      String    @id @default(uuid())
+  role    Role
+  session Session[]
+
+  customer Customer?
+  admin    Admin?
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  accountId    String
+  account      Account  @relation(fields: [accountId], references: [id])
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String?
+  phone     String?
+  account   Account  @relation(fields: [accountId], references: [id])
+  accountId String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  properties       Property[]
+  subscribers      Subscriber[]
+  listings         Listing[]
+  smsNotifications SmsNotification[]
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ------------------------------------------------------
+// Common models
+// ------------------------------------------------------
+
+model Media {
+  id        String   @id @default(uuid())
+  fileName  String
+  fileKey   String
+  mimeType  String
+  size      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  propertyPhotos    Property[] @relation("PropertyPhotos")
+  propertyDocuments Property[] @relation("PropertyDocuments")
+  propertyVideo     Property[] @relation(name: "PropertyVideo")
+}
+
+// data from https://www.insee.fr/fr/information/7766585 -> Pays et territoires étrangers
+model Country {
+  id            String  @id @default(uuid())
+  countryName   String
+  iso2Code      String  @unique // ISO 3166-1 alpha-2 code (FR, DE, ES, IT, etc..)
+  iso3Code      String  @unique // ISO 3166-1 alpha-3 code (FRA, DEU, ESP, ITA, etc..)
+  num3Code      String  @unique // ISO 3166-1 numeric-3 code (250, 276, 724, 380, etc..)
+  inseeCode     String?
+  continent     String?
+  continentName String?
+  currencyCode  String?
+  population    Int?    @default(0)
+}
+
+// ------------------------------------------------------
+// Customer models
+// ------------------------------------------------------
+
+enum PropertyStatus {
+  AVAILABLE
+  SOLD
+}
+
+model Property {
+  id                 String         @id @default(uuid())
+  name               String
+  description        String?        @db.Text()
+  rooms              Int?
+  squareMeters       Int?
+  address            String?
+  price              Float?
+  estimatedWorkPrice Float?
+  freeToRent         Boolean        @default(false)
+  coOwnershipCharges Float?
+  landTax            Float?
+  status             PropertyStatus @default(AVAILABLE)
+  video              Media?         @relation(name: "PropertyVideo", fields: [videoId], references: [id])
+  videoId            String?
+  createdBy          Customer?      @relation(fields: [createdById], references: [id])
+  createdById        String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  photos           Media[]           @relation("PropertyPhotos")
+  documents        Media[]           @relation("PropertyDocuments")
+  smsNotifications SmsNotification[]
+}
+
+enum SmsNotificationStatus {
+  PENDING
+  SENT
+  ERROR
+}
+
+model SmsNotification {
+  id         String                @id @default(uuid())
+  content    String                @db.Text()
+  status     SmsNotificationStatus @default(PENDING)
+  property   Property              @relation(fields: [propertyId], references: [id])
+  propertyId String
+  listing    Listing               @relation(fields: [listingId], references: [id])
+  listingId  String
+  customer   Customer              @relation(fields: [customerId], references: [id])
+  customerId String
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+}
+
+model Listing {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  subscribers Subscriber[] @relation("ListingSubscribers")
+  customer    Customer     @relation(fields: [customerId], references: [id])
+  customerId  String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  smsNotifications SmsNotification[]
+}
+
+model Subscriber {
+  id         String    @id @default(uuid())
+  firstName  String
+  lastName   String
+  phone      String
+  email      String?
+  listings   Listing[] @relation("ListingSubscribers")
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  customerId String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model ShortLink {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

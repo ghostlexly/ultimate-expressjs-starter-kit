@@ -1,0 +1,61 @@
+{
+    "keepSettings": {
+        "type": 2,
+        "amount": 10
+    },
+    "auditFilename": "audit.json",
+    "hashType": "md5",
+    "extension": "",
+    "files": [
+        {
+            "date": 1729067471122,
+            "name": "/usr/src/app/logs/debug-2024-10-16.log",
+            "hash": "ecd81f8ba899ebcba47c00f08bf10360"
+        },
+        {
+            "date": 1729067471124,
+            "name": "/usr/src/app/logs/error-2024-10-16.log",
+            "hash": "c74150275a6666b50e68b28479f44640"
+        },
+        {
+            "date": 1729153575845,
+            "name": "/usr/src/app/logs/debug-2024-10-17.log",
+            "hash": "7805bb43677eb4568aa1f53addc0e131"
+        },
+        {
+            "date": 1729153575847,
+            "name": "/usr/src/app/logs/error-2024-10-17.log",
+            "hash": "51149b3f1104a52f1dbd409c95a389ee"
+        },
+        {
+            "date": 1729238770947,
+            "name": "/usr/src/app/logs/debug-2024-10-18.log",
+            "hash": "3d4c9c994f007713505c2fceb7002a11"
+        },
+        {
+            "date": 1729238770949,
+            "name": "/usr/src/app/logs/error-2024-10-18.log",
+            "hash": "949127c9e36923cd5185fed4aa3c1497"
+        },
+        {
+            "date": 1729250547552,
+            "name": "[object Promise]/logs/debug-2024-10-18.log",
+            "hash": "a64b7cc4528a242d12b11c97a24ef09c"
+        },
+        {
+            "date": 1729250547558,
+            "name": "[object Promise]/logs/error-2024-10-18.log",
+            "hash": "b77e29780a2eb19e6591c79903a18a2f"
+        },
+        {
+            "date": 1729253790222,
+            "name": "/usr/src/app/dist/logs/debug-2024-10-18.log",
+            "hash": "3912951b49cefdf472353c44cb1a3029"
+        },
+        {
+            "date": 1729253790224,
+            "name": "/usr/src/app/dist/logs/error-2024-10-18.log",
+            "hash": "d0b00d899558745656775f0f2424f133"
+        }
+    ]
+}
