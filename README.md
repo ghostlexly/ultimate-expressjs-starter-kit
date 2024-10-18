@@ -75,16 +75,10 @@ This starter kit provides a robust foundation for building scalable and feature-
 2. Install dependencies: `yarn install`
 3. Set up your environment variables
 
-```
-DATABASE_CONNECTION_URL="mysql://root:password@mysql:3306/databaseName?schema=public"
-REDIS_HOST="redis"
-REDIS_PORT="6379"
-S3_ENDPOINT=
-S3_ACCESS_KEY=
-S3_SECRET_KEY=
-S3_BUCKET=
-PLAYWRIGHT_HEADLESS="true"
-```
+👉 You can use the `.env.template` file to create your own `.env` file
+
+👉 Importantly, you need to have a running instance of `redis` and `mysql` on your machine to run this project.
+If you need a more complete solution with docker-compose to setup everything, please check this repository: https://github.com/ghostlexly/ultimate-typescript-starter-kit
 
 4. Run the development server: `yarn start:dev`
 

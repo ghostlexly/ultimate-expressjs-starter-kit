@@ -39,7 +39,7 @@ const validate = async <TBody, TParams, TQuery>({
       } catch (zodError) {
         if (zodError instanceof z.ZodError) {
           throw createHttpError(400, {
-            message: `Le formulaire comporte ${zodError.errors.length} erreur(s). Veuillez les corriger pour continuer.`,
+            message: `The form contains ${zodError.errors.length} error(s). Please correct them to continue.`,
             violations: zodError.errors.map((e) => ({
               type: part,
               code: e.code,

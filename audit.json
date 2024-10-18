@@ -8,26 +8,6 @@
     "extension": "",
     "files": [
         {
-            "date": 1729067471122,
-            "name": "/usr/src/app/logs/debug-2024-10-16.log",
-            "hash": "ecd81f8ba899ebcba47c00f08bf10360"
-        },
-        {
-            "date": 1729067471124,
-            "name": "/usr/src/app/logs/error-2024-10-16.log",
-            "hash": "c74150275a6666b50e68b28479f44640"
-        },
-        {
-            "date": 1729153575845,
-            "name": "/usr/src/app/logs/debug-2024-10-17.log",
-            "hash": "7805bb43677eb4568aa1f53addc0e131"
-        },
-        {
-            "date": 1729153575847,
-            "name": "/usr/src/app/logs/error-2024-10-17.log",
-            "hash": "51149b3f1104a52f1dbd409c95a389ee"
-        },
-        {
             "date": 1729238770947,
             "name": "/usr/src/app/logs/debug-2024-10-18.log",
             "hash": "3d4c9c994f007713505c2fceb7002a11"
@@ -56,6 +36,26 @@
             "date": 1729253790224,
             "name": "/usr/src/app/dist/logs/error-2024-10-18.log",
             "hash": "d0b00d899558745656775f0f2424f133"
+        },
+        {
+            "date": 1729288336196,
+            "name": "/Users/ghostlexly/Desktop/git/ultimate-expressjs-starter-kit/logs/debug-2024-10-18.log",
+            "hash": "8765fa1fe654f3d34ec4b7500cf19fcd"
+        },
+        {
+            "date": 1729288336197,
+            "name": "/Users/ghostlexly/Desktop/git/ultimate-expressjs-starter-kit/logs/error-2024-10-18.log",
+            "hash": "10c1335a1df41696ed7b4589aa34dc53"
+        },
+        {
+            "date": 1729288800980,
+            "name": "/Users/ghostlexly/Desktop/git/ultimate-expressjs-starter-kit/logs/error-2024-10-19.log",
+            "hash": "e75b3adc95390bc4a722b10d28c0ad10"
+        },
+        {
+            "date": 1729288846836,
+            "name": "/Users/ghostlexly/Desktop/git/ultimate-expressjs-starter-kit/logs/debug-2024-10-19.log",
+            "hash": "987effa37fcf97cbd00fe47440a804b5"
         }
     ]
 }
