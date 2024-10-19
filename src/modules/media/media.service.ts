@@ -162,21 +162,6 @@ const removeOrphanMedias = async () => {
   const orphanMedias = await prisma.media.findMany({
     where: {
       AND: [
-        {
-          propertyPhotos: {
-            none: {},
-          },
-        },
-        {
-          propertyDocuments: {
-            none: {},
-          },
-        },
-        {
-          propertyVideo: {
-            none: {},
-          },
-        },
         // {
         //   housekeeperAvatar: null,
         // },

@@ -7,7 +7,7 @@ const create = async ({ accountId }: { accountId: string }) => {
   const session = await prisma.session.create({
     data: {
       expiresAt: add(new Date(), { days: 7 }),
-      sessionToken: crypto.randomUUID(),
+      token: crypto.randomUUID(),
       accountId: accountId,
     },
   });
@@ -32,7 +32,7 @@ const findByToken = async ({ token }: { token: string }) => {
       },
     },
     where: {
-      sessionToken: token,
+      token: token,
     },
   });
 
@@ -46,7 +46,7 @@ const findByToken = async ({ token }: { token: string }) => {
 const isExpired = async ({ token }: { token: string }) => {
   const session = await prisma.session.findFirst({
     where: {
-      sessionToken: token,
+      token: token,
     },
   });
 
@@ -57,7 +57,7 @@ const isExpired = async ({ token }: { token: string }) => {
   if (isAfter(new Date(), session.expiresAt)) {
     await remove({
       where: {
-        sessionToken: session.id,
+        id: session.id,
       },
     });
 

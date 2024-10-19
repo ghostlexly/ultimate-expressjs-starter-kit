@@ -38,7 +38,7 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     return res.json({
-      access_token: session.sessionToken,
+      access_token: session.token,
     });
   } catch (error) {
     next(error);
