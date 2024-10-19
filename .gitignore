@@ -1,4 +1,5 @@
 .env
+audit.json
 
 # compiled output
 /dist

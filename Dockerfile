@@ -38,7 +38,6 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then \
 # Install production-only dependencies (this will ignore devDependencies)
 COPY ./package.json ./
 COPY ./yarn.lock ./
-COPY ./.yarnrc ./
 RUN yarn install --production --ignore-optional
 
 # Playwright's dependencies
@@ -52,4 +51,4 @@ COPY ./prisma ./prisma
 # Generate Prisma
 RUN yarn prisma generate
 
-CMD yarn start:prod
+CMD yarn start
