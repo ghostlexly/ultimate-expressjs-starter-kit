@@ -10,7 +10,7 @@
     "start": "node dist/src/main.js",
     "start:dev": "nodemon",
     "cli": "node dist/src/cli.js",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",
