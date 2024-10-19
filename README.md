@@ -47,6 +47,10 @@ This starter kit provides a robust foundation for building scalable and feature-
 
 - **PDF Generation**: Create PDFs with `playwright`
 
+#### 🖥️ CLI Commands
+
+- **Command-line Interface**: Easy-to-use CLI commands with `commander`
+
 #### 🐳 Deployment
 
 - **Docker Support**: Containerization for easy deployment
@@ -81,6 +85,20 @@ This starter kit provides a robust foundation for building scalable and feature-
 If you need a more complete solution with docker-compose to setup everything, please check this repository: https://github.com/ghostlexly/ultimate-typescript-starter-kit
 
 4. Run the development server: `yarn start:dev`
+
+## 🖥️ CLI Commands
+
+This starter kit includes a set of CLI commands to help you manage your application. Here are some examples:
+
+- `yarn cli test:split-text this-is-a-test -s -`: Split a text into an array
+- `yarn cli seed:countries`: Seed the database with countries data
+- `yarn cli create:admin-account admin@example.com password`: Create an admin account
+
+For a full list of available commands, run:
+
+```bash
+yarn cli
+```
 
 ## 📚 Documentation
 
