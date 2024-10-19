@@ -27,29 +27,26 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(uuid())
-  sessionToken String   @unique
-  expiresAt    DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  accountId    String
-  account      Account  @relation(fields: [accountId], references: [id])
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id])
 }
 
 model Customer {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String?
-  phone     String?
-  account   Account  @relation(fields: [accountId], references: [id])
-  accountId String   @unique
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String?
+  phone    String?
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  properties       Property[]
-  subscribers      Subscriber[]
-  listings         Listing[]
-  smsNotifications SmsNotification[]
 }
 
 model Admin {
@@ -76,10 +73,6 @@ model Media {
   size      Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  propertyPhotos    Property[] @relation("PropertyPhotos")
-  propertyDocuments Property[] @relation("PropertyDocuments")
-  propertyVideo     Property[] @relation(name: "PropertyVideo")
 }
 
 // data from https://www.insee.fr/fr/information/7766585 -> Pays et territoires étrangers
@@ -99,86 +92,3 @@ model Country {
 // ------------------------------------------------------
 // Customer models
 // ------------------------------------------------------
-
-enum PropertyStatus {
-  AVAILABLE
-  SOLD
-}
-
-model Property {
-  id                 String         @id @default(uuid())
-  name               String
-  description        String?        @db.Text()
-  rooms              Int?
-  squareMeters       Int?
-  address            String?
-  price              Float?
-  estimatedWorkPrice Float?
-  freeToRent         Boolean        @default(false)
-  coOwnershipCharges Float?
-  landTax            Float?
-  status             PropertyStatus @default(AVAILABLE)
-  video              Media?         @relation(name: "PropertyVideo", fields: [videoId], references: [id])
-  videoId            String?
-  createdBy          Customer?      @relation(fields: [createdById], references: [id])
-  createdById        String?
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-
-  photos           Media[]           @relation("PropertyPhotos")
-  documents        Media[]           @relation("PropertyDocuments")
-  smsNotifications SmsNotification[]
-}
-
-enum SmsNotificationStatus {
-  PENDING
-  SENT
-  ERROR
-}
-
-model SmsNotification {
-  id         String                @id @default(uuid())
-  content    String                @db.Text()
-  status     SmsNotificationStatus @default(PENDING)
-  property   Property              @relation(fields: [propertyId], references: [id])
-  propertyId String
-  listing    Listing               @relation(fields: [listingId], references: [id])
-  listingId  String
-  customer   Customer              @relation(fields: [customerId], references: [id])
-  customerId String
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-}
-
-model Listing {
-  id          String       @id @default(uuid())
-  name        String       @unique
-  subscribers Subscriber[] @relation("ListingSubscribers")
-  customer    Customer     @relation(fields: [customerId], references: [id])
-  customerId  String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-
-  smsNotifications SmsNotification[]
-}
-
-model Subscriber {
-  id         String    @id @default(uuid())
-  firstName  String
-  lastName   String
-  phone      String
-  email      String?
-  listings   Listing[] @relation("ListingSubscribers")
-  customer   Customer  @relation(fields: [customerId], references: [id])
-  customerId String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-}
-
-model ShortLink {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  url       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}

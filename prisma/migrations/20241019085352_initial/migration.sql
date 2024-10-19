@@ -9,13 +9,13 @@ CREATE TABLE `Account` (
 -- CreateTable
 CREATE TABLE `Session` (
     `id` VARCHAR(191) NOT NULL,
-    `sessionToken` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
     `expiresAt` DATETIME(3) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `accountId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Session_sessionToken_key`(`sessionToken`),
+    UNIQUE INDEX `Session_token_key`(`token`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -24,15 +24,13 @@ CREATE TABLE `Customer` (
     `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
     `accountId` VARCHAR(191) NOT NULL,
-    `subscriptionType` ENUM('FREE', 'PRO') NOT NULL DEFAULT 'FREE',
-    `stripeCustomerId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Customer_email_key`(`email`),
     UNIQUE INDEX `Customer_accountId_key`(`accountId`),
-    UNIQUE INDEX `Customer_stripeCustomerId_key`(`stripeCustomerId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -82,67 +80,6 @@ CREATE TABLE `Country` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- CreateTable
-CREATE TABLE `Property` (
-    `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NULL,
-    `rooms` INTEGER NOT NULL DEFAULT 0,
-    `bedrooms` INTEGER NOT NULL DEFAULT 0,
-    `bathrooms` INTEGER NOT NULL DEFAULT 0,
-    `floor` INTEGER NULL,
-    `floorsInTheBuilding` INTEGER NULL,
-    `squareMeters` INTEGER NOT NULL DEFAULT 0,
-    `parkingSpots` INTEGER NOT NULL DEFAULT 0,
-    `address` VARCHAR(191) NULL,
-    `price` DOUBLE NOT NULL DEFAULT 0,
-    `estimatedWorkPrice` DOUBLE NULL,
-    `possibleRentalPrice` DOUBLE NULL,
-    `yearOfConstruction` INTEGER NULL,
-    `description` LONGTEXT NULL,
-    `status` ENUM('AVAILABLE', 'SOLD') NOT NULL DEFAULT 'AVAILABLE',
-    `isPublished` BOOLEAN NOT NULL DEFAULT false,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `PropertyPhoto` (
-    `id` VARCHAR(191) NOT NULL,
-    `propertyId` VARCHAR(191) NOT NULL,
-    `mediaId` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    UNIQUE INDEX `PropertyPhoto_propertyId_mediaId_key`(`propertyId`, `mediaId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `PushNotificationSubscription` (
-    `id` VARCHAR(191) NOT NULL,
-    `endpoint` VARCHAR(191) NOT NULL,
-    `auth` VARCHAR(191) NOT NULL,
-    `p256dh` VARCHAR(191) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    UNIQUE INDEX `PushNotificationSubscription_endpoint_key`(`endpoint`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `PushNotification` (
-    `id` VARCHAR(191) NOT NULL,
-    `title` VARCHAR(191) NOT NULL,
-    `content` LONGTEXT NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
 -- AddForeignKey
 ALTER TABLE `Session` ADD CONSTRAINT `Session_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `Account`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -151,9 +88,3 @@ ALTER TABLE `Customer` ADD CONSTRAINT `Customer_accountId_fkey` FOREIGN KEY (`ac
 
 -- AddForeignKey
 ALTER TABLE `Admin` ADD CONSTRAINT `Admin_accountId_fkey` FOREIGN KEY (`accountId`) REFERENCES `Account`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `PropertyPhoto` ADD CONSTRAINT `PropertyPhoto_propertyId_fkey` FOREIGN KEY (`propertyId`) REFERENCES `Property`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `PropertyPhoto` ADD CONSTRAINT `PropertyPhoto_mediaId_fkey` FOREIGN KEY (`mediaId`) REFERENCES `Media`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
