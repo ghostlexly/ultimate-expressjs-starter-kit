@@ -64,7 +64,6 @@ This starter kit provides a robust foundation for building scalable and feature-
 
 ### ⚡ Performance Optimization
 
-- Bundled with `SWC` for faster builds
 - Hot-reload with `nodemon` for rapid development
 - Performance-optimized architecture
 

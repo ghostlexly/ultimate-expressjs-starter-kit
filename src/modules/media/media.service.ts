@@ -163,6 +163,21 @@ const removeOrphanMedias = async () => {
     where: {
       AND: [
         // {
+        //   propertyPhotos: {
+        //     none: {},
+        //   },
+        // },
+        // {
+        //   propertyDocuments: {
+        //     none: {},
+        //   },
+        // },
+        // {
+        //   propertyVideo: {
+        //     none: {},
+        //   },
+        // },
+        // {
         //   housekeeperAvatar: null,
         // },
         // {

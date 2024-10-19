@@ -1,3 +1,4 @@
+import path from "path";
 global.appRoot = path.resolve(__dirname);
 import "dotenv/config";
 import "reflect-metadata";
@@ -11,7 +12,6 @@ import { setupBearerStrategy } from "./modules/auth/strategies/bearer.strategy";
 import { setupI18n } from "./common/lib/i18n";
 import { setupSwagger } from "./common/lib/swagger";
 import { setupCrons } from "./common/lib/crons";
-import path from "path";
 
 const app = express();
 
