@@ -1,5 +1,7 @@
 .env
 audit.json
+.rollup.cache
+tsconfig.tsbuildinfo
 
 # compiled output
 /dist

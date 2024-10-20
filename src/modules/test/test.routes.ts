@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { testController } from "./controllers/test.controller";
-import { strictThrottler } from "@/src/common/throttlers/strict.throttler";
+import { strictThrottler } from "@/common/throttlers/strict.throttler";
 
 export const testRouter = Router();
 

@@ -1,5 +1,5 @@
 import { Job, Worker } from "bullmq";
-import { loggerService } from "@/src/common/lib/logger";
+import { loggerService } from "@/common/lib/logger";
 
 type initWorkerEventsLoggerProps = {
   worker: Worker;

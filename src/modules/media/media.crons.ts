@@ -1,4 +1,4 @@
-import { loggerService } from "@/src/common/lib/logger";
+import { loggerService } from "@/common/lib/logger";
 import cron from "node-cron";
 import { mediaService } from "./media.service";
 

@@ -1,7 +1,7 @@
-import { validate } from "@/src/common/lib/validator";
+import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
 import { customerAuthLoginSchema } from "./schemas/login.schema";
-import { prisma } from "@/src/common/providers/database/prisma";
+import { prisma } from "@/common/providers/database/prisma";
 import createHttpError from "http-errors";
 import * as bcrypt from "bcryptjs";
 import { sessionService } from "../session.service";

@@ -1,4 +1,4 @@
-import { prisma } from "@/src/common/providers/database/prisma";
+import { prisma } from "@/common/providers/database/prisma";
 import { Prisma } from "@prisma/client";
 import { add, isAfter } from "date-fns";
 import createHttpError from "http-errors";

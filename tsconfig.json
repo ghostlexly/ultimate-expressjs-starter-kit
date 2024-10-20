@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2022",
     "module": "commonjs",
 
-    "rootDir": "./", // set root dir for source files
-    "baseUrl": "./", // set base url for paths resolvers
+    "rootDir": "./src", // set root dir for source files
+    "baseUrl": "./src", // Change this to "./src"
     "outDir": "./dist", // set output dir for build files
     "paths": {
       // paths resolvers
-      "@/*": ["*"]
+      "@/*": ["./*"]
     },
 
     "declaration": true,
@@ -17,7 +17,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "incremental": true,
+    "incremental": false, // incremental build to speed up the build process
     "skipLibCheck": true, // ignore node_modules
     "strictNullChecks": true, // allow null checks for Zod infers to work
     "noImplicitAny": false, // allow any type
@@ -26,5 +26,7 @@
     "noFallthroughCasesInSwitch": false, // allow fallthrough cases in switch
     "resolveJsonModule": true, // allow import json
     "esModuleInterop": true // allow import es modules
-  }
+  },
+
+  "exclude": ["node_modules", "dist"]
 }

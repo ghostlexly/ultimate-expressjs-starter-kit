@@ -1,5 +1,5 @@
-import { loggerService } from "@/src/common/lib/logger";
-import { prisma } from "@/src/common/providers/database/prisma";
+import { loggerService } from "@/common/lib/logger";
+import { prisma } from "@/common/providers/database/prisma";
 import { SandboxedJob } from "bullmq";
 
 export const TESTING_JOB = "testingJob";

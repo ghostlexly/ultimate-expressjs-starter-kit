@@ -1,5 +1,5 @@
-import { serializerService } from "@/src/common/lib/serializer";
-import { validate } from "@/src/common/lib/validator";
+import { serializerService } from "@/common/lib/serializer";
+import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import { AccountDto } from "../dtos/account.dto";

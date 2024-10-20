@@ -1,7 +1,7 @@
-import { filesService } from "@/src/common/lib/files";
-import { loggerService } from "@/src/common/lib/logger";
-import { prisma } from "@/src/common/providers/database/prisma";
-import { s3Service } from "@/src/common/providers/s3/s3";
+import { filesService } from "@/common/lib/files";
+import { loggerService } from "@/common/lib/logger";
+import { prisma } from "@/common/providers/database/prisma";
+import { s3Service } from "@/common/providers/s3/s3";
 import { Prisma } from "@prisma/client";
 import { sub } from "date-fns";
 import createHttpError from "http-errors";

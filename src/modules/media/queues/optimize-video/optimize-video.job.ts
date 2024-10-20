@@ -1,11 +1,11 @@
-import { loggerService } from "@/src/common/lib/logger";
-import { prisma } from "@/src/common/providers/database/prisma";
+import { loggerService } from "@/common/lib/logger";
+import { prisma } from "@/common/providers/database/prisma";
 import { SandboxedJob } from "bullmq";
 import path from "path";
 import os from "os";
 import crypto from "crypto";
-import { s3Service } from "@/src/common/providers/s3/s3";
-import { ffmpegService } from "@/src/common/lib/ffmpeg";
+import { s3Service } from "@/common/providers/s3/s3";
+import { ffmpegService } from "@/common/lib/ffmpeg";
 
 export const OPTIMIZE_VIDEO_JOB = "optimizeVideoJob";
 

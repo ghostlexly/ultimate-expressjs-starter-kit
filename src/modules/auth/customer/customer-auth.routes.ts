@@ -1,4 +1,4 @@
-import { strictThrottler } from "@/src/common/throttlers/strict.throttler";
+import { strictThrottler } from "@/common/throttlers/strict.throttler";
 import { Router } from "express";
 import { customerAuthController } from "./customer-auth.controller";
 
