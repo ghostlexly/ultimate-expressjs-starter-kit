@@ -18,6 +18,9 @@ declare module "express" {
   export interface Request {
     // Overwrite the existing request's user type with your custom user type
     account: CustomAccount;
+
+    // Get the real ip address from cloudflare or other proxies
+    clientIp: string;
   }
 }
 

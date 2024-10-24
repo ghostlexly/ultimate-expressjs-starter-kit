@@ -12,16 +12,13 @@ import { setupBearerStrategy } from "./modules/auth/strategies/bearer.strategy";
 import { setupI18n } from "./common/lib/i18n";
 import { setupSwagger } from "./common/lib/swagger";
 import { setupCrons } from "./common/lib/crons";
+import { rewriteIpAddressMiddleware } from "./common/middlewares/rewrite-ip-address.middleware";
 
 const app = express();
 
 async function bootstrap() {
   // disable `x-powered-by` header for security reasons
   app.disable("x-powered-by");
-
-  // Trust the `X-Forwarded-For` header for cloudflare and other reverse proxies
-  // to send the real IP address of the client by this header.
-  app.set("trust proxy", 1);
 
   // We parse the body of the request to be able to access it
   // @example: app.post('/', (req) => req.body.prop)
@@ -31,6 +28,9 @@ async function bootstrap() {
   // ex: key1=value1&key2=value2.
   // to be able to access these forms's values in req.body
   app.use(express.urlencoded({ extended: true }));
+
+  // -- Rewrite ip address from cloudflare or other proxies
+  app.use(rewriteIpAddressMiddleware);
 
   // We trim the body of the incoming requests to remove any leading or trailing whitespace
   app.use(trimMiddleware);

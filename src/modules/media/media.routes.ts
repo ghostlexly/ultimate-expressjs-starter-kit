@@ -32,11 +32,7 @@ const fileInterceptor = multer({
  *      '200':
  *        description: OK
  */
-mediaRouter.post(
-  "/media",
-  fileInterceptor.single("file"),
-  mediaController.create
-);
+mediaRouter.post("/", fileInterceptor.single("file"), mediaController.create);
 
 /**
  * @swagger
@@ -60,7 +56,7 @@ mediaRouter.post(
  *        description: OK
  */
 mediaRouter.post(
-  "/media/video",
+  "/video",
   fileInterceptor.single("file"),
   mediaController.createVideo
 );

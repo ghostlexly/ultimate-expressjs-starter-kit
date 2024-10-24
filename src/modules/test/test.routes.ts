@@ -15,7 +15,7 @@ export const testRouter = Router();
  *      '200':
  *        description: OK
  */
-testRouter.get("/tests/bad-request", testController.testBadRequest);
+testRouter.get("/bad-request", testController.testBadRequest);
 
 /**
  * @swagger
@@ -29,7 +29,7 @@ testRouter.get("/tests/bad-request", testController.testBadRequest);
  *        description: OK
  */
 testRouter.get(
-  "/tests/strict-throttler",
+  "/strict-throttler",
   strictThrottler,
   testController.testSerializer
 );
@@ -45,7 +45,7 @@ testRouter.get(
  *      '200':
  *        description: OK
  */
-testRouter.get("/tests/queue-launch", testController.testQueueLaunch);
+testRouter.get("/queue-launch", testController.testQueueLaunch);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ testRouter.get("/tests/queue-launch", testController.testQueueLaunch);
  *      '200':
  *        description: OK
  */
-testRouter.post("/tests/zod", testController.testZod);
+testRouter.post("/zod", testController.testZod);
 
 /**
  * @swagger
@@ -107,4 +107,4 @@ testRouter.post("/tests/zod", testController.testZod);
  *      '200':
  *        description: OK
  */
-testRouter.post("/tests/serializer", testController.testSerializer);
+testRouter.post("/serializer", testController.testSerializer);

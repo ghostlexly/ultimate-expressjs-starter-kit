@@ -76,10 +76,8 @@ export default {
       name: "watch-and-restart",
       async buildEnd() {
         if (isWatchMode) {
-          // Wait for a short delay to ensure all files are written to disk
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          await Promise.all([restartServer(), typescriptTypesCheck()]);
+          restartServer();
+          typescriptTypesCheck();
         }
       },
     },

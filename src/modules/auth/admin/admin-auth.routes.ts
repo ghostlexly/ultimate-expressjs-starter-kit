@@ -26,8 +26,4 @@ export const adminAuthRouter = Router();
  *      '200':
  *        description: OK
  */
-adminAuthRouter.post(
-  "/admin/auth/signin",
-  strictThrottler,
-  adminAuthController.signin
-);
+adminAuthRouter.post("/signin", strictThrottler, adminAuthController.signin);
