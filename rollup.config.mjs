@@ -74,19 +74,24 @@ export default {
     // restart the server when the files change in watch mode
     {
       name: "watch-and-restart",
-      async closeBundle() {
+      async buildEnd() {
         if (isWatchMode) {
+          // Wait for a short delay to ensure all files are written to disk
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
           await Promise.all([restartServer(), typescriptTypesCheck()]);
         }
       },
     },
-
-    // disable the clear screen in watch mode
-    {
-      name: "watch-clear-screen",
-      watch: {
-        clearScreen: false,
-      },
-    },
   ],
+
+  // watch mode configuration
+  watch: {
+    clearScreen: false, // disable the clear screen in watch mode
+    include: ["src/**"],
+    chokidar: {
+      usePolling: true, // use polling to watch for file changes
+      interval: 1000, // poll every 1000ms (1 second)
+    },
+  },
 };
