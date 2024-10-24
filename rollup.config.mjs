@@ -44,7 +44,11 @@ const typescriptTypesCheck = async () => {
 const entryPoints = [
   "src/main.ts",
   "src/cli.ts",
-  ...glob.sync(["src/**/*.worker.ts", "src/**/*.crons.ts"]),
+  ...glob.sync([
+    "src/**/*.worker.ts",
+    "src/**/*.crons.ts",
+    "src/**/*.command.ts",
+  ]),
 ];
 
 export default {
