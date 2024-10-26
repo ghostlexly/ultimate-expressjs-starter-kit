@@ -33,6 +33,8 @@ const runCommand = async (
     },
     "Splited text successfully"
   );
+
+  process.exit(0);
 };
 
 export default setupCommand;

@@ -10,38 +10,75 @@ export const REDIS_CONNECTION = {
 };
 
 /** Load Redis */
-export const redisClient = new Redis(REDIS_CONNECTION);
+let redisClient: Redis | null = null;
 
-redisClient.on("error", (err) => {
-  logger.error({ name: "redis", error: err });
-});
+const getRedisClient = (): Redis => {
+  if (!redisClient) {
+    redisClient = new Redis(REDIS_CONNECTION);
 
-redisClient.on("connect", () => {
-  logger.info({ name: "redis" }, "Connected");
-});
+    redisClient.on("error", (err) => {
+      logger.error({ name: "redis", error: err });
+    });
+
+    redisClient.on("connect", () => {
+      logger.info({ name: "redis" }, "Connected");
+    });
+  }
+
+  return redisClient;
+};
 
 /**
  * Get a value from the cache. (JSON supported)
+ *
  * @param key
  * @returns
  */
 const get = async (key: string) => {
-  const value = await redisClient.get(key);
+  const client = getRedisClient();
+  const value = await client.get(key);
   return value ? JSON.parse(value) : null;
 };
 
 /**
  * Set a value in the cache with an optional expiration time. (JSON supported)
+ *
  * @param key - The key to store the value under
  * @param value - The value to store
  * @param ttl - Time to live in seconds (optional)
  */
 const set = async (key: string, value: any, ttl?: number) => {
+  const client = getRedisClient();
+
   if (ttl) {
-    await redisClient.set(key, JSON.stringify(value), "EX", ttl);
+    await client.set(key, JSON.stringify(value), "EX", ttl);
   } else {
-    await redisClient.set(key, JSON.stringify(value));
+    await client.set(key, JSON.stringify(value));
   }
 };
 
-export const redisService = { get, set, delete: redisClient.del };
+const deleteKey = async (key: string) => {
+  const client = getRedisClient();
+  return client.del(key);
+};
+
+const flushall = async () => {
+  const client = getRedisClient();
+  return client.flushall();
+};
+
+const quit = async () => {
+  const client = getRedisClient();
+  await client.quit();
+  redisClient = null;
+  logger.info({ name: "redis" }, "Connection closed");
+};
+
+export const redisService = {
+  getRedisClient,
+  get,
+  set,
+  delete: deleteKey,
+  flushall,
+  quit,
+};

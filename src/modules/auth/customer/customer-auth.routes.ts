@@ -27,7 +27,7 @@ export const customerAuthRouter = Router();
  *        description: OK
  */
 customerAuthRouter.post(
-  "/signin",
+  "/customer/auth/signin",
   strictThrottler,
   customerAuthController.signin
 );

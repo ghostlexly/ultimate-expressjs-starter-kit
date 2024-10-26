@@ -8,7 +8,7 @@ export const setupSwagger = ({ app }: { app: express.Application }) => {
       openapi: "3.1.0",
       info: {
         title: "API Documentation",
-        description: "Bienvenue dans la documentation de l'API.",
+        description: "Welcome to the API documentation.",
         version: "1.0.0",
       },
       // security: [

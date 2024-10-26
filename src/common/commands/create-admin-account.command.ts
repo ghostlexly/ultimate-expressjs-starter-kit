@@ -30,6 +30,7 @@ const runCommand = async (email: string, password: string): Promise<void> => {
   });
 
   logger.info("Account created successfully.");
+  process.exit(0);
 };
 
 export default setupCommand;

@@ -17,4 +17,4 @@ export const meRouter = Router();
  *      '200':
  *        description: OK
  */
-meRouter.get("/", sessionsGuard, meController.getMe);
+meRouter.get("/me", sessionsGuard, meController.getMe);

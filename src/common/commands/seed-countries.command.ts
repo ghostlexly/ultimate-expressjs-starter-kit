@@ -27,27 +27,16 @@ type InseeRow = {
 
 const runCommand = async (): Promise<void> => {
   try {
-    logger.info("Downloading insee data...");
-    const inseeData = await getInseeData();
+    const inseeService = await createInseeService();
+    const geonames = await getGeonames();
 
-    logger.info("Downloading geonames.org data...");
-    const countries = await wolfios
-      .get("http://api.geonames.org/countryInfoJSON", {
-        params: {
-          username: "ghostlexly",
-          formatted: "true",
-          style: "full",
-          lang: "FR", // 👈 set your country language code here for country name translation
-        },
-      })
-      .then(async (res) => await res.json())
-      .then((data) => data.geonames);
-
-    for (const country of countries) {
+    for (const country of geonames) {
       // -------------------------------------
       // find the insee data to get insee country code
       // -------------------------------------
-      const insee = findInsee({ inseeData, iso2Code: country.countryCode });
+      const insee = inseeService.getInseeByIso2Code({
+        iso2Code: country.countryCode,
+      });
 
       if (!insee) {
         logger.warn(`No insee data found for ${country.countryCode}`);
@@ -77,26 +66,46 @@ const runCommand = async (): Promise<void> => {
   } catch (error) {
     logger.error(error, "Error on seeding countries !");
   }
+
+  process.exit(0);
 };
 
-const getInseeData = async (): Promise<InseeRow[]> => {
-  const inseeData = await wolfios
+const getGeonames = async () => {
+  logger.info("Downloading geonames.org data...");
+  const countries = await wolfios
+    .get("http://api.geonames.org/countryInfoJSON", {
+      params: {
+        username: "ghostlexly",
+        formatted: "true",
+        style: "full",
+        lang: "FR", // 👈 set your country language code here for country name translation
+      },
+    })
+    .then(async (res) => await res.json())
+    .then((data) => data.geonames);
+
+  return countries;
+};
+
+const createInseeService = async () => {
+  logger.info("Downloading insee data...");
+  const response = await wolfios
     .get(
       "https://www.insee.fr/fr/statistiques/fichier/7766585/v_pays_territoire_2024.csv"
     )
     .then(async (res) => await res.text());
 
   // -- parse csv data
-  const { data } = papaparse.parse<InseeRow>(inseeData, {
+  const { data: inseeData } = papaparse.parse<InseeRow>(response, {
     header: true,
     skipEmptyLines: true,
   });
 
-  return data;
-};
-
-const findInsee = ({ inseeData, iso2Code }) => {
-  return inseeData.find((item) => item.CODEISO2 === iso2Code);
+  return {
+    getInseeData: () => inseeData,
+    getInseeByIso2Code: ({ iso2Code }) =>
+      inseeData.find((item) => item.CODEISO2 === iso2Code),
+  };
 };
 
 export default setupCommand;

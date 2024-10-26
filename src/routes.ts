@@ -7,12 +7,12 @@ import { customerAuthRouter } from "./modules/auth/customer/customer-auth.routes
 
 export const apiRouter = Router();
 // -- Common
-apiRouter.use("/media", mediaRouter);
+apiRouter.use(mediaRouter);
 
 // -- Auth
-apiRouter.use("/me", meRouter);
-apiRouter.use("/admin/auth", adminAuthRouter);
-apiRouter.use("/customer/auth", customerAuthRouter);
+apiRouter.use(meRouter);
+apiRouter.use(adminAuthRouter);
+apiRouter.use(customerAuthRouter);
 
 // -- Business
-apiRouter.use("/tests", testRouter);
+apiRouter.use(testRouter);
