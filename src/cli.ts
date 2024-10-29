@@ -2,10 +2,10 @@ import { Command } from "commander";
 import path from "path";
 import { getAppDir } from "./common/lib/app-dir";
 import { glob } from "glob";
-import { loggerService } from "./common/lib/logger";
+import { createLoggerService } from "./common/lib/logger";
 import chalk from "chalk";
 
-const logger = loggerService.create({ name: "cli" });
+const logger = createLoggerService({ name: "cli" });
 const program = new Command();
 
 // Configure help output

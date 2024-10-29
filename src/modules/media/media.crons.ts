@@ -1,8 +1,8 @@
-import { loggerService } from "@/common/lib/logger";
+import { createLoggerService } from "@/common/lib/logger";
 import cron from "node-cron";
 import { createMediaService } from "./media.service";
 
-const logger = loggerService.create({ name: "mediaCrons" });
+const logger = createLoggerService({ name: "mediaCrons" });
 const mediaService = createMediaService();
 
 cron.schedule("0 * * * *", async () => {

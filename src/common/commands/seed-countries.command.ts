@@ -1,10 +1,10 @@
 import { Command } from "commander";
-import { loggerService } from "../lib/logger";
+import { createLoggerService } from "../lib/logger";
 import papaparse from "papaparse";
 import { wolfios } from "../lib/wolfios";
 import { prisma } from "../providers/database/prisma";
 
-const logger = loggerService.create({ name: "seed-countries-command" });
+const logger = createLoggerService({ name: "seed-countries-command" });
 
 const setupCommand = (program: Command): void => {
   program

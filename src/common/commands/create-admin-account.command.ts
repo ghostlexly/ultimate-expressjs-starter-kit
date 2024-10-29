@@ -1,9 +1,9 @@
 import { Command } from "commander";
-import { loggerService } from "../lib/logger";
+import { createLoggerService } from "../lib/logger";
 import { prisma } from "../providers/database/prisma";
 import * as bcrypt from "bcryptjs";
 
-const logger = loggerService.create({ name: "create-admin-account-command" });
+const logger = createLoggerService({ name: "create-admin-account-command" });
 
 const setupCommand = (program: Command): void => {
   program

@@ -1,9 +1,9 @@
 import { glob } from "glob";
 import path from "path";
-import { loggerService } from "./logger";
+import { createLoggerService } from "./logger";
 import { getAppDir } from "./app-dir";
 
-const logger = loggerService.create({ name: "setupCrons" });
+const logger = createLoggerService({ name: "setupCrons" });
 
 export const setupCrons = async () => {
   const modulesPath = path.join(getAppDir(), "modules");
