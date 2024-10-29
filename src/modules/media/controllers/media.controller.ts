@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { mediaService } from "../media.service";
+import { createMediaService } from "../media.service";
 import createHttpError from "http-errors";
 import { optimizeVideoQueue } from "../queues/optimize-video/optimize-video.queue";
 import { OPTIMIZE_VIDEO_JOB } from "../queues/optimize-video/optimize-video.job";
+
+const mediaService = createMediaService();
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {

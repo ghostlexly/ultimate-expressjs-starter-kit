@@ -101,10 +101,12 @@ const createInseeService = async () => {
     skipEmptyLines: true,
   });
 
+  const getInseeByIso2Code = ({ iso2Code }: { iso2Code: string }) =>
+    inseeData.find((item) => item.CODEISO2 === iso2Code);
+
   return {
     getInseeData: () => inseeData,
-    getInseeByIso2Code: ({ iso2Code }) =>
-      inseeData.find((item) => item.CODEISO2 === iso2Code),
+    getInseeByIso2Code,
   };
 };
 
