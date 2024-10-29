@@ -10,6 +10,7 @@ This starter kit provides a robust foundation for building scalable and feature-
 
 - **Logging**: Advanced logging with `Pino` and log rotation using `file-stream-rotator`
 - **Database**: Efficient data management with `Prisma ORM`
+- **Events**: Powerful event handling with `EventEmitter2`
 - **Authentication**: Secure bearer sessions and OAuth support (Google, Facebook, Twitter, GitHub) via `passportjs`
 - **Authorization**: Fine-grained access control with `Casl`
 - **Validation**: Request validation (Body, Parameters, Query) using `Zod`

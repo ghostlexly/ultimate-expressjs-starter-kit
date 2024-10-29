@@ -48,6 +48,7 @@ const entryPoints = [
     "src/**/*.worker.ts",
     "src/**/*.crons.ts",
     "src/**/*.command.ts",
+    "src/**/*.listener.ts",
   ]),
 ];
 

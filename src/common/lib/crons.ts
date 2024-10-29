@@ -3,9 +3,9 @@ import path from "path";
 import { loggerService } from "./logger";
 import { getAppDir } from "./app-dir";
 
-export const setupCrons = async () => {
-  const logger = loggerService.create({ name: "setupCrons" });
+const logger = loggerService.create({ name: "setupCrons" });
 
+export const setupCrons = async () => {
   const modulesPath = path.join(getAppDir(), "modules");
 
   const files = await glob("**/*.crons.js", {

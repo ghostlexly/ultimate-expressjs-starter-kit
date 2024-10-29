@@ -13,6 +13,7 @@ import { setupI18n } from "./common/lib/i18n";
 import { setupSwagger } from "./common/lib/swagger";
 import { setupCrons } from "./common/lib/crons";
 import { rewriteIpAddressMiddleware } from "./common/middlewares/rewrite-ip-address.middleware";
+import { setupEventEmitter } from "./common/lib/event-emitter";
 
 const app = express();
 
@@ -46,6 +47,9 @@ async function bootstrap() {
 
   // -- Crons
   setupCrons();
+
+  // -- Event emitter
+  setupEventEmitter();
 
   // -- Routes
   app.use("/api", globalThrottler, apiRouter);

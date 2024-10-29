@@ -6,6 +6,7 @@ import { AccountDto } from "../dtos/account.dto";
 import { testingQueue } from "../queues/testing/testing.queue";
 import { accountUpdateSchema } from "../schemas/account-update.schema";
 import { TESTING_JOB } from "../queues/testing/testing.job";
+import { eventEmitter } from "@/common/lib/event-emitter";
 
 const testBadRequest = async (
   req: Request,
@@ -82,9 +83,26 @@ const testSerializer = async (
   }
 };
 
+const testEventEmitter = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await eventEmitter.emitAsync("test.event", "Hello World");
+
+    return res.json({
+      message: "Event emitted.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const testController = {
   testBadRequest,
   testQueueLaunch,
   testZod,
   testSerializer,
+  testEventEmitter,
 };

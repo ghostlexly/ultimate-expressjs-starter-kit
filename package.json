@@ -24,6 +24,7 @@
     "commander": "^12.1.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
+    "eventemitter2": "^6.4.9",
     "express": "^4.21.1",
     "express-rate-limit": "^7.4.1",
     "file-stream-rotator": "^1.0.0",

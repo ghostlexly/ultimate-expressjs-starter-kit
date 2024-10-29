@@ -108,3 +108,16 @@ testRouter.post("/tests/zod", testController.testZod);
  *        description: OK
  */
 testRouter.post("/tests/serializer", testController.testSerializer);
+
+/**
+ * @swagger
+ * /api/tests/event-emitter:
+ *  get:
+ *    tags: [Tests]
+ *    summary: Test event emitter
+ *    description: Test event emitter.
+ *    responses:
+ *      '200':
+ *        description: OK
+ */
+testRouter.get("/tests/event-emitter", testController.testEventEmitter);
