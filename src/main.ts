@@ -18,6 +18,8 @@ import { setupEventEmitter } from "./common/lib/event-emitter";
 const app = express();
 
 async function bootstrap() {
+  console.time("bootstrap");
+
   // disable `x-powered-by` header for security reasons
   app.disable("x-powered-by");
 
@@ -68,6 +70,7 @@ async function bootstrap() {
 
   // -- Start server
   app.listen(3000, () => {
+    console.timeEnd("bootstrap");
     console.log(`🚀 Server ready on port: 3000`);
   });
 }

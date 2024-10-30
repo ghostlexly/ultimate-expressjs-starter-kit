@@ -8,7 +8,10 @@ import { sessionService } from "../session.service";
 
 const signin = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { body } = await validate({ req, schema: customerAuthLoginSchema });
+    const body = await validate({
+      data: req.body,
+      schema: customerAuthLoginSchema,
+    });
 
     // -- verify if user exists
     const user = await prisma.customer.findFirst({

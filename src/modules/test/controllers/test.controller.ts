@@ -44,8 +44,8 @@ const testQueueLaunch = async (
 
 const testZod = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { body } = await validate({
-      req,
+    const body = await validate({
+      data: req.body,
       schema: accountUpdateSchema,
     });
 

@@ -84,7 +84,7 @@ const getTransformed = ({
     next: NextFunction
   ) => {
     try {
-      const { query } = await validate({ req, schema: municipalitiesGetSchema });
+      const query  = await validate({ data: req.query, schema: municipalitiesGetSchema });
       const pagination = pageQuery.getPagination({
         page: query.page,
         first: query.first,
