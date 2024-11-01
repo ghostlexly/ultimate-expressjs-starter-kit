@@ -1,12 +1,12 @@
 import { Job, Worker } from "bullmq";
-import { createLoggerService } from "@/common/lib/logger";
+import { createLogger } from "@/common/lib/logger";
 
 type initWorkerEventsLoggerProps = {
   worker: Worker;
 };
 
 const initWorkerEventsLogger = ({ worker }: initWorkerEventsLoggerProps) => {
-  const logger = createLoggerService({ name: "bullmq" });
+  const logger = createLogger({ name: "bullmq" });
 
   // Start the time
   let startTime = Date.now();

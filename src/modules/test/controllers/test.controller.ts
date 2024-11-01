@@ -7,6 +7,7 @@ import { testingQueue } from "../queues/testing/testing.queue";
 import { accountUpdateSchema } from "../schemas/account-update.schema";
 import { TESTING_JOB } from "../queues/testing/testing.job";
 import { eventEmitter } from "@/common/lib/event-emitter";
+import { services } from "@/common/lib/services";
 
 const testBadRequest = async (
   req: Request,
@@ -99,10 +100,27 @@ const testEventEmitter = async (
   }
 };
 
+const testDependencyInjection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = services.testService.example();
+
+    return res.json({
+      message: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const testController = {
   testBadRequest,
   testQueueLaunch,
   testZod,
   testSerializer,
   testEventEmitter,
+  testDependencyInjection,
 };

@@ -1,8 +1,8 @@
 import { Command } from "commander";
-import { createLoggerService } from "../lib/logger";
+import { createLogger } from "../lib/logger";
 import { redisService } from "../providers/cache/redis";
 
-const logger = createLoggerService({ name: "redis-clear-command" });
+const logger = createLogger({ name: "redis-clear-command" });
 
 const setupCommand = (program: Command): void => {
   program

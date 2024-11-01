@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import httpError from "http-errors";
-import { createLoggerService } from "../lib/logger";
+import { createLogger } from "../lib/logger";
 
-const logger = createLoggerService({ name: "exceptions-middleware" });
+const logger = createLogger({ name: "exceptions-middleware" });
 
 /**
  * Global error handling middleware

@@ -3,7 +3,7 @@ import pino from "pino";
 import pretty from "pino-pretty";
 import { getRootDir } from "./app-dir";
 
-export const createLoggerService = ({ name }: { name: string }) => {
+export const createLogger = ({ name }: { name: string }) => {
   const rootDir = getRootDir();
 
   const streams = [

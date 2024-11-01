@@ -15,6 +15,7 @@ This starter kit provides a robust foundation for building scalable and feature-
 - **Authorization**: Fine-grained access control with `Casl`
 - **Validation**: Request validation (Body, Parameters, Query) using `Zod`
 - **Error Handling**: Comprehensive error management system
+- **Dependency Injection**: Service container with type-safe dependency management
 
 #### 📁 File Management
 

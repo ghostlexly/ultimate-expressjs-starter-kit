@@ -1,11 +1,11 @@
 import { glob } from "glob";
 import path from "path";
-import { createLoggerService } from "./logger";
+import { createLogger } from "./logger";
 import { getAppDir } from "./app-dir";
 
-const logger = createLoggerService({ name: "setupCrons" });
+const logger = createLogger({ name: "initializeCrons" });
 
-export const setupCrons = async () => {
+export const initializeCrons = async () => {
   const modulesPath = path.join(getAppDir(), "modules");
 
   const files = await glob("**/*.crons.js", {

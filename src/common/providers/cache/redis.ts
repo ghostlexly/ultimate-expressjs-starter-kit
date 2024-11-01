@@ -1,8 +1,8 @@
 import { Redis } from "ioredis";
 import { configService } from "../../lib/config";
-import { createLoggerService } from "../../lib/logger";
+import { createLogger } from "../../lib/logger";
 
-const logger = createLoggerService({ name: "redis" });
+const logger = createLogger({ name: "redis" });
 
 export const REDIS_CONNECTION = {
   host: configService.getOrThrow("REDIS_HOST"),

@@ -1,5 +1,5 @@
 import { filesService } from "@/common/lib/files";
-import { createLoggerService } from "@/common/lib/logger";
+import { createLogger } from "@/common/lib/logger";
 import { prisma } from "@/common/providers/database/prisma";
 import { s3Service } from "@/common/providers/s3/s3";
 import { Prisma } from "@prisma/client";
@@ -7,7 +7,7 @@ import { sub } from "date-fns";
 import createHttpError from "http-errors";
 
 export const createMediaService = () => {
-  const logger = createLoggerService({ name: "mediaService" });
+  const logger = createLogger({ name: "mediaService" });
 
   /**
    * Save a file uploaded with Multer to S3 and create a media record.

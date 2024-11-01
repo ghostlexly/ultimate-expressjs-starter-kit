@@ -2,7 +2,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import express from "express";
 
-export const setupSwagger = ({ app }: { app: express.Application }) => {
+export const initializeSwagger = ({ app }: { app: express.Application }) => {
   const swaggerSpec = swaggerJSDoc({
     definition: {
       openapi: "3.1.0",

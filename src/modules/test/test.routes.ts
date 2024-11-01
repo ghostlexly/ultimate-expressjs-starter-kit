@@ -121,3 +121,19 @@ testRouter.post("/tests/serializer", testController.testSerializer);
  *        description: OK
  */
 testRouter.get("/tests/event-emitter", testController.testEventEmitter);
+
+/**
+ * @swagger
+ * /api/tests/dependency-injection:
+ *  get:
+ *    tags: [Tests]
+ *    summary: Test dependency injection
+ *    description: Inject a service from another module. This is a simple homemade dependency injection. Please check common/lib/services.ts for more details.
+ *    responses:
+ *      '200':
+ *        description: OK
+ */
+testRouter.get(
+  "/tests/dependency-injection",
+  testController.testDependencyInjection
+);

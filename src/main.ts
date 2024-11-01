@@ -8,17 +8,21 @@ import { exceptionsMiddleware } from "./common/middlewares/exceptions.middleware
 import { unknownRoutesMiddleware } from "./common/middlewares/unknown-routes.middleware";
 import { globalThrottler } from "./common/throttlers/global.throttler";
 import { trimMiddleware } from "./common/middlewares/trim.middleware";
-import { setupBearerStrategy } from "./modules/auth/strategies/bearer.strategy";
-import { setupI18n } from "./common/lib/i18n";
-import { setupSwagger } from "./common/lib/swagger";
-import { setupCrons } from "./common/lib/crons";
+import { initializeBearerStrategy } from "./modules/auth/strategies/bearer.strategy";
+import { initializeI18n } from "./common/lib/i18n";
+import { initializeSwagger } from "./common/lib/swagger";
+import { initializeCrons } from "./common/lib/crons";
 import { rewriteIpAddressMiddleware } from "./common/middlewares/rewrite-ip-address.middleware";
-import { setupEventEmitter } from "./common/lib/event-emitter";
+import { initializeEventEmitter } from "./common/lib/event-emitter";
+import { createLogger } from "./common/lib/logger";
+import { initializeServices } from "./common/lib/services";
 
 const app = express();
+const logger = createLogger({ name: "main" });
 
 async function bootstrap() {
-  console.time("bootstrap");
+  // -- Log bootstrap time
+  const bootstrapStartTime = Date.now();
 
   // disable `x-powered-by` header for security reasons
   app.disable("x-powered-by");
@@ -38,20 +42,23 @@ async function bootstrap() {
   // We trim the body of the incoming requests to remove any leading or trailing whitespace
   app.use(trimMiddleware);
 
+  // -- Services
+  initializeServices();
+
   // -- Swagger
-  setupSwagger({ app });
+  initializeSwagger({ app });
 
   // -- Passport strategies
-  setupBearerStrategy();
+  initializeBearerStrategy();
 
   // -- I18n
-  setupI18n();
+  initializeI18n();
 
   // -- Crons
-  setupCrons();
+  initializeCrons();
 
   // -- Event emitter
-  setupEventEmitter();
+  initializeEventEmitter();
 
   // -- Routes
   app.use("/api", globalThrottler, apiRouter);
@@ -70,8 +77,10 @@ async function bootstrap() {
 
   // -- Start server
   app.listen(3000, () => {
-    console.timeEnd("bootstrap");
-    console.log(`🚀 Server ready on port: 3000`);
+    // -- Log bootstrap time
+    logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
+    // -- Log server ready
+    logger.info(`🚀 Server ready on port: 3000`);
   });
 }
 

@@ -1,7 +1,7 @@
 import { Command } from "commander";
-import { createLoggerService } from "../lib/logger";
+import { createLogger } from "../lib/logger";
 
-const logger = createLoggerService({ name: "test-command" });
+const logger = createLogger({ name: "test-command" });
 
 const setupCommand = (program: Command): void => {
   program

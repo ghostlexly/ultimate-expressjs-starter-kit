@@ -1,11 +1,11 @@
-import { createLoggerService } from "@/common/lib/logger";
+import { createLogger } from "@/common/lib/logger";
 import { prisma } from "@/common/providers/database/prisma";
 import { SandboxedJob } from "bullmq";
 
 export const TESTING_JOB = "testingJob";
 
 export const testingJob = async (job: SandboxedJob) => {
-  const logger = createLoggerService({ name: "testingJob" });
+  const logger = createLogger({ name: "testingJob" });
 
   const { message } = job.data;
 

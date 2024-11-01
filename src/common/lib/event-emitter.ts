@@ -1,10 +1,10 @@
 import EventEmitter2 from "eventemitter2";
-import { createLoggerService } from "./logger";
+import { createLogger } from "./logger";
 import path from "path";
 import { getAppDir } from "./app-dir";
 import { glob } from "glob";
 
-const logger = createLoggerService({ name: "setupEventEmitter" });
+const logger = createLogger({ name: "initializeEventEmitter" });
 
 export const eventEmitter = new EventEmitter2({
   // set this to `true` to use wildcards
@@ -29,7 +29,7 @@ export const eventEmitter = new EventEmitter2({
   ignoreErrors: false,
 });
 
-export const setupEventEmitter = async () => {
+export const initializeEventEmitter = async () => {
   const modulesPath = path.join(getAppDir(), "modules");
 
   const files = await glob("**/*.listener.js", {
