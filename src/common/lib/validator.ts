@@ -1,13 +1,13 @@
 import createHttpError from "http-errors";
 import { ZodSchema, z } from "zod";
 
-export const validate = async ({
+export const validate = async <T>({
   data,
   schema,
 }: {
   data: any;
-  schema: ZodSchema<any>;
-}) => {
+  schema: ZodSchema<T>;
+}): Promise<T> => {
   try {
     return await schema.parseAsync(data);
   } catch (error) {
