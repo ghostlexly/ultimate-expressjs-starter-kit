@@ -16,16 +16,16 @@ const createWatchPlugin = () => ({
   async writeBundle() {
     if (isWatchMode) {
       retry(restartServer, {
-        retries: 4,
+        retries: 2,
         factor: 2,
         onRetry: (error, attempt) => {
-          console.error(`Retry attempt ${attempt}/4 failed:`, error.message);
-
-          if (attempt === 4) {
-            console.error("Failed to restart server after 4 attempts !");
-            process.exit(1); // Exit the process with error code
-          }
+          console.error(`Retry attempt ${attempt}/2 failed:`, error.message);
         },
+      }).catch((error) => {
+        console.error(
+          "Failed to restart server after 2 attempts:",
+          error.message
+        );
       });
 
       await typescriptTypesCheck();

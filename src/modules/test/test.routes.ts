@@ -72,6 +72,8 @@ testRouter.get("/tests/queue-launch", testController.testQueueLaunch);
  *                      type: string
  *                    name:
  *                      type: string
+ *              phoneNumber:
+ *                type: string
  *    responses:
  *      '200':
  *        description: OK

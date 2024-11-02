@@ -9,6 +9,7 @@
     "build": "rollup -c",
     "start": "node dist/main.js",
     "start:dev": "rollup -c -w",
+    "check": "tsc --noEmit",
     "cli": "node dist/cli.js",
     "format": "prettier --write \"src/**/*.ts\""
   },
