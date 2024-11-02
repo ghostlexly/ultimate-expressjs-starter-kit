@@ -62,4 +62,60 @@ export class HttpError extends Error {
       ...this.body,
     };
   }
+
+  static BadRequest(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 400, ...params });
+  }
+
+  static Unauthorized(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 401, ...params });
+  }
+
+  static PaymentRequired(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 402, ...params });
+  }
+
+  static Forbidden(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 403, ...params });
+  }
+
+  static NotFound(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 404, ...params });
+  }
+
+  static MethodNotAllowed(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 405, ...params });
+  }
+
+  static NotAcceptable(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 406, ...params });
+  }
+
+  static Conflict(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 409, ...params });
+  }
+
+  static TooManyRequests(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 429, ...params });
+  }
+
+  static InternalServerError(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 500, ...params });
+  }
+
+  static NotImplemented(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 501, ...params });
+  }
+
+  static BadGateway(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 502, ...params });
+  }
+
+  static ServiceUnavailable(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 503, ...params });
+  }
+
+  static GatewayTimeout(params: Omit<HttpErrorParams, "status">) {
+    return new HttpError({ status: 504, ...params });
+  }
 }

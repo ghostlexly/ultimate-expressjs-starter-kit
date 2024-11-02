@@ -15,11 +15,16 @@ const testBadRequest = async (
   next: NextFunction
 ) => {
   try {
-    throw new HttpError({
-      status: 400,
+    throw HttpError.BadRequest({
       body: "An error occurred.",
       code: "TEST_BAD_REQUEST",
     });
+
+    // throw new HttpError({
+    //   status: 400,
+    //   body: "An error occurred.",
+    //   code: "TEST_BAD_REQUEST",
+    // });
 
     return res.json({
       message: "Hello World",
