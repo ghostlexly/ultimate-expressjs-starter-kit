@@ -1,7 +1,7 @@
+import { HttpError } from "@/common/lib/errors";
 import { prisma } from "@/common/providers/database/prisma";
 import { Prisma } from "@prisma/client";
 import { add, isAfter } from "date-fns";
-import createHttpError from "http-errors";
 
 const create = async ({ accountId }: { accountId: string }) => {
   const session = await prisma.session.create({
@@ -37,7 +37,10 @@ const findByToken = async ({ token }: { token: string }) => {
   });
 
   if (!session) {
-    throw createHttpError.Forbidden(`Session #${token} not found.`);
+    throw new HttpError({
+      status: 403,
+      body: `Session #${token} not found.`,
+    });
   }
 
   return session;

@@ -32,7 +32,6 @@
     "file-stream-rotator": "^1.0.0",
     "file-type": "16.5.4",
     "glob": "^11.0.0",
-    "http-errors": "^2.0.0",
     "i18n-iso-countries": "^7.11.1",
     "i18next": "^23.11.3",
     "iban": "^0.0.14",

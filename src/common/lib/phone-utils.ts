@@ -1,5 +1,5 @@
-import createHttpError from "http-errors";
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
+import { HttpError } from "./errors";
 
 const parse = (params: { phoneNumber: string; countryCode?: CountryCode }) => {
   const { phoneNumber, countryCode = "FR" } = params;
@@ -7,7 +7,10 @@ const parse = (params: { phoneNumber: string; countryCode?: CountryCode }) => {
   const parsed = parsePhoneNumberFromString(phoneNumber, countryCode);
 
   if (!parsed || !parsed.isValid()) {
-    throw createHttpError.BadRequest("Numéro de téléphone invalide.");
+    throw new HttpError({
+      status: 400,
+      body: "Invalid phone number.",
+    });
   }
 
   return parsed;

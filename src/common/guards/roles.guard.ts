@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-import createHttpError from "http-errors";
+import { HttpError } from "../lib/errors";
 
 export const rolesGuard =
   (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
@@ -11,7 +11,12 @@ export const rolesGuard =
     // otherwise, throw an Unauthorized error (401). This status code indicates that the client is not authenticated.
     // -----------------------------------
     if (!account) {
-      return next(createHttpError.Unauthorized("Unauthorized"));
+      return next(
+        new HttpError({
+          status: 401,
+          body: "Unauthorized",
+        })
+      );
     }
 
     // -----------------------------------
@@ -21,9 +26,10 @@ export const rolesGuard =
     // -----------------------------------
     if (!roles.includes(account.role)) {
       return next(
-        createHttpError.Forbidden(
-          "You don't have permission to access this resource."
-        )
+        new HttpError({
+          status: 403,
+          body: "You don't have permission to access this resource.",
+        })
       );
     }
 

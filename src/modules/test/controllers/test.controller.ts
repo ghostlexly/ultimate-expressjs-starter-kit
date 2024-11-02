@@ -1,13 +1,13 @@
 import { serializerService } from "@/common/lib/serializer";
 import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
-import createHttpError from "http-errors";
 import { AccountDto } from "../dtos/account.dto";
 import { testingQueue } from "../queues/testing/testing.queue";
 import { accountUpdateSchema } from "../schemas/account-update.schema";
 import { TESTING_JOB } from "../queues/testing/testing.job";
 import { eventEmitter } from "@/common/lib/event-emitter";
 import { services } from "@/common/lib/services";
+import { HttpError } from "@/common/lib/errors";
 
 const testBadRequest = async (
   req: Request,
@@ -15,7 +15,11 @@ const testBadRequest = async (
   next: NextFunction
 ) => {
   try {
-    throw createHttpError.BadRequest("Un problème est survenu.");
+    throw new HttpError({
+      status: 400,
+      body: "An error occurred.",
+      code: "TEST_BAD_REQUEST",
+    });
 
     return res.json({
       message: "Hello World",

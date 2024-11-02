@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import createHttpError from "http-errors";
+import { HttpError } from "@/common/lib/errors";
 
 const getMe = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -18,7 +18,10 @@ const getMe = async (req: Request, res: Response, next: NextFunction) => {
         role: account.role,
       });
     } else {
-      throw createHttpError.BadRequest("Invalid role.");
+      throw new HttpError({
+        status: 400,
+        body: "Invalid role.",
+      });
     }
   } catch (error) {
     next(error);

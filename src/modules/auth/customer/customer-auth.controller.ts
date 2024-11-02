@@ -2,9 +2,9 @@ import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
 import { customerAuthLoginSchema } from "./schemas/login.schema";
 import { prisma } from "@/common/providers/database/prisma";
-import createHttpError from "http-errors";
 import * as bcrypt from "bcryptjs";
 import { sessionService } from "../session.service";
+import { HttpError } from "@/common/lib/errors";
 
 const signin = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -21,18 +21,27 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!user) {
-      throw createHttpError.Unauthorized("Invalid credentials.");
+      throw new HttpError({
+        status: 401,
+        body: "Invalid credentials.",
+      });
     }
 
     // -- check if the user has a password
     if (!user.password) {
-      throw createHttpError.Unauthorized("Invalid credentials.");
+      throw new HttpError({
+        status: 401,
+        body: "Invalid credentials.",
+      });
     }
 
     // -- hash given password and compare it to the stored hash
     const validPassword = await bcrypt.compare(body.password, user.password);
     if (!validPassword) {
-      throw createHttpError.Unauthorized("Invalid credentials.");
+      throw new HttpError({
+        status: 401,
+        body: "Invalid credentials.",
+      });
     }
 
     // -- generate session token

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { createMediaService } from "../media.service";
-import createHttpError from "http-errors";
 import { optimizeVideoQueue } from "../queues/optimize-video/optimize-video.queue";
 import { OPTIMIZE_VIDEO_JOB } from "../queues/optimize-video/optimize-video.job";
+import { HttpError } from "@/common/lib/errors";
 
 const mediaService = createMediaService();
 
@@ -11,7 +11,10 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     const file = req.file;
 
     if (!file) {
-      throw new createHttpError.BadRequest("No file uploaded.");
+      throw new HttpError({
+        status: 400,
+        body: "No file uploaded.",
+      });
     }
 
     // -- verify the file
@@ -46,7 +49,10 @@ const createVideo = async (req: Request, res: Response, next: NextFunction) => {
     const file = req.file;
 
     if (!file) {
-      throw new createHttpError.BadRequest("No file uploaded.");
+      throw new HttpError({
+        status: 400,
+        body: "No file uploaded.",
+      });
     }
 
     // -- verify the file

@@ -11,7 +11,7 @@ import fs from "fs";
 import path from "path";
 import { filesService } from "../../lib/files";
 import { format } from "date-fns";
-import createHttpError from "http-errors";
+import { HttpError } from "@/common/lib/errors";
 
 const client = new S3Client({
   endpoint: configService.getOrThrow("S3_ENDPOINT"),
@@ -94,7 +94,10 @@ const downloadToFile = async ({
   );
 
   if (!data.Body) {
-    throw createHttpError.NotFound("File not found.");
+    throw new HttpError({
+      status: 404,
+      body: "File not found.",
+    });
   }
 
   const fileWriteStream = fs.createWriteStream(destinationPath);
@@ -135,7 +138,10 @@ const downloadToMemoryBase64 = async ({ fileKey }: { fileKey: string }) => {
   );
 
   if (!data.Body) {
-    throw createHttpError.NotFound("File not found.");
+    throw new HttpError({
+      status: 404,
+      body: "File not found.",
+    });
   }
 
   const contentType = data.ContentType;

@@ -1,5 +1,5 @@
-import createHttpError from "http-errors";
 import { ZodSchema, z } from "zod";
+import { HttpError } from "./errors";
 
 export const validate = async <T>({
   data,
@@ -12,13 +12,18 @@ export const validate = async <T>({
     return await schema.parseAsync(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw createHttpError(400, {
-        message: `The form contains ${error.errors.length} error(s). Please correct them to continue.`,
-        violations: error.errors.map((e) => ({
-          code: e.code,
-          message: e.message,
-          path: e.path.join("."),
-        })),
+      throw new HttpError({
+        status: 400,
+        code: "VALIDATION_ERROR",
+        body: {
+          message: `The form contains ${error.errors.length} error(s). Please correct them to continue.`,
+          violations: error.errors.map((e) => ({
+            code: e.code,
+            message: e.message,
+            path: e.path.join("."),
+          })),
+        },
+        cause: error,
       });
     }
 

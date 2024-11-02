@@ -5,9 +5,9 @@ import {
   MongoQuery,
   createMongoAbility,
 } from "@casl/ability";
-import createHttpError from "http-errors";
 import { CustomAccount } from "../types/request";
 import { Request, Response, NextFunction } from "express";
+import { HttpError } from "../lib/errors";
 
 /**
  * Define the abilities of the given account.
@@ -100,9 +100,10 @@ export const checkAbilities = async ({
     })
   ) {
     if (throwError) {
-      throw createHttpError.Forbidden(
-        "You are not allowed to access this resource."
-      );
+      throw new HttpError({
+        status: 403,
+        body: "You are not allowed to access this resource.",
+      });
     } else {
       return false;
     }
@@ -120,9 +121,10 @@ export const checkAbilities = async ({
  */
 export const getAbilities = (req: Request) => {
   if (!req.account) {
-    throw createHttpError.Forbidden(
-      "You must be logged in to access this resource."
-    );
+    throw new HttpError({
+      status: 403,
+      body: "You must be logged in to access this resource.",
+    });
   }
 
   return defineAbilitiesFor(req.account);
@@ -159,9 +161,10 @@ export const abilitiesGuard =
       });
 
       if (!hasAccess) {
-        throw createHttpError.Forbidden(
-          "You are not allowed to access this resource."
-        );
+        throw new HttpError({
+          status: 403,
+          body: "You are not allowed to access this resource.",
+        });
       }
 
       return next();

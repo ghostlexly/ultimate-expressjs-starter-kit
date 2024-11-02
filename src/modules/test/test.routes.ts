@@ -51,7 +51,7 @@ testRouter.get("/tests/queue-launch", testController.testQueueLaunch);
  * @swagger
  * /api/tests/zod:
  *  post:
- *    tags: [Tests]
+ *    tags: [Test]
  *    summary: Test Zod
  *    description: Test Zod validation.
  *    requestBody:

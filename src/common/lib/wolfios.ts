@@ -101,23 +101,23 @@ const request = async (endpoint: string, config: WolfiosProps) => {
 
 const handleApiResponse = async (response: Response) => {
   if (!response.ok) {
-    let data: any;
+    let body: any;
     let errorMessage = "An error occurred on the server.\nPlease try again.";
     const contentType = response.headers.get("content-type");
 
     if (contentType && contentType.includes("application/json")) {
-      data = await response.json();
+      body = await response.json();
 
-      if (data.message) {
-        errorMessage = data.message;
+      if (body.message) {
+        errorMessage = body.message;
       }
     } else {
-      data = await response.text();
+      body = await response.text();
     }
 
     throw {
       response: response,
-      data: data,
+      body: body,
       message: errorMessage,
     };
   }

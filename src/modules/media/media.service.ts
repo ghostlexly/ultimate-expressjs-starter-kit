@@ -1,10 +1,10 @@
+import { HttpError } from "@/common/lib/errors";
 import { filesService } from "@/common/lib/files";
 import { createLogger } from "@/common/lib/logger";
 import { prisma } from "@/common/providers/database/prisma";
 import { s3Service } from "@/common/providers/s3/s3";
 import { Prisma } from "@prisma/client";
 import { sub } from "date-fns";
-import createHttpError from "http-errors";
 
 export const createMediaService = () => {
   const logger = createLogger({ name: "mediaService" });
@@ -64,7 +64,10 @@ export const createMediaService = () => {
     });
 
     if (!media) {
-      throw createHttpError.NotFound(`Media to delete cannot be found.`);
+      throw new HttpError({
+        status: 404,
+        body: "Media to delete cannot be found.",
+      });
     }
 
     // -- Delete the record from the database
@@ -96,15 +99,17 @@ export const createMediaService = () => {
     const fileInfos = await filesService.getFileInfos(file.path);
 
     if (!allowedMimeTypes.includes(fileInfos.mimeType)) {
-      throw createHttpError.UnsupportedMediaType(
-        "This file type is not supported."
-      );
+      throw new HttpError({
+        status: 415,
+        body: "This file type is not supported.",
+      });
     }
 
     if (file.size > maxFileSizeInBytes) {
-      throw createHttpError.PayloadTooLarge(
-        `The file size must not exceed ${maxFileSize} Mo.`
-      );
+      throw new HttpError({
+        status: 413,
+        body: `The file size must not exceed ${maxFileSize} Mo.`,
+      });
     }
 
     return true;
@@ -136,19 +141,24 @@ export const createMediaService = () => {
     });
 
     if (!media) {
-      throw createHttpError.NotFound(`Media to verify cannot be found.`);
+      throw new HttpError({
+        status: 404,
+        body: "Media to verify cannot be found.",
+      });
     }
 
     if (!allowedMimeTypes.includes(media.mimeType)) {
-      throw createHttpError.UnsupportedMediaType(
-        "This file type is not allowed."
-      );
+      throw new HttpError({
+        status: 415,
+        body: "This file type is not allowed.",
+      });
     }
 
     if (media.size > maxFileSizeInBytes) {
-      throw createHttpError.PayloadTooLarge(
-        `The file size must not exceed ${maxFileSize} Mo.`
-      );
+      throw new HttpError({
+        status: 413,
+        body: `The file size must not exceed ${maxFileSize} Mo.`,
+      });
     }
 
     return true;
