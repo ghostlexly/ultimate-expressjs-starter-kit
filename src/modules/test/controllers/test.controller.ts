@@ -8,6 +8,7 @@ import { TESTING_JOB } from "../queues/testing/testing.job";
 import { eventEmitter } from "@/common/lib/event-emitter";
 import { services } from "@/common/lib/services";
 import { HttpError } from "@/common/lib/errors";
+import { testConfig } from "../test.config";
 
 const testBadRequest = async (
   req: Request,
@@ -119,6 +120,7 @@ const testDependencyInjection = async (
 
     return res.json({
       message: result,
+      commissionRate: testConfig.defaultCommissionRate,
     });
   } catch (error) {
     next(error);
