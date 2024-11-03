@@ -39,8 +39,13 @@ export const initializeSwagger = ({ app }: { app: express.Application }) => {
     apis: ["./src/modules/**/*.routes.ts", "./src/modules/**/*.controller.ts"],
   });
 
+  app.get("/api/swagger.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+  });
+
   app.use(
-    "/swagger",
+    "/api/swagger",
     swaggerUi.serve,
     swaggerUi.setup(swaggerSpec, {
       explorer: true,
