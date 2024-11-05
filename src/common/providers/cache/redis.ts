@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import { configService } from "../../lib/config";
+import { configService } from "../../services/config.service";
 import { createLogger } from "../../lib/logger";
 
 const logger = createLogger({ name: "redis" });

@@ -63,13 +63,19 @@ const request = async (endpoint: string, config: WolfiosProps) => {
   const url = new URL(endpoint, isServer ? "http://nginx" : document.baseURI);
 
   // ---------------------------------------
-  // if we have a `data` param, stringify it and set the content type
+  // if we have a `data` param, handle it based on content type
   // ----------------------------------------
   if (config?.data) {
-    config.body = JSON.stringify(config.data);
+    const contentType = config.headers?.["Content-Type"] || "application/json";
+
+    if (contentType === "application/x-www-form-urlencoded") {
+      config.body = new URLSearchParams(config.data).toString();
+    } else {
+      config.body = JSON.stringify(config.data);
+    }
 
     config.headers = {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
       ...config.headers,
     };
   }
@@ -102,23 +108,37 @@ const request = async (endpoint: string, config: WolfiosProps) => {
 const handleApiResponse = async (response: Response) => {
   if (!response.ok) {
     let body: any;
-    let errorMessage = "An error occurred on the server.\nPlease try again.";
-    const contentType = response.headers.get("content-type");
 
-    if (contentType && contentType.includes("application/json")) {
-      body = await response.json();
+    try {
+      // Always get the text first since it's the most reliable
+      const rawText = await response.text();
 
-      if (body.message) {
-        errorMessage = body.message;
+      // Then try to parse as JSON if it's a JSON content type
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          body = JSON.parse(rawText);
+        } catch (jsonError) {
+          // Fallback to raw text if JSON parsing fails
+          body = rawText;
+        }
+      } else {
+        body = rawText;
       }
-    } else {
-      body = await response.text();
+    } catch (error) {
+      console.warn("Error while reading response !", error);
+      body = {
+        status: response.status,
+        statusText: response.statusText,
+        type: response.type,
+        url: response.url,
+      };
     }
 
     throw {
+      message: "An error occurred on the server.\nPlease try again.",
       response: response,
       body: body,
-      message: errorMessage,
     };
   }
 

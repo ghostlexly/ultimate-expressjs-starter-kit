@@ -13,9 +13,9 @@ import { initializeI18n } from "./common/lib/i18n";
 import { initializeSwagger } from "./common/lib/swagger";
 import { initializeCrons } from "./common/lib/crons";
 import { rewriteIpAddressMiddleware } from "./common/middlewares/rewrite-ip-address.middleware";
-import { initializeEventEmitter } from "./common/lib/event-emitter";
 import { createLogger } from "./common/lib/logger";
 import { initializeServices } from "./common/lib/services";
+import { eventsService } from "./common/services/events.service";
 
 const app = express();
 const logger = createLogger({ name: "main" });
@@ -57,8 +57,8 @@ async function bootstrap() {
   // -- Crons
   initializeCrons();
 
-  // -- Event emitter
-  initializeEventEmitter();
+  // -- App Events
+  eventsService.initialize();
 
   // -- Routes
   app.use("/api", globalThrottler, apiRouter);

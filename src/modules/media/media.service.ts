@@ -1,5 +1,5 @@
 import { HttpError } from "@/common/lib/errors";
-import { filesService } from "@/common/lib/files";
+import { filesService } from "@/common/services/files.service";
 import { createLogger } from "@/common/lib/logger";
 import { prisma } from "@/common/providers/database/prisma";
 import { s3Service } from "@/common/providers/s3/s3";

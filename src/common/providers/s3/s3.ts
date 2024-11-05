@@ -6,10 +6,10 @@ import {
   StorageClass,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { configService } from "../../lib/config";
+import { configService } from "../../services/config.service";
 import fs from "fs";
 import path from "path";
-import { filesService } from "../../lib/files";
+import { filesService } from "../../services/files.service";
 import { format } from "date-fns";
 import { HttpError } from "@/common/lib/errors";
 
