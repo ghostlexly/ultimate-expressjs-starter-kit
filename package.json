@@ -45,6 +45,7 @@
     "papaparse": "^5.4.1",
     "passport": "^0.7.0",
     "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.1",
     "pino": "^9.5.0",
     "pino-pretty": "^11.3.0",
     "playwright": "^1.44.0",

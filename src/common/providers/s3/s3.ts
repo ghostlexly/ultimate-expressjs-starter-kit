@@ -14,15 +14,15 @@ import { format } from "date-fns";
 import { HttpError } from "@/common/lib/errors";
 
 const client = new S3Client({
-  endpoint: configService.getOrThrow("S3_ENDPOINT"),
+  endpoint: configService.getOrThrow("API_S3_ENDPOINT"),
   region: "auto", // [ex for AWS: eu-west-3] [ex for Cloudflare: auto]
   credentials: {
-    accessKeyId: configService.getOrThrow("S3_ACCESS_KEY"),
-    secretAccessKey: configService.getOrThrow("S3_SECRET_KEY"),
+    accessKeyId: configService.getOrThrow("API_S3_ACCESS_KEY"),
+    secretAccessKey: configService.getOrThrow("API_S3_SECRET_KEY"),
   },
 });
 
-const bucketName = configService.getOrThrow("S3_BUCKET");
+const bucketName = configService.getOrThrow("API_S3_BUCKET");
 
 /**
  * Save a file to S3 bucket and create a record in the database

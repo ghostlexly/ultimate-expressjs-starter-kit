@@ -1,9 +1,5 @@
-export const createTestAuthorService = () => {
-  const sayHello = () => {
+export class TestAuthorService {
+  sayHello() {
     return "Hello World";
-  };
-
-  return {
-    sayHello,
-  };
-};
+  }
+}

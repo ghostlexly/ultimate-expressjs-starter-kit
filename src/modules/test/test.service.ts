@@ -1,19 +1,13 @@
-import { TServiceContainer } from "@/common/lib/services";
+import { TestAuthorService } from "../test-author/test-author.service";
 
-export const createTestService = ({
-  testAuthorService,
-}: {
-  testAuthorService: TServiceContainer["testAuthorService"];
-}) => {
+export class TestService {
+  constructor(private readonly testAuthorService: TestAuthorService) {}
+
   /**
    * Example of a service that uses another service from another module (Dependency Injection)
    */
-  const example = () => {
-    const result = testAuthorService.sayHello();
+  example() {
+    const result = this.testAuthorService.sayHello();
     return `message received from another module's injected service: ${result}`;
-  };
-
-  return {
-    example,
-  };
-};
+  }
+}

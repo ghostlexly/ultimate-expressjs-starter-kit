@@ -16,7 +16,7 @@ export const validate = async <T>({
         status: 400,
         code: "VALIDATION_ERROR",
         body: {
-          message: `The form contains ${error.errors.length} error(s). Please correct them to continue.`,
+          message: error.errors[0].message,
           violations: error.errors.map((e) => ({
             code: e.code,
             message: e.message,

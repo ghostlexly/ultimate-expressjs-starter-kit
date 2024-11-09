@@ -1,9 +1,11 @@
 import { Strategy } from "passport-http-bearer";
-import { sessionService } from "../session.service";
 import passport from "passport";
 import { redisService } from "@/common/providers/cache/redis";
+import { SessionService } from "../session.service";
 
 export const initializeBearerStrategy = async () => {
+  const sessionService = new SessionService();
+
   passport.use(
     "bearer",
     new Strategy(async (token, done) => {

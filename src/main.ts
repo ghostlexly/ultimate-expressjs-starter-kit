@@ -14,7 +14,6 @@ import { initializeSwagger } from "./common/lib/swagger";
 import { initializeCrons } from "./common/lib/crons";
 import { rewriteIpAddressMiddleware } from "./common/middlewares/rewrite-ip-address.middleware";
 import { createLogger } from "./common/lib/logger";
-import { initializeServices } from "./common/lib/services";
 import { eventsService } from "./common/services/events.service";
 
 const app = express();
@@ -41,9 +40,6 @@ async function bootstrap() {
 
   // We trim the body of the incoming requests to remove any leading or trailing whitespace
   app.use(trimMiddleware);
-
-  // -- Services
-  initializeServices();
 
   // -- Swagger
   initializeSwagger({ app });

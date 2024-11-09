@@ -10,21 +10,18 @@ export const initializeSwagger = async ({
   let swaggerSpec: any = null;
 
   // Serve Swagger JSON
-  app.get(
-    "/api/swagger.json",
-    (req: express.Request, res: express.Response) => {
-      if (swaggerSpec) {
-        res.setHeader("Content-Type", "application/json");
-        res.send(swaggerSpec);
-      } else {
-        res.setHeader("Content-Type", "application/json");
-        res.send({ message: "Swagger documentation is being generated..." });
-      }
+  app.get("/api/docs/json", (req: express.Request, res: express.Response) => {
+    if (swaggerSpec) {
+      res.setHeader("Content-Type", "application/json");
+      res.send(swaggerSpec);
+    } else {
+      res.setHeader("Content-Type", "application/json");
+      res.send({ message: "Swagger documentation is being generated..." });
     }
-  );
+  });
 
   // Serve Swagger UI
-  app.use("/api/swagger", swaggerUi.serve, (req, res, next) => {
+  app.use("/api/docs", swaggerUi.serve, (req, res, next) => {
     if (swaggerSpec) {
       swaggerUi.setup(swaggerSpec, {
         explorer: true,

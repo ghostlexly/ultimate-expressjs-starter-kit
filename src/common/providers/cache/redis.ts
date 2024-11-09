@@ -5,8 +5,8 @@ import { createLogger } from "../../lib/logger";
 const logger = createLogger({ name: "redis" });
 
 export const REDIS_CONNECTION = {
-  host: configService.getOrThrow("REDIS_HOST"),
-  port: Number(configService.getOrThrow("REDIS_PORT")),
+  host: configService.getOrThrow("APP_REDIS_HOST"),
+  port: Number(configService.getOrThrow("APP_REDIS_PORT")),
 };
 
 /** Load Redis */

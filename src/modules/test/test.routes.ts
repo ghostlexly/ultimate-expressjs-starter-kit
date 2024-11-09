@@ -1,8 +1,9 @@
-import { Router } from "express";
-import { testController } from "./controllers/test.controller";
 import { strictThrottler } from "@/common/throttlers/strict.throttler";
+import { Router } from "express";
+import { TestControllerFactory } from "./factories/test.controller.factory";
 
 export const testRouter = Router();
+const testController = TestControllerFactory.create();
 
 /**
  * @swagger
