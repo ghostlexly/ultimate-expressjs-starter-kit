@@ -4,14 +4,14 @@ import { Queue, Worker } from "bullmq";
 import path from "path";
 
 // -- Queue
-const testingQueue = new Queue("testing", {
+const testQueue = new Queue("test", {
   connection: REDIS_CONNECTION,
 });
 
 // -- Worker
-const testingWorker = new Worker(
-  "testing", // queue name
-  path.join(__dirname, "testing.worker.js"),
+const testWorker = new Worker(
+  "test", // queue name
+  path.join(__dirname, "test.worker.js"),
   {
     connection: REDIS_CONNECTION,
     removeOnComplete: { count: 10 },
@@ -20,7 +20,7 @@ const testingWorker = new Worker(
 
 // -- Worker Events
 bullmqService.initWorkerEventsLogger({
-  worker: testingWorker,
+  worker: testWorker,
 });
 
-export { testingQueue };
+export { testQueue };

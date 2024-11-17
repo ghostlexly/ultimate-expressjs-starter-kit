@@ -6,7 +6,7 @@
 import { SandboxedJob } from "bullmq";
 import { TESTING_JOB, testingJob } from "./testing.job";
 
-const testingWorker = async (job: SandboxedJob) => {
+const testWorker = async (job: SandboxedJob) => {
   switch (job.name) {
     case TESTING_JOB:
       await testingJob(job);
@@ -16,4 +16,4 @@ const testingWorker = async (job: SandboxedJob) => {
   }
 };
 
-export default testingWorker;
+export default testWorker;

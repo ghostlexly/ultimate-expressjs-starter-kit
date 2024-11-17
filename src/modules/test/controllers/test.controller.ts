@@ -1,9 +1,9 @@
 import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
 import { AccountDto } from "../outputs/account.dto";
-import { testingQueue } from "../queues/testing/testing.queue";
+import { testQueue } from "../queues/test.queue";
 import { accountUpdateSchema } from "../inputs/account-update.schema";
-import { TESTING_JOB } from "../queues/testing/testing.job";
+import { TESTING_JOB } from "../queues/testing.job";
 import { HttpException } from "@/common/lib/errors";
 import { testConfig } from "../test.config";
 import { serializerService } from "@/common/services/serializer.service";
@@ -36,7 +36,7 @@ export class TestController {
 
   testQueueLaunch = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await testingQueue.add(TESTING_JOB, {
+      await testQueue.add(TESTING_JOB, {
         message: "Hello World",
       });
 
