@@ -5,12 +5,13 @@ import path from "path";
 import os from "os";
 import crypto from "crypto";
 import { s3Service } from "@/common/providers/s3/s3";
-import { ffmpegService } from "@/common/lib/ffmpeg";
+import { FfmpegService } from "@/common/lib/ffmpeg";
 
 export const OPTIMIZE_VIDEO_JOB = "optimizeVideoJob";
 
 export const optimizeVideoJob = async (job: SandboxedJob) => {
   const logger = createLogger({ name: "optimizeVideoJob" });
+  const ffmpegService = new FfmpegService();
 
   const { mediaId } = job.data;
 

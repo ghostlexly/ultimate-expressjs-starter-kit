@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { meController } from "./me.controller";
 import { sessionsGuard } from "@/common/guards/sessions.guard";
+import { MeController } from "./me.controller";
 
 export const meRouter = Router();
+
+const meController = new MeController();
 
 /**
  * @swagger

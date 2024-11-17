@@ -1,10 +1,10 @@
 import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
-import { AccountDto } from "../dtos/account.dto";
+import { AccountDto } from "../outputs/account.dto";
 import { testingQueue } from "../queues/testing/testing.queue";
-import { accountUpdateSchema } from "../schemas/account-update.schema";
+import { accountUpdateSchema } from "../inputs/account-update.schema";
 import { TESTING_JOB } from "../queues/testing/testing.job";
-import { HttpError } from "@/common/lib/errors";
+import { HttpException } from "@/common/lib/errors";
 import { testConfig } from "../test.config";
 import { serializerService } from "@/common/services/serializer.service";
 import { eventsService } from "@/common/services/events.service";
@@ -13,14 +13,14 @@ import { TestService } from "../test.service";
 export class TestController {
   constructor(private readonly testService: TestService) {}
 
-  async testBadRequest(req: Request, res: Response, next: NextFunction) {
+  testBadRequest = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      throw HttpError.BadRequest({
+      throw HttpException.BadRequest({
         body: "An error occurred.",
         code: "TEST_BAD_REQUEST",
       });
 
-      // throw new HttpError({
+      // throw new HttpException({
       //   status: 400,
       //   body: "An error occurred.",
       //   code: "TEST_BAD_REQUEST",
@@ -32,9 +32,9 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async testQueueLaunch(req: Request, res: Response, next: NextFunction) {
+  testQueueLaunch = async (req: Request, res: Response, next: NextFunction) => {
     try {
       await testingQueue.add(TESTING_JOB, {
         message: "Hello World",
@@ -46,9 +46,9 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async testZod(req: Request, res: Response, next: NextFunction) {
+  testZod = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = await validate({
         data: req.body,
@@ -59,9 +59,9 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async testSerializer(req: Request, res: Response, next: NextFunction) {
+  testSerializer = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = {
         id: "123",
@@ -83,9 +83,13 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async testEventEmitter(req: Request, res: Response, next: NextFunction) {
+  testEventEmitter = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       await eventsService.emitAsync("test.event", "Hello World");
 
@@ -95,13 +99,13 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  async testDependencyInjection(
+  testDependencyInjection = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ) {
+  ) => {
     try {
       const result = this.testService.example();
 
@@ -112,5 +116,5 @@ export class TestController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }

@@ -1,4 +1,4 @@
-import { HttpError } from "@/common/lib/errors";
+import { HttpException } from "@/common/lib/errors";
 import { filesService } from "@/common/services/files.service";
 import { createLogger } from "@/common/lib/logger";
 import { prisma } from "@/common/providers/database/prisma";
@@ -6,8 +6,8 @@ import { s3Service } from "@/common/providers/s3/s3";
 import { Prisma } from "@prisma/client";
 import { sub } from "date-fns";
 
-export const createMediaService = () => {
-  const logger = createLogger({ name: "mediaService" });
+export class MediaService {
+  private readonly logger = createLogger({ name: "mediaService" });
 
   /**
    * Save a file uploaded with Multer to S3 and create a media record.
@@ -16,7 +16,7 @@ export const createMediaService = () => {
    * @param params.originalFileName The original file name
    * @returns The media record
    */
-  const uploadFileToS3 = async ({
+  uploadFileToS3 = async ({
     filePath,
     originalFileName,
   }: {
@@ -32,7 +32,7 @@ export const createMediaService = () => {
       mimeType: fileInfos.mimeType,
     });
 
-    const media = await create({
+    const media = await this.create({
       data: {
         fileKey: fileKey,
         fileName: originalFileName,
@@ -44,7 +44,7 @@ export const createMediaService = () => {
     return media;
   };
 
-  const create = async ({ data }: { data: Prisma.MediaCreateInput }) => {
+  create = async ({ data }: { data: Prisma.MediaCreateInput }) => {
     // -- create
     const media = await prisma.media.create({
       data: {
@@ -55,7 +55,7 @@ export const createMediaService = () => {
     return media;
   };
 
-  const remove = async ({ where }: { where: Prisma.MediaWhereUniqueInput }) => {
+  remove = async ({ where }: { where: Prisma.MediaWhereUniqueInput }) => {
     // -- Get the record from the database
     const media = await prisma.media.findUnique({
       where: {
@@ -64,7 +64,7 @@ export const createMediaService = () => {
     });
 
     if (!media) {
-      throw new HttpError({
+      throw new HttpException({
         status: 404,
         body: "Media to delete cannot be found.",
       });
@@ -86,7 +86,7 @@ export const createMediaService = () => {
    * @param params.allowedTypes The allowed MIME types
    * @param params.maxFileSize The maximum file size in Mo
    */
-  const verifyMulterMaxSizeAndMimeType = async ({
+  verifyMulterMaxSizeAndMimeType = async ({
     file,
     allowedMimeTypes,
     maxFileSize,
@@ -99,14 +99,14 @@ export const createMediaService = () => {
     const fileInfos = await filesService.getFileInfos(file.path);
 
     if (!allowedMimeTypes.includes(fileInfos.mimeType)) {
-      throw new HttpError({
+      throw new HttpException({
         status: 415,
         body: "This file type is not supported.",
       });
     }
 
     if (file.size > maxFileSizeInBytes) {
-      throw new HttpError({
+      throw new HttpException({
         status: 413,
         body: `The file size must not exceed ${maxFileSize} Mo.`,
       });
@@ -123,7 +123,7 @@ export const createMediaService = () => {
    * @param params.allowedMimeTypes The allowed MIME types
    * @param params.maxFileSize The maximum file size in Mo
    */
-  const verifyMediaMaxSizeAndMimeType = async ({
+  verifyMediaMaxSizeAndMimeType = async ({
     mediaId,
     allowedMimeTypes,
     maxFileSize,
@@ -141,21 +141,21 @@ export const createMediaService = () => {
     });
 
     if (!media) {
-      throw new HttpError({
+      throw new HttpException({
         status: 404,
         body: "Media to verify cannot be found.",
       });
     }
 
     if (!allowedMimeTypes.includes(media.mimeType)) {
-      throw new HttpError({
+      throw new HttpException({
         status: 415,
         body: "This file type is not allowed.",
       });
     }
 
     if (media.size > maxFileSizeInBytes) {
-      throw new HttpError({
+      throw new HttpException({
         status: 413,
         body: `The file size must not exceed ${maxFileSize} Mo.`,
       });
@@ -168,26 +168,11 @@ export const createMediaService = () => {
    * Remove orphan media records.
    * An orphan media record is a media record that is not linked to any other record.
    */
-  const removeOrphanMedias = async () => {
+  removeOrphanMedias = async () => {
     // -- Get the orphan media records
     const orphanMedias = await prisma.media.findMany({
       where: {
         AND: [
-          // {
-          //   propertyPhotos: {
-          //     none: {},
-          //   },
-          // },
-          // {
-          //   propertyDocuments: {
-          //     none: {},
-          //   },
-          // },
-          // {
-          //   propertyVideo: {
-          //     none: {},
-          //   },
-          // },
           // {
           //   housekeeperAvatar: null,
           // },
@@ -195,9 +180,6 @@ export const createMediaService = () => {
           //   housekeeperDocumentsMedias: {
           //     none: {},
           //   },
-          // },
-          // {
-          //   housekeeperInsurance: null,
           // },
         ],
 
@@ -209,28 +191,19 @@ export const createMediaService = () => {
 
     // -- Delete the orphan media records
     for (const media of orphanMedias) {
-      logger.debug(
+      this.logger.debug(
         `Deleting orphan media #${media.id} with FileKey [${media.fileKey}]...`
       );
 
-      await remove({
+      await this.remove({
         where: {
           id: media.id,
         },
       }).catch((err) => {
-        logger.error(
+        this.logger.error(
           `Error deleting orphan media #${media.id}: ${err.message}`
         );
       });
     }
   };
-
-  return {
-    uploadFileToS3,
-    create,
-    remove,
-    verifyMulterMaxSizeAndMimeType,
-    verifyMediaMaxSizeAndMimeType,
-    removeOrphanMedias,
-  };
-};
+}

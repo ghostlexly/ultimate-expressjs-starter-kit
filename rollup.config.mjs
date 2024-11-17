@@ -4,6 +4,7 @@ import { typescriptPaths } from "rollup-plugin-typescript-paths";
 import { spawn } from "child_process";
 import { glob } from "glob";
 import retry from "async-retry";
+import fs from "fs/promises";
 
 const isWatchMode = process.env.ROLLUP_WATCH;
 let server;
@@ -13,6 +14,11 @@ let server;
  */
 const createWatchPlugin = () => ({
   name: "watch-and-restart",
+  async buildStart() {
+    if (isWatchMode) {
+      await clearDistFolder();
+    }
+  },
   async writeBundle() {
     if (isWatchMode) {
       retry(restartServer, {
@@ -32,6 +38,14 @@ const createWatchPlugin = () => ({
     }
   },
 });
+
+const clearDistFolder = async () => {
+  try {
+    await fs.rm("dist", { recursive: true, force: true });
+  } catch (error) {
+    console.error("Failed to clear dist folder:", error);
+  }
+};
 
 /**
  * Restart the node server process

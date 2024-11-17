@@ -107,7 +107,7 @@ const request = async (endpoint: string, config: WolfiosProps) => {
 
 const handleApiResponse = async (response: Response) => {
   if (!response.ok) {
-    let body: any;
+    let data: any;
 
     try {
       // Always get the text first since it's the most reliable
@@ -117,17 +117,17 @@ const handleApiResponse = async (response: Response) => {
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         try {
-          body = JSON.parse(rawText);
+          data = JSON.parse(rawText);
         } catch (jsonError) {
           // Fallback to raw text if JSON parsing fails
-          body = rawText;
+          data = rawText;
         }
       } else {
-        body = rawText;
+        data = rawText;
       }
     } catch (error) {
       console.warn("Error while reading response !", error);
-      body = {
+      data = {
         status: response.status,
         statusText: response.statusText,
         type: response.type,
@@ -138,7 +138,7 @@ const handleApiResponse = async (response: Response) => {
     throw {
       message: "An error occurred on the server.\nPlease try again.",
       response: response,
-      body: body,
+      data: data,
     };
   }
 

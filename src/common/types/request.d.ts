@@ -5,22 +5,19 @@ export type CustomAccount = Account & {
   customer: Customer;
 };
 
+export type Context = {
+  account: CustomAccount | undefined;
+};
+
 declare global {
   namespace Express {
     interface Request {
-      // Overwrite the existing user type with your custom user type
-      account: CustomAccount;
+      // Add context to the request
+      context?: Context | undefined;
+
+      // Get the real ip address from cloudflare or other proxies
+      clientIp: string;
     }
-  }
-}
-
-declare module "express" {
-  export interface Request {
-    // Overwrite the existing request's user type with your custom user type
-    account: CustomAccount;
-
-    // Get the real ip address from cloudflare or other proxies
-    clientIp: string;
   }
 }
 

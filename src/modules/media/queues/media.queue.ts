@@ -4,14 +4,14 @@ import { Queue, Worker } from "bullmq";
 import path from "path";
 
 // -- Queue
-const optimizeVideoQueue = new Queue("optimizeVideo", {
+const mediaQueue = new Queue("media", {
   connection: REDIS_CONNECTION,
 });
 
 // -- Worker
-const optimizeVideoWorker = new Worker(
-  "optimizeVideo", // queue name
-  path.join(__dirname, "optimize-video.worker.js"),
+const mediaWorker = new Worker(
+  "media", // queue name
+  path.join(__dirname, "media.worker.js"),
   {
     connection: REDIS_CONNECTION,
     removeOnComplete: { count: 10 },
@@ -20,7 +20,7 @@ const optimizeVideoWorker = new Worker(
 
 // -- Worker Events
 bullmqService.initWorkerEventsLogger({
-  worker: optimizeVideoWorker,
+  worker: mediaWorker,
 });
 
-export { optimizeVideoQueue };
+export { mediaQueue };

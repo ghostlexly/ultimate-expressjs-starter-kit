@@ -1,10 +1,10 @@
-import { HttpError } from "@/common/lib/errors";
+import { HttpException } from "@/common/lib/errors";
 import { prisma } from "@/common/providers/database/prisma";
 import { Prisma } from "@prisma/client";
 import { add, isAfter } from "date-fns";
 
 export class SessionService {
-  async create({ accountId }: { accountId: string }) {
+  create = async ({ accountId }: { accountId: string }) => {
     const session = await prisma.session.create({
       data: {
         expiresAt: add(new Date(), { days: 7 }),
@@ -14,15 +14,15 @@ export class SessionService {
     });
 
     return session;
-  }
+  };
 
-  async remove({ where }: { where: Prisma.SessionWhereUniqueInput }) {
+  remove = async ({ where }: { where: Prisma.SessionWhereUniqueInput }) => {
     await prisma.session.delete({
       where,
     });
-  }
+  };
 
-  async findByToken({ token }: { token: string }) {
+  findByToken = async ({ token }: { token: string }) => {
     const session = await prisma.session.findUnique({
       include: {
         account: {
@@ -38,16 +38,16 @@ export class SessionService {
     });
 
     if (!session) {
-      throw new HttpError({
+      throw new HttpException({
         status: 403,
         body: `Session #${token} not found.`,
       });
     }
 
     return session;
-  }
+  };
 
-  async isExpired({ token }: { token: string }) {
+  isExpired = async ({ token }: { token: string }) => {
     const session = await prisma.session.findFirst({
       where: {
         token: token,
@@ -69,5 +69,5 @@ export class SessionService {
     }
 
     return false;
-  }
+  };
 }

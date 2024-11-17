@@ -14,8 +14,8 @@ export const usageThrottler = rateLimit({
     const ip = req.clientIp;
     let email = "unknown";
 
-    if (req.account?.customer?.email) {
-      email = req.account.customer.email;
+    if (req.context?.account?.customer?.email) {
+      email = req.context.account.customer.email;
     }
 
     return `${ip}-${email}`;

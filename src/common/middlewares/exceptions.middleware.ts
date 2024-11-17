@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { createLogger } from "../lib/logger";
-import { HttpError } from "../lib/errors";
+import { HttpException } from "../lib/errors";
 
 const logger = createLogger({ name: "exceptions-middleware" });
 const isDev = process.env.NODE_ENV === "development";
@@ -25,7 +25,7 @@ export const exceptionsMiddleware = (
     return next(err);
   }
 
-  if (err instanceof HttpError) {
+  if (err instanceof HttpException) {
     return res.status(err.status).json({
       code: err.code,
       ...err.body,

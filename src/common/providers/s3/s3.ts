@@ -11,7 +11,7 @@ import fs from "fs";
 import path from "path";
 import { filesService } from "../../services/files.service";
 import { format } from "date-fns";
-import { HttpError } from "@/common/lib/errors";
+import { HttpException } from "@/common/lib/errors";
 
 const client = new S3Client({
   endpoint: configService.getOrThrow("API_S3_ENDPOINT"),
@@ -94,7 +94,7 @@ const downloadToFile = async ({
   );
 
   if (!data.Body) {
-    throw new HttpError({
+    throw new HttpException({
       status: 404,
       body: "File not found.",
     });
@@ -138,7 +138,7 @@ const downloadToMemoryBase64 = async ({ fileKey }: { fileKey: string }) => {
   );
 
   if (!data.Body) {
-    throw new HttpError({
+    throw new HttpException({
       status: 404,
       body: "File not found.",
     });

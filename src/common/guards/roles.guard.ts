@@ -1,10 +1,10 @@
 import { Role } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-import { HttpError } from "../lib/errors";
+import { HttpException } from "../lib/errors";
 
 export const rolesGuard =
   (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
-    const account = req.account;
+    const account = req.context?.account;
 
     // -----------------------------------
     // Check if the user is logged in
@@ -12,7 +12,7 @@ export const rolesGuard =
     // -----------------------------------
     if (!account) {
       return next(
-        new HttpError({
+        new HttpException({
           status: 401,
           body: "Unauthorized",
         })
@@ -26,7 +26,7 @@ export const rolesGuard =
     // -----------------------------------
     if (!roles.includes(account.role)) {
       return next(
-        new HttpError({
+        new HttpException({
           status: 403,
           body: "You don't have permission to access this resource.",
         })

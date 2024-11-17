@@ -1,5 +1,5 @@
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
-import { HttpError } from "./errors";
+import { HttpException } from "./errors";
 
 const parse = (params: { phoneNumber: string; countryCode?: CountryCode }) => {
   const { phoneNumber, countryCode = "FR" } = params;
@@ -7,7 +7,7 @@ const parse = (params: { phoneNumber: string; countryCode?: CountryCode }) => {
   const parsed = parsePhoneNumberFromString(phoneNumber, countryCode);
 
   if (!parsed || !parsed.isValid()) {
-    throw new HttpError({
+    throw new HttpException({
       status: 400,
       body: "Invalid phone number.",
     });

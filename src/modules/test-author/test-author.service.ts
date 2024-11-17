@@ -1,5 +1,5 @@
 export class TestAuthorService {
-  sayHello() {
+  sayHello = () => {
     return "Hello World";
-  }
+  };
 }

@@ -1,15 +1,15 @@
 import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
-import { customerAuthLoginSchema } from "./schemas/login.schema";
+import { customerAuthLoginSchema } from "./inputs/login.schema";
 import { prisma } from "@/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
-import { HttpError } from "@/common/lib/errors";
+import { HttpException } from "@/common/lib/errors";
 import { SessionService } from "../session.service";
 
 export class CustomerAuthController {
   constructor(private readonly sessionService: SessionService) {}
 
-  async signin(req: Request, res: Response, next: NextFunction) {
+  signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = await validate({
         data: req.body,
@@ -24,7 +24,7 @@ export class CustomerAuthController {
       });
 
       if (!user) {
-        throw new HttpError({
+        throw new HttpException({
           status: 401,
           body: "Invalid credentials.",
         });
@@ -32,7 +32,7 @@ export class CustomerAuthController {
 
       // -- check if the user has a password
       if (!user.password) {
-        throw new HttpError({
+        throw new HttpException({
           status: 401,
           body: "Invalid credentials.",
         });
@@ -41,7 +41,7 @@ export class CustomerAuthController {
       // -- hash given password and compare it to the stored hash
       const validPassword = await bcrypt.compare(body.password, user.password);
       if (!validPassword) {
-        throw new HttpError({
+        throw new HttpException({
           status: 401,
           body: "Invalid credentials.",
         });
@@ -58,5 +58,5 @@ export class CustomerAuthController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }

@@ -6,7 +6,7 @@
 import { SandboxedJob } from "bullmq";
 import { OPTIMIZE_VIDEO_JOB, optimizeVideoJob } from "./optimize-video.job";
 
-const optimizeVideoWorker = async (job: SandboxedJob) => {
+const mediaWorker = async (job: SandboxedJob) => {
   switch (job.name) {
     case OPTIMIZE_VIDEO_JOB:
       await optimizeVideoJob(job);
@@ -16,4 +16,4 @@ const optimizeVideoWorker = async (job: SandboxedJob) => {
   }
 };
 
-export default optimizeVideoWorker;
+export default mediaWorker;

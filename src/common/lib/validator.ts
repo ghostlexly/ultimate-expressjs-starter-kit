@@ -1,5 +1,5 @@
 import { ZodSchema, z } from "zod";
-import { HttpError } from "./errors";
+import { HttpException } from "./errors";
 
 export const validate = async <T>({
   data,
@@ -12,7 +12,7 @@ export const validate = async <T>({
     return await schema.parseAsync(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new HttpError({
+      throw new HttpException({
         status: 400,
         code: "VALIDATION_ERROR",
         body: {

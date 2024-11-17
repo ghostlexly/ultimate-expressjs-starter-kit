@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { mediaController } from "./controllers/media.controller";
 import multer from "multer";
+import { MediaController } from "./controllers/media.controller";
+import { MediaService } from "./media.service";
 
 export const mediaRouter = Router();
+
+const mediaService = new MediaService();
+const mediaController = new MediaController(mediaService);
 
 const fileInterceptor = multer({
   storage: multer.diskStorage({}),

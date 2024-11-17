@@ -2,7 +2,7 @@
 
 ## 🚀 Batteries-included TypeScript ExpressJS Backend (REST API)
 
-This starter kit provides a robust foundation for building scalable, feature-rich, enterprise-grade REST APIs using ExpressJS and TypeScript.
+This starter kit provides a robust foundation for building scalable and feature-rich REST APIs using ExpressJS and TypeScript.
 
 ### 🌟 Key Features
 

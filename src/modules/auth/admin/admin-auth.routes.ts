@@ -1,9 +1,11 @@
 import { strictThrottler } from "@/common/throttlers/strict.throttler";
 import { Router } from "express";
-import { AdminAuthControllerFactory } from "./admin-auth.controller.factory";
+import { AdminAuthController } from "./admin-auth.controller";
+import { SessionService } from "../session.service";
 
 export const adminAuthRouter = Router();
-const adminAuthController = AdminAuthControllerFactory.create();
+const sessionService = new SessionService();
+const adminAuthController = new AdminAuthController(sessionService);
 
 /**
  * @swagger

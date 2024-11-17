@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { HttpError } from "../lib/errors";
+import { HttpException } from "../lib/errors";
 
 /**
   Block everything if the user is not authenticated and the route is not public
   get the user from the token and add it to the request.
-  @example app.get('/', (req) => req.account)
+  @example app.get('/', (req) => req.context?.account)
 */
 export const sessionsGuard = async (
   req: Request,
@@ -22,7 +22,7 @@ export const sessionsGuard = async (
     // -- Handle authentication failure
     if (!user) {
       return next(
-        new HttpError({
+        new HttpException({
           status: 401,
           body: "Unauthorized",
         })
@@ -30,7 +30,9 @@ export const sessionsGuard = async (
     }
 
     // -- Handle authentication success
-    req.account = user;
+    req.context = {
+      account: user,
+    };
     next();
   })(req, res, next);
 };

@@ -6,8 +6,8 @@ export class TestService {
   /**
    * Example of a service that uses another service from another module (Dependency Injection)
    */
-  example() {
+  example = () => {
     const result = this.testAuthorService.sayHello();
     return `message received from another module's injected service: ${result}`;
-  }
+  };
 }
