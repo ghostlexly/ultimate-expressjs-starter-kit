@@ -3,7 +3,7 @@ import * as iban from "iban";
 
 const ibanRegex = /^([A-Z]{2})(\d{2})([A-Z\d]{1,30})$/;
 
-export const ibanSchema = z
+export const ibanValidator = z
   .string()
   .transform((v) => v.replace(/[ _]/g, "")) // Remove spaces and underscores
   .pipe(
