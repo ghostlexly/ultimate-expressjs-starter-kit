@@ -1,5 +1,5 @@
 import { ZodSchema, z } from "zod";
-import { HttpException } from "./errors";
+import { ValidationException } from "../errors/validation-exception";
 
 export const validate = async <T>({
   data,
@@ -12,17 +12,13 @@ export const validate = async <T>({
     return await schema.parseAsync(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      throw new HttpException({
-        status: 400,
-        code: "VALIDATION_ERROR",
-        body: {
-          message: error.errors[0].message,
-          violations: error.errors.map((e) => ({
-            code: e.code,
-            message: e.message,
-            path: e.path.join("."),
-          })),
-        },
+      throw new ValidationException({
+        message: error.errors[0].message,
+        violations: error.errors.map((e) => ({
+          code: e.code,
+          message: e.message,
+          path: e.path.join("."),
+        })),
         cause: error,
       });
     }

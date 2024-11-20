@@ -1,6 +1,4 @@
-import { TestAuthorService } from "@/modules/test-author/test-author.service";
 import { createLogger } from "./logger";
-import { TestService } from "@/modules/test/test.service";
 
 type Constructor<T = any> = new (...args: any[]) => T;
 
@@ -17,12 +15,12 @@ export class Container {
     if (this.initialized) return;
 
     // Create all service instances with their dependencies
-    const testAuthorService = new TestAuthorService();
-    const testService = new TestService(testAuthorService);
+    // const testAuthorService = new TestAuthorService();
+    // const testService = new TestService(testAuthorService);
     // ... other services
 
     // Register them
-    this.register(TestService, testService);
+    // this.register(TestService, testService);
 
     this.initialized = true;
     this.logger.info("✅ Services registered successfully");

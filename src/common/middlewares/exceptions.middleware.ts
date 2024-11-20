@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { createLogger } from "../lib/logger";
-import { HttpException } from "../lib/errors";
+import { HttpException } from "../errors/http-exception";
+import { ValidationException } from "../errors/validation-exception";
 
 const logger = createLogger({ name: "exceptions-middleware" });
 const isDev = process.env.NODE_ENV === "development";
@@ -28,7 +29,17 @@ export const exceptionsMiddleware = (
   if (err instanceof HttpException) {
     return res.status(err.status).json({
       code: err.code,
-      ...err.body,
+      message: err.message,
+      stack: isDev ? err.stack : undefined,
+      cause: isDev && err.cause ? (err.cause as Error).message : undefined,
+    });
+  }
+
+  if (err instanceof ValidationException) {
+    return res.status(err.status).json({
+      code: err.code,
+      message: err.message,
+      violations: err.violations,
       stack: isDev ? err.stack : undefined,
       cause: isDev && err.cause ? (err.cause as Error).message : undefined,
     });

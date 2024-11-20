@@ -1,19 +1,16 @@
 import { strictThrottler } from "@/common/throttlers/strict.throttler";
 import { Router } from "express";
-import { AdminAuthController } from "./admin-auth.controller";
-import { SessionService } from "../session.service";
+import { adminAuthController } from "./admin-auth.controller";
 
-export const adminAuthRouter = Router();
-const sessionService = new SessionService();
-const adminAuthController = new AdminAuthController(sessionService);
+export const adminAuthRoutes = Router();
 
 /**
  * @swagger
  * /api/admin/auth/signin:
  *  post:
- *    tags: [Auth/Admin]
  *    summary: Signin to the admin panel
  *    description: Signin to the admin panel.
+ *    tags: [Auth/Admin]
  *    requestBody:
  *      required: true
  *      content:
@@ -29,7 +26,7 @@ const adminAuthController = new AdminAuthController(sessionService);
  *      '200':
  *        description: OK
  */
-adminAuthRouter.post(
+adminAuthRoutes.post(
   "/admin/auth/signin",
   strictThrottler,
   adminAuthController.signin

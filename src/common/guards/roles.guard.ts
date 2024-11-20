@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
-import { HttpException } from "../lib/errors";
+import { HttpException } from "../errors/http-exception";
 
 export const rolesGuard =
   (roles: Role[]) => (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@ export const rolesGuard =
       return next(
         new HttpException({
           status: 401,
-          body: "Unauthorized",
+          message: "Unauthorized",
         })
       );
     }
@@ -28,7 +28,7 @@ export const rolesGuard =
       return next(
         new HttpException({
           status: 403,
-          body: "You don't have permission to access this resource.",
+          message: "You don't have permission to access this resource.",
         })
       );
     }

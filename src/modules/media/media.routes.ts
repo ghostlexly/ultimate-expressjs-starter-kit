@@ -1,12 +1,8 @@
 import { Router } from "express";
 import multer from "multer";
-import { MediaController } from "./controllers/media.controller";
-import { MediaService } from "./media.service";
+import { mediaController } from "./controllers/media.controller";
 
-export const mediaRouter = Router();
-
-const mediaService = new MediaService();
-const mediaController = new MediaController(mediaService);
+export const mediaRoutes = Router();
 
 const fileInterceptor = multer({
   storage: multer.diskStorage({}),
@@ -19,9 +15,9 @@ const fileInterceptor = multer({
  * @swagger
  * /api/media:
  *  post:
- *    tags: [Media]
  *    summary: Upload a media
  *    description: Upload a media to the server.
+ *    tags: [Media]
  *    requestBody:
  *      required: true
  *      content:
@@ -36,7 +32,7 @@ const fileInterceptor = multer({
  *      '200':
  *        description: OK
  */
-mediaRouter.post(
+mediaRoutes.post(
   "/media",
   fileInterceptor.single("file"),
   mediaController.create
@@ -46,9 +42,9 @@ mediaRouter.post(
  * @swagger
  * /api/media/video:
  *  post:
- *    tags: [Media]
  *    summary: Upload a video media
  *    description: Upload a video media to the server.
+ *    tags: [Media]
  *    requestBody:
  *      required: true
  *      content:
@@ -63,7 +59,7 @@ mediaRouter.post(
  *      '200':
  *        description: OK
  */
-mediaRouter.post(
+mediaRoutes.post(
   "/media/video",
   fileInterceptor.single("file"),
   mediaController.createVideo

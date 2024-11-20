@@ -1,4 +1,4 @@
-import { HttpException } from "@/common/lib/errors";
+import { HttpException } from "@/common/errors/http-exception";
 import { prisma } from "@/common/providers/database/prisma";
 import { Prisma } from "@prisma/client";
 import { add, isAfter } from "date-fns";
@@ -40,7 +40,7 @@ export class SessionService {
     if (!session) {
       throw new HttpException({
         status: 403,
-        body: `Session #${token} not found.`,
+        message: `Session #${token} not found.`,
       });
     }
 
@@ -71,3 +71,5 @@ export class SessionService {
     return false;
   };
 }
+
+export const sessionService = new SessionService();

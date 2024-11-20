@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { HttpException } from "../lib/errors";
+import { HttpException } from "../errors/http-exception";
 
 /**
   Block everything if the user is not authenticated and the route is not public
@@ -24,7 +24,7 @@ export const sessionsGuard = async (
       return next(
         new HttpException({
           status: 401,
-          body: "Unauthorized",
+          message: "Unauthorized",
         })
       );
     }

@@ -1,6 +1,6 @@
 type HttpExceptionParams = {
   status: number;
-  body: any | string;
+  message: string;
   code?: string;
   cause?: Error;
 };
@@ -18,104 +18,116 @@ type HttpExceptionParams = {
  *    throw new HttpException({
  *      status: 400,
  *      code: 'PAYMENT_FAILED',
- *      body: 'Payment processing failed',
+ *      message: 'Payment processing failed',
  *      cause: stripeError
  *    });
  * }
  */
 export class HttpException extends Error {
-  readonly status: number;
-  readonly body: any;
-  readonly stack: string;
-  readonly code?: string;
-  readonly cause?: Error;
+  public readonly status: number;
+  public readonly message: string;
+  public readonly stack!: string;
+  public readonly code?: string;
+  public readonly cause?: Error;
 
-  constructor({ status, body, code, cause }: HttpExceptionParams) {
+  constructor({ status, message, code, cause }: HttpExceptionParams) {
     // -- validate
     if (!status || typeof status !== "number" || status < 100 || status > 599) {
       throw new Error("Invalid status code");
     }
 
-    // -- normalize body
-    // if body is a string, convert it to an object with a message property
-    const normalizedBody = typeof body === "string" ? { message: body } : body;
-
     // -- initialize
-    super(typeof body === "string" ? body : body.message);
+    super(message);
     this.status = status;
     this.code = code;
-    this.body = normalizedBody;
+    this.message = message;
     this.cause = cause;
 
     // This maintains proper stack trace for where our error was thrown
     Error.captureStackTrace(this, HttpException);
   }
 
-  toJSON() {
-    const isDev = process.env.NODE_ENV === "development";
-
-    return {
-      status: this.status,
-      code: this.code,
-      stack: isDev ? this.stack : undefined,
-      cause: isDev ? this.cause : undefined,
-      ...this.body,
-    };
-  }
-
-  static BadRequest(params: Omit<HttpExceptionParams, "status">) {
+  public static badRequest(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 400, ...params });
   }
 
-  static Unauthorized(params: Omit<HttpExceptionParams, "status">) {
+  public static unauthorized(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 401, ...params });
   }
 
-  static PaymentRequired(params: Omit<HttpExceptionParams, "status">) {
+  public static paymentRequired(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 402, ...params });
   }
 
-  static Forbidden(params: Omit<HttpExceptionParams, "status">) {
+  public static forbidden(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 403, ...params });
   }
 
-  static NotFound(params: Omit<HttpExceptionParams, "status">) {
+  public static notFound(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 404, ...params });
   }
 
-  static MethodNotAllowed(params: Omit<HttpExceptionParams, "status">) {
+  public static methodNotAllowed(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 405, ...params });
   }
 
-  static NotAcceptable(params: Omit<HttpExceptionParams, "status">) {
+  public static notAcceptable(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 406, ...params });
   }
 
-  static Conflict(params: Omit<HttpExceptionParams, "status">) {
+  public static conflict(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 409, ...params });
   }
 
-  static TooManyRequests(params: Omit<HttpExceptionParams, "status">) {
+  public static tooManyRequests(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 429, ...params });
   }
 
-  static InternalServerError(params: Omit<HttpExceptionParams, "status">) {
+  public static internalServerError(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 500, ...params });
   }
 
-  static NotImplemented(params: Omit<HttpExceptionParams, "status">) {
+  public static notImplemented(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 501, ...params });
   }
 
-  static BadGateway(params: Omit<HttpExceptionParams, "status">) {
+  public static badGateway(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 502, ...params });
   }
 
-  static ServiceUnavailable(params: Omit<HttpExceptionParams, "status">) {
+  public static serviceUnavailable(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 503, ...params });
   }
 
-  static GatewayTimeout(params: Omit<HttpExceptionParams, "status">) {
+  public static gatewayTimeout(
+    params: Omit<HttpExceptionParams, "status">
+  ): HttpException {
     return new HttpException({ status: 504, ...params });
   }
 }

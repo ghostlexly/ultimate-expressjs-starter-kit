@@ -1,4 +1,4 @@
-import EventEmitter from "eventemitter3";
+import { EventEmitter2 } from "eventemitter2";
 import { createLogger } from "../lib/logger";
 import path from "path";
 import { getAppDir } from "../lib/app-dir";
@@ -17,7 +17,11 @@ export type AppEvents = {
   "booking.completed": (data: { bookingId: string; cartId: string }) => void;
 };
 
-const eventBus = new EventEmitter();
+const eventBus = new EventEmitter2({
+  wildcard: true,
+  delimiter: ".",
+  maxListeners: 20,
+});
 
 const initializeEventEmitter = async () => {
   try {
@@ -60,8 +64,7 @@ export const emitEventAsync = <K extends keyof AppEvents>(
   event: K,
   data: Parameters<AppEvents[K]>[0]
 ): Promise<any[]> => {
-  const listeners = eventBus.listeners(event);
-  return Promise.all(listeners.map((listener) => listener(data)));
+  return eventBus.emitAsync(event, data);
 };
 
 export const onEvent = <K extends keyof AppEvents>(

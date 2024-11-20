@@ -4,19 +4,17 @@ import { AccountDto } from "../outputs/account.dto";
 import { testQueue } from "../queues/test.queue";
 import { accountUpdateSchema } from "../inputs/account-update.schema";
 import { TESTING_JOB } from "../queues/testing.job";
-import { HttpException } from "@/common/lib/errors";
+import { HttpException } from "@/common/errors/http-exception";
 import { testConfig } from "../test.config";
 import { serializerService } from "@/common/services/serializer.service";
 import { eventsService } from "@/common/services/events.service";
-import { TestService } from "../test.service";
+import { testService } from "../test.service";
 
 export class TestController {
-  constructor(private readonly testService: TestService) {}
-
   testBadRequest = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      throw HttpException.BadRequest({
-        body: "An error occurred.",
+      throw HttpException.badRequest({
+        message: "An error occurred.",
         code: "TEST_BAD_REQUEST",
       });
 
@@ -107,7 +105,7 @@ export class TestController {
     next: NextFunction
   ) => {
     try {
-      const result = this.testService.example();
+      const result = testService.example();
 
       return res.json({
         message: result,
@@ -118,3 +116,5 @@ export class TestController {
     }
   };
 }
+
+export const testController = new TestController();

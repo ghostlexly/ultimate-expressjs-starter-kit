@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpException } from "@/common/lib/errors";
+import { HttpException } from "@/common/errors/http-exception";
 
 export class MeController {
   getMe = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +21,7 @@ export class MeController {
       } else {
         throw new HttpException({
           status: 400,
-          body: "Invalid role.",
+          message: "Invalid role.",
         });
       }
     } catch (error) {

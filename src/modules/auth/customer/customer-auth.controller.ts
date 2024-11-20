@@ -3,12 +3,10 @@ import { NextFunction, Request, Response } from "express";
 import { customerAuthLoginSchema } from "./inputs/login.schema";
 import { prisma } from "@/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
-import { HttpException } from "@/common/lib/errors";
-import { SessionService } from "../session.service";
+import { HttpException } from "@/common/errors/http-exception";
+import { sessionService } from "../session.service";
 
 export class CustomerAuthController {
-  constructor(private readonly sessionService: SessionService) {}
-
   signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = await validate({
@@ -26,7 +24,7 @@ export class CustomerAuthController {
       if (!user) {
         throw new HttpException({
           status: 401,
-          body: "Invalid credentials.",
+          message: "Invalid credentials.",
         });
       }
 
@@ -34,7 +32,7 @@ export class CustomerAuthController {
       if (!user.password) {
         throw new HttpException({
           status: 401,
-          body: "Invalid credentials.",
+          message: "Invalid credentials.",
         });
       }
 
@@ -43,12 +41,12 @@ export class CustomerAuthController {
       if (!validPassword) {
         throw new HttpException({
           status: 401,
-          body: "Invalid credentials.",
+          message: "Invalid credentials.",
         });
       }
 
       // -- generate session token
-      const session = await this.sessionService.create({
+      const session = await sessionService.create({
         accountId: user.accountId,
       });
 
@@ -60,3 +58,5 @@ export class CustomerAuthController {
     }
   };
 }
+
+export const customerAuthController = new CustomerAuthController();

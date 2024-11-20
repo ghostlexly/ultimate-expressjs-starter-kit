@@ -3,3 +3,5 @@ export class TestAuthorService {
     return "Hello World";
   };
 }
+
+export const testAuthorService = new TestAuthorService();

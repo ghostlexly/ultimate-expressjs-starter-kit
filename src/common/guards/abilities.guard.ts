@@ -7,7 +7,7 @@ import {
 } from "@casl/ability";
 import { CustomAccount } from "../types/request";
 import { Request, Response, NextFunction } from "express";
-import { HttpException } from "../lib/errors";
+import { HttpException } from "../errors/http-exception";
 
 /**
  * Define the abilities of the given account.
@@ -102,7 +102,7 @@ export const checkAbilities = async ({
     if (throwError) {
       throw new HttpException({
         status: 403,
-        body: "You are not allowed to access this resource.",
+        message: "You are not allowed to access this resource.",
       });
     } else {
       return false;
@@ -123,7 +123,7 @@ export const getAbilities = (req: Request) => {
   if (!req.context?.account) {
     throw new HttpException({
       status: 403,
-      body: "You must be logged in to access this resource.",
+      message: "You must be logged in to access this resource.",
     });
   }
 
@@ -163,7 +163,7 @@ export const abilitiesGuard =
       if (!hasAccess) {
         throw new HttpException({
           status: 403,
-          body: "You are not allowed to access this resource.",
+          message: "You are not allowed to access this resource.",
         });
       }
 
