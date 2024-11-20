@@ -29,3 +29,5 @@ export class MeController {
     }
   };
 }
+
+export const meController = new MeController();
