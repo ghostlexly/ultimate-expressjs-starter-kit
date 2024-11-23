@@ -1,6 +1,7 @@
 type WolfiosProps = RequestInit & {
   data?: Record<any, any>;
   params?: Record<string, string[] | string | number>;
+  cookies?: Record<string, string>;
 };
 
 /**
@@ -95,6 +96,20 @@ const request = async (endpoint: string, config: WolfiosProps) => {
         url.searchParams.append(key, value.toString());
       }
     });
+  }
+
+  // ----------------------------------------
+  // If we have cookies, add them to the headers
+  // ----------------------------------------
+  if (config?.cookies) {
+    const cookieString = Object.entries(config.cookies)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("; ");
+
+    config.headers = {
+      ...config.headers,
+      Cookie: cookieString,
+    };
   }
 
   // ----------------------------------------
