@@ -1,6 +1,6 @@
 type WolfiosProps = RequestInit & {
-  data?: Record<any, any>;
-  params?: Record<string, string[] | string | number>;
+  json?: Record<any, any>;
+  searchParams?: Record<string, string[] | string | number>;
   cookies?: Record<string, string>;
 };
 
@@ -12,50 +12,7 @@ type WolfiosProps = RequestInit & {
  * @param config.next The config for NextJS caching. When this is set, the request will be cached.
  * Also, the return response will be a JSON object, you DON'T need to chain .then((res) => res.data).
  */
-const wolfios = {
-  get: async (url: string, config?: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-      method: "GET",
-    });
-  },
-
-  post: async (url: string, config: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-      method: "POST",
-    });
-  },
-
-  put: async (url: string, config: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-      method: "PUT",
-    });
-  },
-
-  delete: async (url: string, config?: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-      method: "DELETE",
-    });
-  },
-
-  patch: async (url: string, config: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-      method: "PATCH",
-    });
-  },
-
-  custom: async (url: string, config: WolfiosProps) => {
-    return await request(url, {
-      ...config,
-    });
-  },
-};
-
-const request = async (endpoint: string, config: WolfiosProps) => {
+const wolfios = async (endpoint: string, config?: WolfiosProps) => {
   const isServer = typeof window === "undefined";
 
   // create a url from the endpoint
@@ -66,13 +23,13 @@ const request = async (endpoint: string, config: WolfiosProps) => {
   // ---------------------------------------
   // if we have a `data` param, handle it based on content type
   // ----------------------------------------
-  if (config?.data) {
+  if (config?.json) {
     const contentType = config.headers?.["Content-Type"] || "application/json";
 
     if (contentType === "application/x-www-form-urlencoded") {
-      config.body = new URLSearchParams(config.data).toString();
+      config.body = new URLSearchParams(config.json).toString();
     } else {
-      config.body = JSON.stringify(config.data);
+      config.body = JSON.stringify(config.json);
     }
 
     config.headers = {
@@ -84,8 +41,8 @@ const request = async (endpoint: string, config: WolfiosProps) => {
   // ----------------------------------------
   // If we have params, add them to the URL
   // ----------------------------------------
-  if (config?.params) {
-    Object.entries(config.params).map(([key, value]) => {
+  if (config?.searchParams) {
+    Object.entries(config.searchParams).map(([key, value]) => {
       if (Array.isArray(value)) {
         value.map((v) => {
           if (v) {

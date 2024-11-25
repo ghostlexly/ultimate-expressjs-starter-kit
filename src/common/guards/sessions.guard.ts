@@ -20,11 +20,13 @@ export const sessionsGuard = async (
     }
 
     // -- Handle authentication failure
+    // -- We provide 401 status code so the frontend can redirect to the login page
     if (!user) {
       return next(
         new HttpException({
           status: 401,
-          message: "Unauthorized",
+          message:
+            "Authentication required. Please provide a valid access token.",
         })
       );
     }

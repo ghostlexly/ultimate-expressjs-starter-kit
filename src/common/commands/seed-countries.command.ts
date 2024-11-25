@@ -72,15 +72,15 @@ const runCommand = async (): Promise<void> => {
 
 const getGeonames = async () => {
   logger.info("Downloading geonames.org data...");
-  const countries = await wolfios
-    .get("http://api.geonames.org/countryInfoJSON", {
-      params: {
-        username: "ghostlexly",
-        formatted: "true",
-        style: "full",
-        lang: "FR", // 👈 set your country language code here for country name translation
-      },
-    })
+  const countries = await wolfios("http://api.geonames.org/countryInfoJSON", {
+    method: "GET",
+    searchParams: {
+      username: "ghostlexly",
+      formatted: "true",
+      style: "full",
+      lang: "FR", // 👈 set your country language code here for country name translation
+    },
+  })
     .then(async (res) => await res.json())
     .then((data) => data.geonames);
 
@@ -89,11 +89,9 @@ const getGeonames = async () => {
 
 const createInseeService = async () => {
   logger.info("Downloading insee data...");
-  const response = await wolfios
-    .get(
-      "https://www.insee.fr/fr/statistiques/fichier/7766585/v_pays_territoire_2024.csv"
-    )
-    .then(async (res) => await res.text());
+  const response = await wolfios(
+    "https://www.insee.fr/fr/statistiques/fichier/7766585/v_pays_territoire_2024.csv"
+  ).then(async (res) => await res.text());
 
   // -- parse csv data
   const { data: inseeData } = papaparse.parse<InseeRow>(response, {
