@@ -70,6 +70,34 @@ export class SessionService {
 
     return false;
   };
+
+  /**
+   * Generate a JWT token for a given user id.
+   */
+  // generateJwtToken = async ({
+  //   userId,
+  // }: {
+  //   userId: string;
+  // }): Promise<string> => {
+  // -- Get the user
+  //   const user = await User.findByPk(userId);
+
+  //   if (!user) {
+  //     throw new Error("User not found.");
+  //   }
+
+  //   // -- Generate the JWT token
+  //   return await jwt.sign(
+  //     {
+  //       sub: userId,
+  //       role: user.role,
+  //     },
+  //     APP_JWT_SECRET,
+  //     {
+  //       expiresIn: `1h`,
+  //     }
+  //   );
+  // };
 }
 
 export const sessionService = new SessionService();
