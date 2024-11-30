@@ -1,6 +1,5 @@
-import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
-import { adminAuthLoginSchema } from "./inputs/login.schema";
+import { AdminAuthLoginSchema } from "./inputs/login.schema";
 import { prisma } from "@/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
 import { HttpException } from "@/common/errors/http-exception";
@@ -9,10 +8,7 @@ import { sessionService } from "../session.service";
 export class AdminAuthController {
   signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const body = await validate({
-        data: req.body,
-        schema: adminAuthLoginSchema,
-      });
+      const body = req.body as AdminAuthLoginSchema["body"];
 
       // -- verify if user exists
       const user = await prisma.admin.findFirst({

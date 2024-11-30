@@ -1,13 +1,12 @@
-import { validate } from "@/common/lib/validator";
+import { HttpException } from "@/common/errors/http-exception";
+import { eventsService } from "@/common/services/events.service";
+import { serializerService } from "@/common/services/serializer.service";
 import { NextFunction, Request, Response } from "express";
+import { AccountUpdateSchema } from "../inputs/account-update.schema";
 import { AccountDto } from "../outputs/account.dto";
 import { testQueue } from "../queues/test.queue";
-import { accountUpdateSchema } from "../inputs/account-update.schema";
 import { TESTING_JOB } from "../queues/testing.job";
-import { HttpException } from "@/common/errors/http-exception";
 import { testConfig } from "../test.config";
-import { serializerService } from "@/common/services/serializer.service";
-import { eventsService } from "@/common/services/events.service";
 import { testService } from "../test.service";
 
 export class TestController {
@@ -48,10 +47,7 @@ export class TestController {
 
   testZod = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const body = await validate({
-        data: req.body,
-        schema: accountUpdateSchema,
-      });
+      const body = req.body as AccountUpdateSchema["body"];
 
       return res.json(body);
     } catch (error) {

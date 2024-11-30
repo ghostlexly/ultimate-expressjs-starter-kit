@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const customerAuthLoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
+  body: z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
 });
+
+export type CustomerAuthLoginSchema = z.infer<typeof customerAuthLoginSchema>;

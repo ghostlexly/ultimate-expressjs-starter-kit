@@ -1,6 +1,5 @@
-import { validate } from "@/common/lib/validator";
 import { NextFunction, Request, Response } from "express";
-import { customerAuthLoginSchema } from "./inputs/login.schema";
+import { CustomerAuthLoginSchema } from "./inputs/login.schema";
 import { prisma } from "@/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
 import { HttpException } from "@/common/errors/http-exception";
@@ -9,10 +8,7 @@ import { sessionService } from "../session.service";
 export class CustomerAuthController {
   signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const body = await validate({
-        data: req.body,
-        schema: customerAuthLoginSchema,
-      });
+      const body = req.body as CustomerAuthLoginSchema["body"];
 
       // -- verify if user exists
       const user = await prisma.customer.findFirst({

@@ -1,6 +1,8 @@
 import { strictThrottler } from "@/common/throttlers/strict.throttler";
 import { Router } from "express";
 import { customerAuthController } from "./customer-auth.controller";
+import { validateRequest } from "@/common/middlewares/validation.middleware";
+import { customerAuthLoginSchema } from "./inputs/login.schema";
 
 export const customerAuthRoutes = Router();
 
@@ -28,6 +30,7 @@ export const customerAuthRoutes = Router();
  */
 customerAuthRoutes.post(
   "/customer/auth/signin",
+  validateRequest(customerAuthLoginSchema),
   strictThrottler,
   customerAuthController.signin
 );

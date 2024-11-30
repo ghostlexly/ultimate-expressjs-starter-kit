@@ -1,6 +1,8 @@
 import { strictThrottler } from "@/common/throttlers/strict.throttler";
 import { Router } from "express";
 import { testController } from "./controllers/test.controller";
+import { validateRequest } from "@/common/middlewares/validation.middleware";
+import { accountUpdateSchema } from "./inputs/account-update.schema";
 
 export const testRoutes = Router();
 
@@ -78,7 +80,11 @@ testRoutes.get("/tests/queue-launch", testController.testQueueLaunch);
  *      '200':
  *        description: OK
  */
-testRoutes.post("/tests/zod", testController.testZod);
+testRoutes.post(
+  "/tests/zod",
+  validateRequest(accountUpdateSchema),
+  testController.testZod
+);
 
 /**
  * @swagger
