@@ -18,7 +18,7 @@ program.configureHelp({
 async function loadCommands() {
   const commandsPath = path.join(getAppDir(), "common", "commands");
 
-  const files = await glob("**/*.command.js", { cwd: commandsPath });
+  const files = await glob("**/*.command.{ts,js}", { cwd: commandsPath });
 
   await Promise.all(
     files.map(async (file) => {

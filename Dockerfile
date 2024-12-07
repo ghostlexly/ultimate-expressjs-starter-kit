@@ -22,8 +22,8 @@ RUN apt update && \
     apt install -y ca-certificates && \
     apt clean
 
-# Install wget
-RUN apt install -y wget xz-utils
+# Install required packages
+RUN apt install -y wget xz-utils procps
 
 # Download and install ffmpeg based on the architecture
 # More files can be found here : https://johnvansickle.com/ffmpeg/

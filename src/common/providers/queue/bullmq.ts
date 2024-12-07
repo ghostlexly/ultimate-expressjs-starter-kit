@@ -1,5 +1,5 @@
 import { Job, Worker } from "bullmq";
-import { createLogger } from "@/common/lib/logger";
+import { createLogger } from "./../../../common/lib/logger";
 
 type initWorkerEventsLoggerProps = {
   worker: Worker;

@@ -1,8 +1,8 @@
-import { strictThrottler } from "@/common/throttlers/strict.throttler";
+import { strictThrottler } from "./../../../common/throttlers/strict.throttler";
 import { Router } from "express";
 import { adminAuthController } from "./admin-auth.controller";
 import { adminAuthLoginSchema } from "./inputs/login.schema";
-import { validateRequest } from "@/common/middlewares/validation.middleware";
+import { validateRequest } from "./../../../common/middlewares/validation.middleware";
 
 export const adminAuthRoutes = Router();
 

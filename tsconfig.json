@@ -3,15 +3,11 @@
     "target": "es2022",
     "module": "commonjs",
 
-    "rootDir": "./src", // set root dir for source files
-    "baseUrl": "./src", // Change this to "./src"
+    // -- Base
+    "rootDir": ".", // set root dir for source files (this is the path we will start building from in the output dir)
     "outDir": "./dist", // set output dir for build files
-    "paths": {
-      // paths resolvers
-      "@/*": ["./*"]
-    },
 
-    "declaration": true,
+    // -- Misc
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -25,8 +21,18 @@
     "forceConsistentCasingInFileNames": false, // allow consistent casing in file names
     "noFallthroughCasesInSwitch": false, // allow fallthrough cases in switch
     "resolveJsonModule": true, // allow import json
-    "esModuleInterop": true // allow import es modules
-  },
+    "esModuleInterop": true, // allow import es modules
 
+    // Set `sourceRoot` to  "/" to strip the build path prefix from generated source code references.
+    // This improves issue grouping in Sentry.
+    "sourceRoot": "/",
+
+    // -- Types
+    "declaration": true,
+    "declarationMap": true,
+    "types": ["node", "express"],
+    "typeRoots": ["./node_modules/@types", "./src/common/types"]
+  },
+  "include": ["src/**/*", "prisma/**/*"],
   "exclude": ["node_modules", "dist"]
 }

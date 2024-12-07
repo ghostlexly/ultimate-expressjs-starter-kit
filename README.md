@@ -35,7 +35,7 @@ This starter kit provides a robust foundation for building scalable and feature-
 #### 🔧 Background Processing
 
 - **Queues & Workers**: Efficient task processing with `BullMQ`
-- **Cron Jobs**: Scheduled tasks using `node-cron`
+- **Cron Jobs**: Scheduled tasks using `cron`
 
 #### 🌐 Internationalization
 
@@ -66,7 +66,6 @@ This starter kit provides a robust foundation for building scalable and feature-
 
 ### ⚡ Performance Optimization
 
-- Fast build process with `Rollup` and `esbuild`
 - Hot-reload
 - Performance-optimized architecture
 

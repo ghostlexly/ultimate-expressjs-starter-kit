@@ -8,7 +8,7 @@ const logger = createLogger({ name: "initializeCrons" });
 export const initializeCrons = async () => {
   const modulesPath = path.join(getAppDir(), "modules");
 
-  const files = await glob("**/*.crons.js", {
+  const files = await glob("**/*.crons.{ts,js}", {
     cwd: modulesPath,
   });
 

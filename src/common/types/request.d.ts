@@ -16,7 +16,7 @@ declare global {
       context?: Context | undefined;
 
       // Get the real ip address from cloudflare or other proxies
-      clientIp: string;
+      clientIp?: string;
     }
   }
 }

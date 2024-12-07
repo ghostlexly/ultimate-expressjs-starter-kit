@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
   This worker is a new process that will be executed in the background.
   This process can't access any variable from the main process or any other files.
 */
 
-import { SandboxedJob } from "bullmq";
-import { TESTING_JOB, testingJob } from "./testing.job";
+const { TESTING_JOB, testingJob } = require("./testing.job");
 
-const testWorker = async (job: SandboxedJob) => {
+module.exports = async (job) => {
   switch (job.name) {
     case TESTING_JOB:
       await testingJob(job);
@@ -15,5 +15,3 @@ const testWorker = async (job: SandboxedJob) => {
       throw new Error(`Unknown job type: ${job.name}.`);
   }
 };
-
-export default testWorker;

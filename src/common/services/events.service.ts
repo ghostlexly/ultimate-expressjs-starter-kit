@@ -29,7 +29,7 @@ const initializeEventEmitter = async () => {
     const modulesPath = path.join(getAppDir(), "modules");
 
     // -- get all listeners files
-    const files = await glob("**/*.listener.js", {
+    const files = await glob("**/*.listener.{ts,js}", {
       cwd: modulesPath,
     });
 
