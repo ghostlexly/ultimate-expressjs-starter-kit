@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpException } from "./../../common/errors/http-exception";
+import { HttpException } from "#/common/errors/http-exception";
 
 export class MeController {
   getMe = async (req: Request, res: Response, next: NextFunction) => {

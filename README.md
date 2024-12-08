@@ -73,6 +73,7 @@ This starter kit provides a robust foundation for building scalable and feature-
 
 - Code formatting with `Prettier`
 - Linting with `ESLint`
+- Path aliases for clean imports (e.g., `#/common`, `#/modules`)
 
 ## 🚀 Getting Started
 

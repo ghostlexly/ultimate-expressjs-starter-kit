@@ -1,4 +1,4 @@
-import { createLogger } from "./../../common/lib/logger";
+import { createLogger } from "#/common/lib/logger";
 import { MediaService } from "./media.service";
 import { CronJob } from "cron";
 

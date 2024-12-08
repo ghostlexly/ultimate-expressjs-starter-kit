@@ -1,5 +1,5 @@
-import { createLogger } from "./../../common/lib/logger";
-import { eventsService } from "./../../common/services/events.service";
+import { createLogger } from "#/common/lib/logger";
+import { eventsService } from "#/common/services/events.service";
 
 const logger = createLogger({ name: "test-event-listener" });
 

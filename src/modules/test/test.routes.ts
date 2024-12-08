@@ -1,7 +1,7 @@
-import { strictThrottler } from "./../../common/throttlers/strict.throttler";
+import { strictThrottler } from "#/common/throttlers/strict.throttler";
 import { Router } from "express";
 import { testController } from "./controllers/test.controller";
-import { validateRequest } from "./../../common/middlewares/validation.middleware";
+import { validateRequest } from "#/common/middlewares/validation.middleware";
 import { accountUpdateSchema } from "./inputs/account-update.schema";
 
 export const testRoutes = Router();

@@ -6,12 +6,12 @@ import {
   StorageClass,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { configService } from "../../services/config.service";
+import { configService } from "#/common/services/config.service";
 import fs from "fs";
 import path from "path";
-import { filesService } from "../../services/files.service";
+import { filesService } from "#/common/services/files.service";
 import { format } from "date-fns";
-import { HttpException } from "./../../../common/errors/http-exception";
+import { HttpException } from "#/common/errors/http-exception";
 
 const client = new S3Client({
   endpoint: configService.getOrThrow("API_S3_ENDPOINT"),

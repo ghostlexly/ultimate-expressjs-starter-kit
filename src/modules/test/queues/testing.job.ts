@@ -1,6 +1,6 @@
 import { SandboxedJob } from "bullmq";
-import { createLogger } from "../../../common/lib/logger";
-import { prisma } from "../../../common/providers/database/prisma";
+import { createLogger } from "#/common/lib/logger";
+import { prisma } from "#/common/providers/database/prisma";
 
 export const TESTING_JOB = "testingJob";
 

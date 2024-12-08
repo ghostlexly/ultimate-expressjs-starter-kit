@@ -1,5 +1,5 @@
-import { HttpException } from "./../../common/errors/http-exception";
-import { prisma } from "./../../common/providers/database/prisma";
+import { HttpException } from "#/common/errors/http-exception";
+import { prisma } from "#/common/providers/database/prisma";
 import { Prisma } from "@prisma/client";
 import { add, isAfter } from "date-fns";
 

@@ -1,5 +1,5 @@
-import { phoneNumberTransformer } from "./../../../common/transformers/phone-number.transformer";
-import { phoneNumberValidator } from "./../../../common/validators/phone-number.validator";
+import { phoneNumberTransformer } from "#/common/transformers/phone-number.transformer";
+import { phoneNumberValidator } from "#/common/validators/phone-number.validator";
 import { z } from "zod";
 
 export const accountUpdateSchema = z.object({

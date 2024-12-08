@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AdminAuthLoginSchema } from "./inputs/login.schema";
-import { prisma } from "./../../../common/providers/database/prisma";
+import { prisma } from "#/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
-import { HttpException } from "./../../../common/errors/http-exception";
+import { HttpException } from "#/common/errors/http-exception";
 import { sessionService } from "../session.service";
 
 export class AdminAuthController {

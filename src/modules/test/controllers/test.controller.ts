@@ -1,6 +1,6 @@
-import { HttpException } from "./../../../common/errors/http-exception";
-import { eventsService } from "./../../../common/services/events.service";
-import { serializerService } from "./../../../common/services/serializer.service";
+import { HttpException } from "#/common/errors/http-exception";
+import { eventsService } from "#/common/services/events.service";
+import { serializerService } from "#/common/services/serializer.service";
 import { NextFunction, Request, Response } from "express";
 import { AccountUpdateSchema } from "../inputs/account-update.schema";
 import { AccountDto } from "../outputs/account.dto";

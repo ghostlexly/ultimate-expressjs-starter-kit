@@ -7,6 +7,12 @@
     "rootDir": ".", // set root dir for source files (this is the path we will start building from in the output dir)
     "outDir": "./dist", // set output dir for build files
 
+    // -- Aliases
+    "baseUrl": ".", // set base url for paths
+    "paths": {
+      "#/*": ["./src/*"]
+    },
+
     // -- Misc
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -37,6 +43,7 @@
   "exclude": ["node_modules", "dist"],
 
   "ts-node": {
+    "require": ["tsconfig-paths/register"],
     "transpileOnly": true,
     "files": true
   }

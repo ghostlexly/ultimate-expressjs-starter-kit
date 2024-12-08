@@ -1,8 +1,8 @@
-import { HttpException } from "./../../common/errors/http-exception";
-import { filesService } from "./../../common/services/files.service";
-import { createLogger } from "./../../common/lib/logger";
-import { prisma } from "./../../common/providers/database/prisma";
-import { s3Service } from "./../../common/providers/s3/s3";
+import { HttpException } from "#/common/errors/http-exception";
+import { filesService } from "#/common/services/files.service";
+import { createLogger } from "#/common/lib/logger";
+import { prisma } from "#/common/providers/database/prisma";
+import { s3Service } from "#/common/providers/s3/s3";
 import { Prisma } from "@prisma/client";
 import { sub } from "date-fns";
 
