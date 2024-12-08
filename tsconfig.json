@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "sourceMap": true, // help with debugging by mapping the compiled code back to the original source
     "incremental": false, // incremental build to speed up the build process
     "skipLibCheck": true, // ignore node_modules
     "strictNullChecks": true, // allow null checks for Zod infers to work
@@ -34,5 +34,10 @@
     "typeRoots": ["./node_modules/@types", "./src/common/types"]
   },
   "include": ["src/**/*", "prisma/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
+
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  }
 }
