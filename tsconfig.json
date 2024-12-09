@@ -28,6 +28,7 @@
     "noFallthroughCasesInSwitch": false, // allow fallthrough cases in switch
     "resolveJsonModule": true, // allow import json
     "esModuleInterop": true, // allow import es modules
+    "allowJs": true, // allow .js files
 
     // Set `sourceRoot` to  "/" to strip the build path prefix from generated source code references.
     // This improves issue grouping in Sentry.
