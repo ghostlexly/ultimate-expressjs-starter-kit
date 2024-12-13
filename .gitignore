@@ -38,3 +38,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Static assets
+/src/static/assets/css/output.css

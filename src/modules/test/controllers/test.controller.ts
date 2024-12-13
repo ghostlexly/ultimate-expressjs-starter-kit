@@ -8,6 +8,11 @@ import { testQueue } from "../queues/test.queue";
 import { TESTING_JOB } from "../queues/testing.job";
 import { testConfig } from "../test.config";
 import { testService } from "../test.service";
+import fs from "fs/promises";
+import path from "path";
+import { getAppDir } from "#/common/lib/app-dir";
+import { pdfService } from "#/common/services/pdf.service";
+import hbs from "handlebars";
 
 export class TestController {
   testBadRequest = async (req: Request, res: Response, next: NextFunction) => {
@@ -107,6 +112,28 @@ export class TestController {
         message: result,
         commissionRate: testConfig.defaultCommissionRate,
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  testPdf = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Get template
+      const template = await fs.readFile(
+        path.join(getAppDir(), "common", "templates", "invoice.hbs"),
+        "utf-8"
+      );
+
+      // Render template
+      const renderedTemplate = hbs.compile(template)({});
+
+      // Generate PDF
+      const pdfBuffer = await pdfService.htmlToPdf({ html: renderedTemplate });
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "inline; filename=invoice.pdf");
+      return res.send(pdfBuffer);
     } catch (error) {
       next(error);
     }

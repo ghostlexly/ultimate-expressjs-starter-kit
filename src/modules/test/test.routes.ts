@@ -127,3 +127,16 @@ testRoutes.get(
   "/tests/dependency-injection",
   testController.testDependencyInjection
 );
+
+/**
+ * @swagger
+ * /api/tests/pdf:
+ *  get:
+ *    summary: Test PDF
+ *    description: Test PDF.
+ *    tags: [Tests]
+ *    responses:
+ *      '200':
+ *        description: OK
+ */
+testRoutes.get("/tests/pdf", testController.testPdf);

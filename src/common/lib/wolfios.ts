@@ -1,3 +1,5 @@
+import isJSON from "validator/lib/isJSON";
+
 type WolfiosProps = RequestInit & {
   json?: Record<any, any>;
   searchParams?: Record<string, string[] | string | number>;
@@ -82,18 +84,12 @@ const handleApiResponse = async (response: Response) => {
     let data: any;
 
     try {
-      // Always get the text first since it's the most reliable
+      // -- Always get the text first since it's the most reliable
       const rawText = await response.text();
 
-      // Then try to parse as JSON if it's a JSON content type
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        try {
-          data = JSON.parse(rawText);
-        } catch (jsonError) {
-          // Fallback to raw text if JSON parsing fails
-          data = rawText;
-        }
+      // -- Then try to parse as JSON if it's a JSON content type
+      if (isJSON(rawText)) {
+        data = JSON.parse(rawText);
       } else {
         data = rawText;
       }

@@ -5,17 +5,10 @@
  * @returns
  */
 const getPagination = ({ first, page }: { first?: number; page?: number }) => {
-  // -- define limits
-  if (!first || first > 100) {
-    first = 50;
-  }
+  const validPage = !page || page < 1 ? 1 : page;
 
-  if (!page || page < 1) {
-    page = 1;
-  }
-
-  const take = Number(first);
-  const skip = (Number(page) - 1) * take;
+  const take = !first || first > 100 ? 50 : first;
+  const skip = (validPage - 1) * take;
 
   return {
     take,
@@ -34,9 +27,14 @@ const getSorting = ({ sort }: { sort?: string }) => {
 
   const [column, direction] = sort.toString().split(":");
 
+  const validDirection = direction?.toLowerCase();
+  if (validDirection !== "asc" && validDirection !== "desc") {
+    return undefined;
+  }
+
   return {
     column,
-    direction: direction.toLowerCase() as "asc" | "desc",
+    direction: validDirection,
   };
 };
 

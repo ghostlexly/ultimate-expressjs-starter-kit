@@ -16,7 +16,7 @@ import { rewriteIpAddressMiddleware } from "#/common/middlewares/rewrite-ip-addr
 import { createLogger } from "#/common/lib/logger";
 import { eventsService } from "#/common/services/events.service";
 import helmet from "helmet";
-
+import cors from "cors";
 const app = express();
 const logger = createLogger({ name: "main" });
 
@@ -37,7 +37,14 @@ async function bootstrap() {
   app.use(express.urlencoded({ extended: true }));
 
   // -- Helmet is a collection of middlewares functions that set security-related headers
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: false, // We are already using CORS
+    })
+  );
+
+  // -- Add CORS middleware
+  app.use(cors()); // This will allow all origins in development
 
   // -- Rewrite ip address from cloudflare or other proxies
   app.use(rewriteIpAddressMiddleware);
@@ -59,6 +66,10 @@ async function bootstrap() {
 
   // -- App Events
   eventsService.initialize();
+
+  // -- Static assets
+  // We are using them in the PDF templates
+  app.use("/static", express.static(path.join(__dirname, "static")));
 
   // -- Routes
   app.use("/api", globalThrottler, apiRouter);

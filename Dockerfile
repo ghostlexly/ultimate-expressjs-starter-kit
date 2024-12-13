@@ -41,8 +41,7 @@ COPY ./yarn.lock ./
 RUN yarn install --production --ignore-optional
 
 # Playwright's dependencies
-RUN yarn playwright install-deps
-RUN yarn add @playwright/browser-chromium
+RUN yarn playwright install chromium --with-deps
 
 # Copy project specific files
 COPY --from=builder /usr/src/app/dist ./dist
