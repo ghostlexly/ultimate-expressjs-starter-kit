@@ -6,13 +6,13 @@ import { AccountUpdateSchema } from "../inputs/account-update.schema";
 import { AccountDto } from "../outputs/account.dto";
 import { testQueue } from "../queues/test.queue";
 import { TESTING_JOB } from "../queues/testing.job";
-import { testConfig } from "../test.config";
-import { testService } from "../test.service";
+import { testConfig } from "../configs/test.config";
 import fs from "fs/promises";
 import path from "path";
 import { getAppDir } from "#/common/lib/app-dir";
 import { pdfService } from "#/common/services/pdf.service";
-import hbs from "handlebars";
+import ejs from "ejs";
+import { testService } from "../services/test.service";
 
 export class TestController {
   testBadRequest = async (req: Request, res: Response, next: NextFunction) => {
@@ -121,12 +121,12 @@ export class TestController {
     try {
       // Get template
       const template = await fs.readFile(
-        path.join(getAppDir(), "common", "templates", "invoice.hbs"),
+        path.join(getAppDir(), "common", "views", "invoice.ejs"),
         "utf-8"
       );
 
       // Render template
-      const renderedTemplate = hbs.compile(template)({});
+      const renderedTemplate = ejs.render(template, {});
 
       // Generate PDF
       const pdfBuffer = await pdfService.htmlToPdf({ html: renderedTemplate });

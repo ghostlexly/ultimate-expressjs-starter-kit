@@ -1,18 +1,18 @@
 import { strictThrottler } from "#/common/throttlers/strict.throttler";
 import { Router } from "express";
-import { customerAuthController } from "./customer-auth.controller";
+import { adminAuthLoginSchema } from "../inputs/login.schema";
 import { validateRequest } from "#/common/middlewares/validation.middleware";
-import { customerAuthLoginSchema } from "./inputs/login.schema";
+import { adminAuthController } from "../controllers/admin-auth.controller";
 
-export const customerAuthRoutes = Router();
+export const adminAuthRoutes = Router();
 
 /**
  * @swagger
- * /api/customer/auth/signin:
+ * /api/admin/auth/signin:
  *  post:
- *    summary: Signin to the customer panel
- *    description: Signin to the customer panel.
- *    tags: [Auth/Customer]
+ *    summary: Signin to the admin panel
+ *    description: Signin to the admin panel.
+ *    tags: [Auth/Admin]
  *    requestBody:
  *      required: true
  *      content:
@@ -28,9 +28,9 @@ export const customerAuthRoutes = Router();
  *      '200':
  *        description: OK
  */
-customerAuthRoutes.post(
-  "/customer/auth/signin",
-  validateRequest(customerAuthLoginSchema),
+adminAuthRoutes.post(
+  "/admin/auth/signin",
+  validateRequest(adminAuthLoginSchema),
   strictThrottler,
-  customerAuthController.signin
+  adminAuthController.signin
 );

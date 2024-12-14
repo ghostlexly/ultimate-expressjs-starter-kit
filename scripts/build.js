@@ -53,15 +53,15 @@ const copyAssets = async () => {
 };
 
 /**
- * Copy templates from src to dist
+ * Copy views from src to dist
  */
-const copyTemplates = async () => {
-  const srcDir = "src/common/templates";
-  const destDir = "dist/src/common/templates";
+const copyViews = async () => {
+  const srcDir = "src/common/views";
+  const destDir = "dist/src/common/views";
 
   // Check if source directory exists
   if (!existsSync(srcDir)) {
-    console.log("Templates directory does not exist, skipping copy");
+    console.log("Views directory does not exist, skipping copy");
     return;
   }
 
@@ -72,7 +72,7 @@ const copyTemplates = async () => {
     // Copy all files recursively
     await fs.cp(srcDir, destDir, { recursive: true });
   } catch (error) {
-    console.error("Error copying templates:", error);
+    console.error("Error copying views:", error);
     throw error;
   }
 };
@@ -107,7 +107,7 @@ const main = async () => {
     await buildJs();
     await buildCss();
     await copyAssets();
-    await copyTemplates();
+    await copyViews();
 
     console.log("Build completed successfully");
   } catch (error) {

@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { testRoutes } from "./modules/test/test.routes";
-import { adminAuthRoutes } from "./modules/auth/admin/admin-auth.routes";
-import { meRoutes } from "./modules/me/me.routes";
-import { mediaRoutes } from "./modules/media/media.routes";
-import { customerAuthRoutes } from "./modules/auth/customer/customer-auth.routes";
+import { adminAuthRoutes } from "./features/auth/admin/routes/admin-auth.routes";
+import { meRoutes } from "./features/me/routes/me.routes";
+import { customerAuthRoutes } from "./features/auth/customer/routes/customer-auth.routes";
+import { testRoutes } from "./features/test/routes/test.routes";
+import { mediaRoutes } from "./features/media/routes/media.routes";
 
 export const apiRouter = Router();
 // -- Common

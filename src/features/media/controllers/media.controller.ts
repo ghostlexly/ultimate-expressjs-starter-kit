@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { mediaQueue } from "../queues/media.queue";
 import { OPTIMIZE_VIDEO_JOB } from "../queues/optimize-video.job";
 import { HttpException } from "#/common/errors/http-exception";
-import { mediaService } from "../media.service";
+import { mediaService } from "../services/media.service";
 
 export class MediaController {
   create = async (req: Request, res: Response, next: NextFunction) => {

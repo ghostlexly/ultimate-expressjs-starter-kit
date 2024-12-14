@@ -1,31 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import { CustomerAuthLoginSchema } from "./inputs/login.schema";
 import { prisma } from "#/common/providers/database/prisma";
 import * as bcrypt from "bcryptjs";
 import { HttpException } from "#/common/errors/http-exception";
-import { sessionService } from "../session.service";
+import { AdminAuthLoginSchema } from "../inputs/login.schema";
+import { sessionService } from "../../services/session.service";
 
-export class CustomerAuthController {
+export class AdminAuthController {
   signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const body = req.body as CustomerAuthLoginSchema["body"];
+      const body = req.body as AdminAuthLoginSchema["body"];
 
       // -- verify if user exists
-      const user = await prisma.customer.findFirst({
+      const user = await prisma.admin.findFirst({
         where: {
           email: body.email,
         },
       });
 
       if (!user) {
-        throw new HttpException({
-          status: 401,
-          message: "Invalid credentials.",
-        });
-      }
-
-      // -- check if the user has a password
-      if (!user.password) {
         throw new HttpException({
           status: 401,
           message: "Invalid credentials.",
@@ -55,4 +47,4 @@ export class CustomerAuthController {
   };
 }
 
-export const customerAuthController = new CustomerAuthController();
+export const adminAuthController = new AdminAuthController();

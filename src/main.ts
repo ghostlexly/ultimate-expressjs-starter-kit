@@ -8,7 +8,7 @@ import { exceptionsMiddleware } from "#/common/middlewares/exceptions.middleware
 import { unknownRoutesMiddleware } from "#/common/middlewares/unknown-routes.middleware";
 import { globalThrottler } from "#/common/throttlers/global.throttler";
 import { trimMiddleware } from "#/common/middlewares/trim.middleware";
-import { initializeBearerStrategy } from "#/modules/auth/strategies/bearer.strategy";
+import { initializeBearerStrategy } from "#/features/auth/strategies/bearer.strategy";
 import { initializeI18n } from "#/common/lib/i18n";
 import { initializeSwagger } from "#/common/lib/swagger";
 import { initializeCrons } from "#/common/lib/crons";
@@ -21,11 +21,14 @@ const app = express();
 const logger = createLogger({ name: "main" });
 
 async function bootstrap() {
-  // -- Log bootstrap time
+  // Log bootstrap time
   const bootstrapStartTime = Date.now();
 
-  // disable `x-powered-by` header for security reasons
+  // Disable `x-powered-by` header for security reasons
   app.disable("x-powered-by");
+
+  // Set view engine to ejs
+  app.set("view engine", "ejs");
 
   // We parse the body of the request to be able to access it
   // @example: app.post('/', (req) => req.body.prop)
@@ -36,42 +39,42 @@ async function bootstrap() {
   // to be able to access these forms's values in req.body
   app.use(express.urlencoded({ extended: true }));
 
-  // -- Helmet is a collection of middlewares functions that set security-related headers
+  // Helmet is a collection of middlewares functions that set security-related headers
   app.use(
     helmet({
       crossOriginResourcePolicy: false, // We are already using CORS
     })
   );
 
-  // -- Add CORS middleware
+  // Add CORS middleware
   app.use(cors()); // This will allow all origins in development
 
-  // -- Rewrite ip address from cloudflare or other proxies
+  // Rewrite ip address from cloudflare or other proxies
   app.use(rewriteIpAddressMiddleware);
 
   // We trim the body of the incoming requests to remove any leading or trailing whitespace
   app.use(trimMiddleware);
 
-  // -- Swagger
+  // Swagger
   initializeSwagger({ app });
 
-  // -- Passport strategies
+  // Passport strategies
   initializeBearerStrategy();
 
-  // -- I18n
+  // I18n
   initializeI18n();
 
-  // -- Crons
+  // Crons
   initializeCrons();
 
-  // -- App Events
+  // App Events
   eventsService.initialize();
 
-  // -- Static assets
-  // We are using them in the PDF templates
+  // Static assets
+  // We are using them in the PDF views
   app.use("/static", express.static(path.join(__dirname, "static")));
 
-  // -- Routes
+  // Routes
   app.use("/api", globalThrottler, apiRouter);
 
   // ----------------------------------------
@@ -86,11 +89,11 @@ async function bootstrap() {
   // ----------------------------------------
   app.use(exceptionsMiddleware);
 
-  // -- Start server
+  // Start server
   app.listen(3000, () => {
-    // -- Log bootstrap time
+    // Log bootstrap time
     logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
-    // -- Log server ready
+    // Log server ready
     logger.info(`🚀 Server ready on port: 3000`);
   });
 }

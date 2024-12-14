@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { sessionsGuard } from "#/common/guards/sessions.guard";
-import { meController } from "./me.controller";
+import { meController } from "../controllers/me.controller";
 
 export const meRoutes = Router();
 

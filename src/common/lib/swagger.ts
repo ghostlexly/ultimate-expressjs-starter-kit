@@ -74,8 +74,8 @@ export const initializeSwagger = async ({
         ],
       },
       apis: [
-        "./src/modules/**/*.routes.ts",
-        "./src/modules/**/*.controller.ts",
+        "./src/features/**/*.routes.ts",
+        "./src/features/**/*.controller.ts",
       ],
     });
   });

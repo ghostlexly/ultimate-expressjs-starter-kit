@@ -1,4 +1,4 @@
-import { testAuthorService } from "../test-author/test-author.service";
+import { testAuthorService } from "#/features/test-author/services/test-author.service";
 
 export class TestService {
   /**

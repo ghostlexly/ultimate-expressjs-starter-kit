@@ -1,6 +1,6 @@
 import { createLogger } from "#/common/lib/logger";
-import { MediaService } from "./media.service";
 import { CronJob } from "cron";
+import { MediaService } from "../services/media.service";
 
 const logger = createLogger({ name: "mediaCrons" });
 const mediaService = new MediaService();

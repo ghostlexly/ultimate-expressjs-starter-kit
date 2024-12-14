@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { mediaController } from "./controllers/media.controller";
+import { mediaController } from "../controllers/media.controller";
 
 export const mediaRoutes = Router();
 
