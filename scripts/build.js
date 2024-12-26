@@ -56,8 +56,8 @@ const copyAssets = async () => {
  * Copy views from src to dist
  */
 const copyViews = async () => {
-  const srcDir = "src/common/views";
-  const destDir = "dist/src/common/views";
+  const srcDir = "src/shared/views";
+  const destDir = "dist/src/shared/views";
 
   // Check if source directory exists
   if (!existsSync(srcDir)) {
