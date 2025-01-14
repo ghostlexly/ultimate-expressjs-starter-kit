@@ -78,7 +78,7 @@ This starter kit provides a robust foundation for building scalable and feature-
 ## 🚀 Getting Started
 
 1. Clone the repository
-2. Install dependencies: `yarn install`
+2. Install dependencies: `npm install`
 3. Set up your environment variables
 
 👉 You can use the `.env.template` file to create your own `.env` file
@@ -86,25 +86,25 @@ This starter kit provides a robust foundation for building scalable and feature-
 👉 Importantly, you need to have a running instance of `redis` and `mysql` on your machine to run this project.
 If you need a more complete solution with docker-compose to setup everything, please check this repository: https://github.com/ghostlexly/ultimate-typescript-starter-kit
 
-4. Run the development server: `yarn start:dev`
+4. Run the development server: `npm run start:dev`
 
 ## 🖥️ CLI Commands
 
 This starter kit includes a set of CLI commands to help you manage your application. Here are some examples:
 
-- `yarn cli test:split-text this-is-a-test -s -`: Split a text into an array
-- `yarn cli seed:countries`: Seed the database with countries data
-- `yarn cli create:admin-account admin@example.com password`: Create an admin account
+- `npm run cli test:split-text this-is-a-test -s -`: Split a text into an array
+- `npm run cli seed:countries`: Seed the database with countries data
+- `npm run cli create:admin-account admin@example.com password`: Create an admin account
 
 For a full list of available commands, run:
 
 ```bash
-yarn cli
+npm run cli
 ```
 
 ## 📚 Documentation
 
-### The Clean Architecture with DDD by Tolga MALKOC
+### The Clean Architecture with modules by Tolga MALKOC
 
 #### Directory structure:
 
@@ -199,7 +199,7 @@ Project Root
 
 # Modern TypeScript Project Structure 🏗️
 
-The Clean Architecture with DDD by Tolga MALKOC
+The Clean Architecture with modules by Tolga MALKOC
 
 ## Core (`/core`)
 
@@ -339,7 +339,7 @@ This structure follows clean architecture principles while remaining practical f
 ### Data-Flow
 
 ```jsx
-Controller -> Use-Case -> Services -> Repositories
+Controller -> Use-Cases -> Services -> Repositories
 ```
 
 - **Controller** : Receives requests and delegates to use-cases.

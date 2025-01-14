@@ -5,7 +5,7 @@ import { appQueue } from "#/infrastructure/queue/bull/app.queue";
 import { OPTIMIZE_VIDEO_JOB } from "#/infrastructure/queue/bull/jobs/optimize-video.job";
 
 export class MediaController {
-  create = async (req: Request, res: Response, next: NextFunction) => {
+  onUploadMedia = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const file = req.file;
 
@@ -43,7 +43,7 @@ export class MediaController {
     }
   };
 
-  createVideo = async (req: Request, res: Response, next: NextFunction) => {
+  onUploadVideo = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const file = req.file;
 

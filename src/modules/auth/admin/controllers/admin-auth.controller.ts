@@ -6,7 +6,7 @@ import { sessionService } from "../../session.service";
 import { AdminAuthLoginValidator } from "../validators/login.validator";
 
 export class AdminAuthController {
-  signin = async (req: Request, res: Response, next: NextFunction) => {
+  onSignin = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body as AdminAuthLoginValidator["body"];
 

@@ -9,76 +9,71 @@ export const REDIS_CONNECTION = {
   port: Number(configService.getOrThrow("APP_REDIS_PORT")),
 };
 
-/** Load Redis */
-let redisClient: Redis | null = null;
+class RedisService {
+  private readonly client: Redis;
 
-const getRedisClient = (): Redis => {
-  if (!redisClient) {
-    redisClient = new Redis(REDIS_CONNECTION);
+  constructor() {
+    this.client = new Redis({
+      ...REDIS_CONNECTION,
+    });
 
-    redisClient.on("error", (err) => {
+    this.client.on("error", (err) => {
       logger.error({ name: "redis", error: err });
     });
-
-    redisClient.on("connect", () => {
-      logger.info({ name: "redis" }, "Connected");
-    });
   }
 
-  return redisClient;
-};
+  /**
+   * Get a value from the cache. (JSON supported)
+   *
+   * @param key
+   * @returns
+   */
+  get = async (key: string) => {
+    const value = await this.client.get(key);
+    return value ? JSON.parse(value) : null;
+  };
 
-/**
- * Get a value from the cache. (JSON supported)
- *
- * @param key
- * @returns
- */
-const get = async (key: string) => {
-  const client = getRedisClient();
-  const value = await client.get(key);
-  return value ? JSON.parse(value) : null;
-};
+  /**
+   * Set a value in the cache with an optional expiration time. (JSON supported)
+   *
+   * @param key - The key to store the value under
+   * @param value - The value to store
+   * @param ttl - Time to live in seconds (optional)
+   */
+  set = async (
+    key: string,
+    value: string | number | boolean | object,
+    ttl?: number
+  ) => {
+    if (ttl) {
+      await this.client.set(key, JSON.stringify(value), "EX", ttl);
+    } else {
+      await this.client.set(key, JSON.stringify(value));
+    }
+  };
 
-/**
- * Set a value in the cache with an optional expiration time. (JSON supported)
- *
- * @param key - The key to store the value under
- * @param value - The value to store
- * @param ttl - Time to live in seconds (optional)
- */
-const set = async (key: string, value: any, ttl?: number) => {
-  const client = getRedisClient();
+  /**
+   * Delete a key from the cache.
+   *
+   * @param key
+   */
+  delete = async (key: string) => {
+    await this.client.del(key);
+  };
 
-  if (ttl) {
-    await client.set(key, JSON.stringify(value), "EX", ttl);
-  } else {
-    await client.set(key, JSON.stringify(value));
-  }
-};
+  /**
+   * Flush all keys from the cache.
+   */
+  flushall = async () => {
+    await this.client.flushall();
+  };
 
-const deleteKey = async (key: string) => {
-  const client = getRedisClient();
-  return client.del(key);
-};
+  /**
+   * Close the Redis connection.
+   */
+  quit = async () => {
+    await this.client.quit();
+  };
+}
 
-const flushall = async () => {
-  const client = getRedisClient();
-  return client.flushall();
-};
-
-const quit = async () => {
-  const client = getRedisClient();
-  await client.quit();
-  redisClient = null;
-  logger.info({ name: "redis" }, "Connection closed");
-};
-
-export const redisService = {
-  getRedisClient,
-  get,
-  set,
-  delete: deleteKey,
-  flushall,
-  quit,
-};
+export const redisService = new RedisService();

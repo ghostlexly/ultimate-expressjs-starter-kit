@@ -3,6 +3,7 @@ import { createLogger } from "#/shared/utils/logger";
 import path from "path";
 import { getAppDir } from "#/shared/utils/app-dir";
 import { glob } from "glob";
+import { configService } from "#/shared/services/config.service";
 
 const logger = createLogger({ name: "initializeEventEmitter" });
 
@@ -48,7 +49,10 @@ const loadListener = async (
   try {
     const filePath = path.join(modulesPath, file);
     await import(filePath);
-    logger.info(`Loaded [${file}] events listener(s).`);
+
+    if (configService.getOrThrow("NODE_ENV") !== "test") {
+      logger.info(`Loaded [${file}] events listener(s).`);
+    }
   } catch (error) {
     logger.error(error, `Failed to load listener ${file} !`);
   }

@@ -3,15 +3,15 @@
 import path from "path";
 
 /**
- * Get the root directory of the application (where the main.ts or app.ts file is located).
- * On your main.ts file, add this line:
+ * Get the root directory of the application (where the app.ts file is located).
+ * On your app.ts file, add this line:
  * ```ts
  * import path from "path";
  * global.appRoot = path.resolve(__dirname);
  * ```
  */
 export const getAppDir = () => {
-  // if appRoot is not set, use the main.ts file location from the require cache
+  // if appRoot is not set, use the app.ts file location from the require cache
   if (!global.appRoot) {
     return path.dirname(require?.main?.filename ?? __dirname);
   }

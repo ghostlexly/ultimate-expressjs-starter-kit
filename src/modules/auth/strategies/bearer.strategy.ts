@@ -32,7 +32,7 @@ export const initializeBearerStrategy = async () => {
         // Return user
         // ----------------------------
         return done(null, session.account, { scope: "all" });
-      } catch (err) {
+      } catch {
         return done(null, false);
       }
     })

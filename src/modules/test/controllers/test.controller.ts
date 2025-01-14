@@ -15,7 +15,11 @@ import { testWriteTextUseCase } from "#/core/use-cases/test-write-text.usecase";
 import { toAccountDto } from "../dtos/account.dto";
 
 export class TestController {
-  testBadRequest = async (req: Request, res: Response, next: NextFunction) => {
+  onTestBadRequest = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       throw HttpException.badRequest({
         message: "An error occurred.",
@@ -27,16 +31,16 @@ export class TestController {
       //   body: "An error occurred.",
       //   code: "TEST_BAD_REQUEST",
       // });
-
-      return res.json({
-        message: "Hello World",
-      });
     } catch (error) {
       next(error);
     }
   };
 
-  testQueueLaunch = async (req: Request, res: Response, next: NextFunction) => {
+  onTestQueueLaunch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       await appQueue.add(TESTING_JOB, {
         message: "Hello World",
@@ -50,7 +54,7 @@ export class TestController {
     }
   };
 
-  testZod = async (req: Request, res: Response, next: NextFunction) => {
+  onTestZod = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body as AccountUpdateValidator["body"];
 
@@ -60,7 +64,7 @@ export class TestController {
     }
   };
 
-  testDto = async (req: Request, res: Response, next: NextFunction) => {
+  onTestDto = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = {
         id: "123",
@@ -81,7 +85,7 @@ export class TestController {
     }
   };
 
-  testEventEmitter = async (
+  onTestEventEmitter = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -97,7 +101,7 @@ export class TestController {
     }
   };
 
-  testDependencyInjection = async (
+  onTestDependencyInjection = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -114,7 +118,7 @@ export class TestController {
     }
   };
 
-  testPdf = async (req: Request, res: Response, next: NextFunction) => {
+  onTestPdf = async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Get template
       const template = await fs.readFile(
@@ -136,7 +140,7 @@ export class TestController {
     }
   };
 
-  testComplexUseCase = async (
+  onTestComplexUseCase = async (
     req: Request,
     res: Response,
     next: NextFunction

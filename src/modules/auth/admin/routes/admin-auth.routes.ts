@@ -29,5 +29,5 @@ export const adminAuthRoutes = Router();
 adminAuthRoutes.post(
   "/admin/auth/signin",
   strictThrottler,
-  adminAuthController.signin
+  adminAuthController.onSignin
 );

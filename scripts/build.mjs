@@ -1,6 +1,6 @@
-const { spawn } = require("child_process");
-const fs = require("fs/promises");
-const { existsSync } = require("fs");
+import { spawn } from "child_process";
+import fs from "fs/promises";
+import { existsSync } from "fs";
 
 /**
  * Do command line command.
@@ -82,8 +82,8 @@ const copyViews = async () => {
  */
 const buildJs = async () => {
   try {
-    await exec("yarn tsc --build --incremental");
-    await exec("yarn tsc-alias");
+    await exec("npx tsc --build --incremental");
+    await exec("npx tsc-alias");
   } catch (error) {
     console.error("Error building JavaScript:", error);
     throw error;
@@ -94,7 +94,7 @@ const buildJs = async () => {
  * Build CSS files
  */
 const buildCss = async () => {
-  await exec("yarn build:css");
+  await exec("npm run build:css");
 };
 
 /**

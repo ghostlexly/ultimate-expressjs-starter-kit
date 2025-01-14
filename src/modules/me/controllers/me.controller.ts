@@ -2,7 +2,7 @@ import { HttpException } from "#/shared/exceptions/http-exception";
 import { NextFunction, Request, Response } from "express";
 
 export class MeController {
-  getMe = async (req: Request, res: Response, next: NextFunction) => {
+  onGetMe = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const account = req.context?.account;
 

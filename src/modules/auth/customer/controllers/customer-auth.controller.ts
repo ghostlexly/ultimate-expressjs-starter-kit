@@ -6,7 +6,7 @@ import { sessionService } from "../../session.service";
 import { CustomerAuthLoginValidator } from "../validators/login.validator";
 
 export class CustomerAuthController {
-  signin = async (req: Request, res: Response, next: NextFunction) => {
+  onSignin = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body as CustomerAuthLoginValidator["body"];
 

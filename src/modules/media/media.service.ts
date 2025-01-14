@@ -3,6 +3,7 @@ import { s3Service } from "#/infrastructure/storage/s3/s3";
 import { HttpException } from "#/shared/exceptions/http-exception";
 import { filesService } from "#/shared/services/files.service";
 import { createLogger } from "#/shared/utils/logger";
+import { Express } from "express";
 
 export class MediaService {
   private readonly logger = createLogger({ name: "mediaService" });

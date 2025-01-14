@@ -17,7 +17,7 @@ export const testRoutes = Router();
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/bad-request", testController.testBadRequest);
+testRoutes.get("/tests/bad-request", testController.onTestBadRequest);
 
 /**
  * @swagger
@@ -33,7 +33,7 @@ testRoutes.get("/tests/bad-request", testController.testBadRequest);
 testRoutes.get(
   "/tests/strict-throttler",
   strictThrottler,
-  testController.testDto
+  testController.onTestDto
 );
 
 /**
@@ -47,7 +47,7 @@ testRoutes.get(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/queue-launch", testController.testQueueLaunch);
+testRoutes.get("/tests/queue-launch", testController.onTestQueueLaunch);
 
 /**
  * @swagger
@@ -83,7 +83,7 @@ testRoutes.get("/tests/queue-launch", testController.testQueueLaunch);
 testRoutes.post(
   "/tests/zod",
   validateRequest(accountUpdateValidator),
-  testController.testZod
+  testController.onTestZod
 );
 
 /**
@@ -97,7 +97,7 @@ testRoutes.post(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/dto", testController.testDto);
+testRoutes.get("/tests/dto", testController.onTestDto);
 
 /**
  * @swagger
@@ -110,7 +110,7 @@ testRoutes.get("/tests/dto", testController.testDto);
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/event-emitter", testController.testEventEmitter);
+testRoutes.get("/tests/event-emitter", testController.onTestEventEmitter);
 
 /**
  * @swagger
@@ -125,7 +125,7 @@ testRoutes.get("/tests/event-emitter", testController.testEventEmitter);
  */
 testRoutes.get(
   "/tests/dependency-injection",
-  testController.testDependencyInjection
+  testController.onTestDependencyInjection
 );
 
 /**
@@ -139,7 +139,7 @@ testRoutes.get(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/pdf", testController.testPdf);
+testRoutes.get("/tests/pdf", testController.onTestPdf);
 
 /**
  * @swagger
@@ -152,4 +152,4 @@ testRoutes.get("/tests/pdf", testController.testPdf);
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/complex-use-case", testController.testComplexUseCase);
+testRoutes.get("/tests/complex-use-case", testController.onTestComplexUseCase);

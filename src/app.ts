@@ -17,10 +17,14 @@ import { initializeSwagger } from "./shared/utils/swagger";
 import { initializeI18n } from "./shared/utils/i18n";
 import { initializeCrons } from "./infrastructure/cron";
 import { eventsService } from "./infrastructure/events/events.service";
-const app = express();
-const logger = createLogger({ name: "main" });
+import { appWorker, appQueue } from "./infrastructure/queue/bull/app.queue";
+import { redisService } from "./infrastructure/cache/redis/redis";
+import { prisma } from "./infrastructure/database/prisma";
 
-async function bootstrap() {
+const bootstrap = async () => {
+  const app = express();
+  const logger = createLogger({ name: "app" });
+
   // Log bootstrap time
   const bootstrapStartTime = Date.now();
 
@@ -55,20 +59,20 @@ async function bootstrap() {
   // We trim the body of the incoming requests to remove any leading or trailing whitespace
   app.use(trimMiddleware);
 
+  // Passport strategies
+  await initializeBearerStrategy();
+
+  // I18n
+  await initializeI18n();
+
+  // App Events
+  await eventsService.initialize();
+
   // Swagger
   initializeSwagger({ app });
 
-  // Passport strategies
-  initializeBearerStrategy();
-
-  // I18n
-  initializeI18n();
-
   // Crons
   initializeCrons();
-
-  // App Events
-  eventsService.initialize();
 
   // Static assets
   // We are using them in the PDF views
@@ -89,15 +93,32 @@ async function bootstrap() {
   // ----------------------------------------
   app.use(exceptionsMiddleware);
 
-  // Start server
-  app.listen(3000, () => {
-    // Log bootstrap time
-    logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
-    // Log server ready
-    logger.info(`🚀 Server ready on port: 3000`);
-  });
+  // Add shutdown handlers
+  process.on("SIGTERM", () => cleanup());
+  process.on("SIGINT", () => cleanup());
+  process.on("beforeExit", () => cleanup());
+
+  // Log bootstrap time
+  logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
+
+  return app;
+};
+
+if (require.main === module) {
+  bootstrap();
 }
 
-bootstrap();
+// Cleanup the app connections before exiting
+const cleanup = async () => {
+  // Close all queue connections
+  await Promise.all([appQueue.close(), appWorker.close()]);
+  await Promise.all([appQueue.disconnect(), appWorker.disconnect()]);
 
-export { app };
+  // Close Redis connection
+  await redisService.quit();
+
+  // Close Prisma connection
+  await prisma.$disconnect();
+};
+
+export { bootstrap, cleanup };

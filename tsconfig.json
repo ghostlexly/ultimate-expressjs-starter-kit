@@ -37,7 +37,7 @@
     // -- Types
     "declaration": true,
     "declarationMap": true,
-    "types": ["node", "express"],
+    "types": ["node", "express", "jest"],
     "typeRoots": ["./node_modules/@types", "./src/common/types"]
   },
   "include": ["src/**/*", "prisma/**/*"],

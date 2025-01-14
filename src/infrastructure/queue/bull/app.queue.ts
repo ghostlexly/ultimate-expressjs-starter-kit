@@ -23,4 +23,4 @@ bullmqService.initWorkerEventsLogger({
   worker: appWorker,
 });
 
-export { appQueue };
+export { appQueue, appWorker };
