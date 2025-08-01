@@ -1,10 +1,13 @@
 import request from "supertest";
-import { bootstrap } from "#/app";
+import { bootstrap } from "@/app";
 import { Express } from "express";
+import { initializeTestDb } from "@/common/test/jest-initialize-db";
 
 let app: Express;
 
 beforeAll(async () => {
+  await initializeTestDb();
+
   app = await bootstrap();
 });
 

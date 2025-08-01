@@ -1,12 +1,12 @@
-import { prisma } from "#/infrastructure/database/prisma";
-import { s3Service } from "#/infrastructure/storage/s3/s3";
-import { HttpException } from "#/shared/exceptions/http-exception";
-import { filesService } from "#/shared/services/files.service";
-import { createLogger } from "#/shared/utils/logger";
+import { prisma } from "@/common/database/prisma";
+import { s3Service } from "@/common/storage/s3";
+import { HttpException } from "@/common/exceptions/http-exception";
+import { filesService } from "@/common/services/files.service";
+import { Logger } from "@/common/utils/logger";
 import { Express } from "express";
 
 export class MediaService {
-  private readonly logger = createLogger({ name: "mediaService" });
+  private readonly logger = new Logger("mediaService");
 
   /**
    * Save a file uploaded with Multer to S3 and create a media record.
@@ -22,10 +22,13 @@ export class MediaService {
     filePath: string;
     originalFileName: string;
   }) => {
-    const fileInfos = await filesService.getFileInfos(filePath);
+    const fileInfos = await filesService.getFileInfos({
+      filePath,
+      originalFileName,
+    });
 
     // -- Save the file to S3
-    const fileKey = await s3Service.upload({
+    const key = await s3Service.upload({
       filePath: filePath,
       fileName: originalFileName,
       mimeType: fileInfos.mimeType,
@@ -33,7 +36,7 @@ export class MediaService {
 
     const media = await prisma.media.create({
       data: {
-        fileKey: fileKey,
+        key: key,
         fileName: originalFileName,
         mimeType: fileInfos.mimeType,
         size: fileInfos.size,
@@ -60,8 +63,11 @@ export class MediaService {
     allowedMimeTypes: string[];
     maxFileSize: number;
   }) => {
-    const maxFileSizeInBytes = maxFileSize * 1024 * 1024; // Convert Mo to bytes
-    const fileInfos = await filesService.getFileInfos(file.path);
+    const maxFileSizeInBytes = maxFileSize * 1_000_000; // Convert Mb to bytes
+    const fileInfos = await filesService.getFileInfos({
+      filePath: file.path,
+      originalFileName: file.originalname,
+    });
 
     if (!allowedMimeTypes.includes(fileInfos.mimeType)) {
       throw new HttpException({
@@ -73,7 +79,7 @@ export class MediaService {
     if (file.size > maxFileSizeInBytes) {
       throw new HttpException({
         status: 413,
-        message: `The file size must not exceed ${maxFileSize} Mo.`,
+        message: `The file size must not exceed ${maxFileSize} Mb.`,
       });
     }
 
@@ -97,7 +103,7 @@ export class MediaService {
     allowedMimeTypes: string[];
     maxFileSize: number;
   }) => {
-    const maxFileSizeInBytes = maxFileSize * 1024 * 1024; // Convert Mo to bytes
+    const maxFileSizeInBytes = maxFileSize * 1_000_000; // Convert Mb to bytes
 
     const media = await prisma.media.findUnique({
       where: {

@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
+import { HttpException } from "@/common/exceptions/http-exception";
 import { mediaService } from "../media.service";
-import { HttpException } from "#/shared/exceptions/http-exception";
-import { appQueue } from "#/infrastructure/queue/bull/app.queue";
-import { OPTIMIZE_VIDEO_JOB } from "#/infrastructure/queue/bull/jobs/optimize-video.job";
+import { queueService } from "@/common/queue/queue.service";
+import { s3Service } from "@/common/storage/s3";
 
 export class MediaController {
-  onUploadMedia = async (req: Request, res: Response, next: NextFunction) => {
+  uploadMedia = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const file = req.file;
 
@@ -16,7 +16,7 @@ export class MediaController {
         });
       }
 
-      // -- verify the file
+      // Verify the file
       await mediaService.verifyMulterMaxSizeAndMimeType({
         file: file,
         allowedMimeTypes: [
@@ -28,22 +28,28 @@ export class MediaController {
         maxFileSize: 50,
       });
 
-      // -- upload the file to S3
+      // Upload the file to S3
       const media = await mediaService.uploadFileToS3({
         filePath: file.path,
         originalFileName: file.originalname,
       });
 
+      // Get the presigned url for the file
+      const presignedUrl = await s3Service.getPresignedUrl({
+        key: media.key,
+      });
+
       return res.json({
-        status: "success",
         id: media.id,
+        presignedUrl,
+        status: "success",
       });
     } catch (error) {
       next(error);
     }
   };
 
-  onUploadVideo = async (req: Request, res: Response, next: NextFunction) => {
+  uploadVideo = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const file = req.file;
 
@@ -54,21 +60,21 @@ export class MediaController {
         });
       }
 
-      // -- verify the file
+      // Verify the file
       await mediaService.verifyMulterMaxSizeAndMimeType({
         file: file,
         allowedMimeTypes: ["video/mp4", "video/quicktime"],
         maxFileSize: 100,
       });
 
-      // -- upload the file to S3
+      // Upload the file to S3
       const media = await mediaService.uploadFileToS3({
         filePath: file.path,
         originalFileName: file.originalname,
       });
 
-      // -- optimize the video file with ffmpeg and reupload it to S3
-      await appQueue.add(OPTIMIZE_VIDEO_JOB, { mediaId: media.id });
+      // Optimize the video file with ffmpeg and reupload it to S3
+      queueService.addOptimizeVideoJob(media.id);
 
       return res.json({
         status: "success",

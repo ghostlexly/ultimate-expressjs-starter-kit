@@ -10,7 +10,7 @@
     // -- Aliases
     "baseUrl": ".", // set base url for paths
     "paths": {
-      "#/*": ["./src/*"]
+      "@/*": ["./src/*"]
     },
 
     // -- Misc
@@ -24,8 +24,6 @@
     "strictNullChecks": true, // allow null checks for Zod infers to work
     "noImplicitAny": false, // allow any type
     "strictBindCallApply": false, // allow bind, call and apply to work
-    "forceConsistentCasingInFileNames": false, // allow consistent casing in file names
-    "noFallthroughCasesInSwitch": false, // allow fallthrough cases in switch
     "resolveJsonModule": true, // allow import json
     "esModuleInterop": true, // allow import es modules
     "allowJs": true, // allow .js files

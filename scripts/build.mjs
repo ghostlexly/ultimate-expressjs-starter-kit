@@ -1,119 +1,103 @@
 import { spawn } from "child_process";
 import fs from "fs/promises";
-import { existsSync } from "fs";
+import { glob } from "glob";
+import path from "path";
 
-/**
- * Do command line command.
- */
-const exec = async (cmd) => {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, { shell: true });
+class Builder {
+  /**
+   * Do command line command.
+   */
+  asyncSpawn = (command, options = {}) => {
+    return new Promise((resolve, reject) => {
+      const childProcess = spawn(command, {
+        shell: true,
+        stdio: ["inherit", "inherit", "inherit"],
+        ...options,
+      });
 
-    child.stdout.on("data", (data) => {
-      console.log(data.toString());
-    });
-
-    child.stderr.on("data", (data) => {
-      console.error(data.toString());
-    });
-
-    child.on("close", (code) => {
-      if (code === 0) {
+      childProcess.on("exit", (code) => {
+        if (code !== 0) {
+          reject(`Child process exited with code ${code}.`);
+        }
         resolve(true);
-      } else {
-        reject(new Error(`Command exited with code ${code}`));
-      }
+      });
+
+      childProcess.on("error", (error) => {
+        reject(`Error on process spawn: ${error.message}.`);
+      });
+
+      process.on("exit", () => {
+        childProcess.kill();
+      });
     });
-  });
-};
+  };
 
-/**
- * Copy assets from src to dist
- */
-const copyAssets = async () => {
-  const srcDir = "src/static";
-  const destDir = "dist/src/static";
+  clearDist = async () => {
+    await fs.rm(path.join("dist"), { recursive: true, force: true });
+  };
 
-  // Check if source directory exists
-  if (!existsSync(srcDir)) {
-    console.log("Assets directory does not exist, skipping copy");
-    return;
-  }
+  /**
+   * Copy non-TypeScript files to the dist directory
+   */
+  copyNonTsFiles = async () => {
+    const foldersToProcess = ["prisma", "src"];
 
-  try {
-    // Create destination directory if it doesn't exist
-    await fs.mkdir(destDir, { recursive: true });
+    for (const folder of foldersToProcess) {
+      const nonTsFiles = await glob(`${folder}/**/*`, {
+        nodir: true,
+      });
 
-    // Copy all files recursively
-    await fs.cp(srcDir, destDir, { recursive: true });
-  } catch (error) {
-    console.error("Error copying assets:", error);
-    throw error;
-  }
-};
+      for (const file of nonTsFiles) {
+        const sourcePath = file;
+        const destPath = path.join("dist", file);
 
-/**
- * Copy views from src to dist
- */
-const copyViews = async () => {
-  const srcDir = "src/shared/views";
-  const destDir = "dist/src/shared/views";
+        // Ensure the destination directory exists
+        await fs.mkdir(path.dirname(destPath), { recursive: true });
 
-  // Check if source directory exists
-  if (!existsSync(srcDir)) {
-    console.log("Views directory does not exist, skipping copy");
-    return;
-  }
+        // Copy the file
+        await fs.copyFile(sourcePath, destPath);
+      }
+    }
+  };
 
-  try {
-    // Create destination directory if it doesn't exist
-    await fs.mkdir(destDir, { recursive: true });
+  /**
+   * Build TypeScript files
+   */
+  buildJs = async () => {
+    try {
+      await this.asyncSpawn("npx tsc --build --incremental");
+      await this.asyncSpawn("npx tsc-alias");
+    } catch (error) {
+      console.error("Error building JavaScript:", error);
+      throw error;
+    }
+  };
 
-    // Copy all files recursively
-    await fs.cp(srcDir, destDir, { recursive: true });
-  } catch (error) {
-    console.error("Error copying views:", error);
-    throw error;
-  }
-};
+  /**
+   * Build CSS files
+   */
+  buildCss = async () => {
+    await this.asyncSpawn("npm run build:css");
+  };
 
-/**
- * Build TypeScript files
- */
-const buildJs = async () => {
-  try {
-    await exec("npx tsc --build --incremental");
-    await exec("npx tsc-alias");
-  } catch (error) {
-    console.error("Error building JavaScript:", error);
-    throw error;
-  }
-};
+  /**
+   * Main build function
+   */
+  build = async () => {
+    try {
+      await this.clearDist();
 
-/**
- * Build CSS files
- */
-const buildCss = async () => {
-  await exec("npm run build:css");
-};
+      console.log("Building...");
+      await this.buildCss();
+      await Promise.all([this.buildJs(), this.copyNonTsFiles()]);
 
-/**
- * Main build function
- */
-const main = async () => {
-  try {
-    console.log("Building...");
+      console.log("Build completed successfully");
+    } catch (error) {
+      console.error("Build failed:", error);
+      process.exit(1);
+    }
+  };
+}
 
-    await buildJs();
-    await buildCss();
-    await copyAssets();
-    await copyViews();
-
-    console.log("Build completed successfully");
-  } catch (error) {
-    console.error("Build failed:", error);
-    process.exit(1);
-  }
-};
-
-main();
+const builder = new Builder();
+builder.build();

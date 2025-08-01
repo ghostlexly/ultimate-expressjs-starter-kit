@@ -35,7 +35,7 @@ const fileInterceptor = multer({
 mediaRoutes.post(
   "/media",
   fileInterceptor.single("file"),
-  mediaController.onUploadMedia
+  mediaController.uploadMedia
 );
 
 /**
@@ -62,5 +62,5 @@ mediaRoutes.post(
 mediaRoutes.post(
   "/media/video",
   fileInterceptor.single("file"),
-  mediaController.onUploadVideo
+  mediaController.uploadVideo
 );

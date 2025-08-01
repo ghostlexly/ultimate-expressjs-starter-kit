@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sessionsGuard } from "#/presentation/guards/sessions.guard";
+import { sessionsGuard } from "@/common/guards/sessions.guard";
 import { meController } from "../controllers/me.controller";
 
 export const meRoutes = Router();
@@ -17,4 +17,4 @@ export const meRoutes = Router();
  *      '200':
  *        description: OK
  */
-meRoutes.get("/me", sessionsGuard, meController.onGetMe);
+meRoutes.get("/me", sessionsGuard, meController.getMe);

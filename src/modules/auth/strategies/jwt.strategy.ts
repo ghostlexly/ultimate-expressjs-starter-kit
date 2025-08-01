@@ -1,23 +1,33 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import passport from "passport";
-import { Account } from "@prisma/client";
-import { prisma } from "#/infrastructure/database/prisma";
+import { Account } from "@/generated/prisma/client";
+import { prisma } from "@/common/database/prisma";
+import { env } from "@/config";
 
 export const initializeJwtStrategy = async () => {
   passport.use(
     new JwtStrategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.APP_JWT_SECRET,
+        algorithms: ["RS256"], // Recommended algorithm for JWT (Asymmetric, uses a private key to sign and a public key to verify.). The default one is HS256 (Symmetric, uses a single secret key for both signing and verifying).
+        secretOrKey: Buffer.from(env.APP_JWT_PUBLIC_KEY, "base64").toString(
+          "utf8"
+        ),
       },
       async (
-        jwt_payload: { sub: string },
+        payload: { sub: string },
         done: (error: Error | null, account?: Account | false) => void
       ) => {
         try {
-          // -- get account by id
+          const sessionId = payload.sub;
+
+          // Get account by id
           const account = await prisma.account.findFirst({
-            where: { id: jwt_payload.sub },
+            include: {
+              admin: true,
+              customer: true,
+            },
+            where: { session: { some: { id: sessionId } } },
           });
 
           if (!account) {
@@ -25,7 +35,7 @@ export const initializeJwtStrategy = async () => {
           }
 
           return done(null, account);
-        } catch (err) {
+        } catch {
           return done(null, false);
         }
       }

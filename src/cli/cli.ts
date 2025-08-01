@@ -1,11 +1,12 @@
 import { Command } from "commander";
 import path from "path";
-import { getAppDir } from "#/shared/utils/app-dir";
+import { getAppDir } from "@/common/utils/app-dir";
 import { glob } from "glob";
-import { createLogger } from "#/shared/utils/logger";
+import { Logger } from "@/common/utils/logger";
 import chalk from "chalk";
+import { appService } from "@/common/services/app.service";
 
-const logger = createLogger({ name: "cli" });
+const logger = new Logger("cli");
 const program = new Command();
 
 // Configure help output
@@ -16,11 +17,9 @@ program.configureHelp({
 
 // Function to dynamically load commands
 async function loadCommands() {
-  const commandsPath = path.join(getAppDir(), "commands");
+  const commandsPath = path.join(getAppDir(), "cli", "commands");
 
-  console.log(commandsPath);
-
-  const files = await glob("**/*.cli.js", { cwd: commandsPath });
+  const files = await glob("**/*.command.js", { cwd: commandsPath });
 
   await Promise.all(
     files.map(async (file) => {
@@ -45,6 +44,9 @@ async function loadCommands() {
     program.outputHelp();
   });
 
-  // Parse the command line arguments
-  program.parse(process.argv);
+  // Parse the command line arguments and await the result
+  await program.parseAsync(process.argv);
+
+  // Only shutdown after command completion
+  await appService.shutdownGracefully();
 })();

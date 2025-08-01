@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { testController } from "../controllers/test.controller";
-import { strictThrottler } from "#/presentation/throttlers/strict.throttler";
-import { validateRequest } from "#/presentation/middlewares/validation.middleware";
-import { accountUpdateValidator } from "../validators/account-update.validator";
+import { strictThrottler } from "@/common/throttlers/strict.throttler";
 
 export const testRoutes = Router();
 
@@ -17,7 +15,7 @@ export const testRoutes = Router();
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/bad-request", testController.onTestBadRequest);
+testRoutes.get("/tests/bad-request", testController.testBadRequest);
 
 /**
  * @swagger
@@ -33,7 +31,7 @@ testRoutes.get("/tests/bad-request", testController.onTestBadRequest);
 testRoutes.get(
   "/tests/strict-throttler",
   strictThrottler,
-  testController.onTestDto
+  testController.testDto
 );
 
 /**
@@ -47,7 +45,7 @@ testRoutes.get(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/queue-launch", testController.onTestQueueLaunch);
+testRoutes.get("/tests/queue-launch", testController.testQueueLaunch);
 
 /**
  * @swagger
@@ -80,11 +78,7 @@ testRoutes.get("/tests/queue-launch", testController.onTestQueueLaunch);
  *      '200':
  *        description: OK
  */
-testRoutes.post(
-  "/tests/zod",
-  validateRequest(accountUpdateValidator),
-  testController.onTestZod
-);
+testRoutes.post("/tests/zod", testController.testZod);
 
 /**
  * @swagger
@@ -97,7 +91,7 @@ testRoutes.post(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/dto", testController.onTestDto);
+testRoutes.get("/tests/dto", testController.testDto);
 
 /**
  * @swagger
@@ -110,7 +104,7 @@ testRoutes.get("/tests/dto", testController.onTestDto);
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/event-emitter", testController.onTestEventEmitter);
+testRoutes.get("/tests/event-emitter", testController.testEventEmitter);
 
 /**
  * @swagger
@@ -125,7 +119,7 @@ testRoutes.get("/tests/event-emitter", testController.onTestEventEmitter);
  */
 testRoutes.get(
   "/tests/dependency-injection",
-  testController.onTestDependencyInjection
+  testController.testDependencyInjection
 );
 
 /**
@@ -139,7 +133,7 @@ testRoutes.get(
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/pdf", testController.onTestPdf);
+testRoutes.get("/tests/pdf", testController.testPdf);
 
 /**
  * @swagger
@@ -152,4 +146,17 @@ testRoutes.get("/tests/pdf", testController.onTestPdf);
  *      '200':
  *        description: OK
  */
-testRoutes.get("/tests/complex-use-case", testController.onTestComplexUseCase);
+testRoutes.get("/tests/complex-use-case", testController.testComplexUseCase);
+
+/**
+ * @swagger
+ * /api/tests/sentry:
+ *  get:
+ *    summary: Test Sentry
+ *    description: Test Sentry.
+ *    tags: [Tests]
+ *    responses:
+ *      '200':
+ *        description: OK
+ */
+testRoutes.get("/tests/sentry", testController.sentry);

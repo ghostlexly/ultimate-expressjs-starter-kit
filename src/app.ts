@@ -1,29 +1,27 @@
+import "./instrument";
 import path from "path";
-global.appRoot = path.resolve(__dirname);
 import "dotenv/config";
 import "reflect-metadata";
-import express from "express";
-import { apiRouter } from "#/presentation/routes";
-import { exceptionsMiddleware } from "#/presentation/middlewares/exceptions.middleware";
-import { unknownRoutesMiddleware } from "#/presentation/middlewares/unknown-routes.middleware";
-import { globalThrottler } from "#/presentation/throttlers/global.throttler";
-import { trimMiddleware } from "#/presentation/middlewares/trim.middleware";
-import { initializeBearerStrategy } from "#/modules/auth/strategies/bearer.strategy";
-import { rewriteIpAddressMiddleware } from "#/presentation/middlewares/rewrite-ip-address.middleware";
-import { createLogger } from "#/shared/utils/logger";
-import helmet from "helmet";
+import { exceptionsMiddleware } from "@/common/middlewares/exceptions.middleware";
+import { rewriteIpAddressMiddleware } from "@/common/middlewares/rewrite-ip-address.middleware";
+import { trimMiddleware } from "@/common/middlewares/trim.middleware";
+import { unknownRoutesMiddleware } from "@/common/middlewares/unknown-routes.middleware";
+import { apiRoutes } from "@/routes";
+import { globalThrottler } from "@/common/throttlers/global.throttler";
+import { Logger } from "@/common/utils/logger";
 import cors from "cors";
-import { initializeSwagger } from "./shared/utils/swagger";
-import { initializeI18n } from "./shared/utils/i18n";
-import { initializeCrons } from "./infrastructure/cron";
-import { eventsService } from "./infrastructure/events/events.service";
-import { appWorker, appQueue } from "./infrastructure/queue/bull/app.queue";
-import { redisService } from "./infrastructure/cache/redis/redis";
-import { prisma } from "./infrastructure/database/prisma";
+import express from "express";
+import helmet from "helmet";
+import { initializeCrons } from "./common/cron";
+import { initializeJwtStrategy } from "./modules/auth/strategies/jwt.strategy";
+import cookieParser from "cookie-parser";
+import * as Sentry from "@sentry/node";
+import { initializeZod } from "./common/utils/zod";
+import { queueService } from "./common/queue/queue.service";
 
 const bootstrap = async () => {
   const app = express();
-  const logger = createLogger({ name: "app" });
+  const logger = new Logger("app");
 
   // Log bootstrap time
   const bootstrapStartTime = Date.now();
@@ -43,6 +41,9 @@ const bootstrap = async () => {
   // to be able to access these forms's values in req.body
   app.use(express.urlencoded({ extended: true }));
 
+  // Parse cookies
+  app.use(cookieParser());
+
   // Helmet is a collection of middlewares functions that set security-related headers
   app.use(
     helmet({
@@ -60,26 +61,23 @@ const bootstrap = async () => {
   app.use(trimMiddleware);
 
   // Passport strategies
-  await initializeBearerStrategy();
-
-  // I18n
-  await initializeI18n();
-
-  // App Events
-  await eventsService.initialize();
-
-  // Swagger
-  initializeSwagger({ app });
+  await initializeJwtStrategy();
 
   // Crons
   initializeCrons();
+
+  // Zod
+  initializeZod();
+
+  // Queue Service (BullMQ workers and queues)
+  queueService.initialize();
 
   // Static assets
   // We are using them in the PDF views
   app.use("/static", express.static(path.join(__dirname, "static")));
 
   // Routes
-  app.use("/api", globalThrottler, apiRouter);
+  app.use("/api", globalThrottler, apiRoutes);
 
   // ----------------------------------------
   // Unknown routes handler
@@ -91,15 +89,13 @@ const bootstrap = async () => {
   // Errors handler
   // @important: Should be the last `app.use`
   // ----------------------------------------
+  Sentry.setupExpressErrorHandler(app);
   app.use(exceptionsMiddleware);
 
-  // Add shutdown handlers
-  process.on("SIGTERM", () => cleanup());
-  process.on("SIGINT", () => cleanup());
-  process.on("beforeExit", () => cleanup());
-
   // Log bootstrap time
-  logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
+  if (process.env.NODE_ENV !== "test") {
+    logger.info(`🕒 Bootstrap time: ${Date.now() - bootstrapStartTime}ms`);
+  }
 
   return app;
 };
@@ -108,17 +104,4 @@ if (require.main === module) {
   bootstrap();
 }
 
-// Cleanup the app connections before exiting
-const cleanup = async () => {
-  // Close all queue connections
-  await Promise.all([appQueue.close(), appWorker.close()]);
-  await Promise.all([appQueue.disconnect(), appWorker.disconnect()]);
-
-  // Close Redis connection
-  await redisService.quit();
-
-  // Close Prisma connection
-  await prisma.$disconnect();
-};
-
-export { bootstrap, cleanup };
+export { bootstrap };

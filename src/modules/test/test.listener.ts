@@ -1,8 +1,8 @@
-import { createLogger } from "#/shared/utils/logger";
-import { eventsService } from "#/infrastructure/events/events.service";
+import { Logger } from "@/common/utils/logger";
+import { eventsService } from "@/common/events/events.service";
 
-const logger = createLogger({ name: "test-event-listener" });
+const logger = new Logger("test-event-listener");
 
 eventsService.on("test.event", async (data) => {
-  logger.info({ data }, "test-event listener received data !");
+  logger.info("test-event listener received data !", { data });
 });

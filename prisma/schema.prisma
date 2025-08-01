@@ -1,10 +1,16 @@
 generator client {
-  provider      = "prisma-client-js"
+  provider      = "prisma-client"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-arm64-openssl-1.1.x"]
+  output        = "../src/generated/prisma/client"
+
+  // Optional Prisma Client Generator configuration
+  runtime                = "nodejs"
+  moduleFormat           = "cjs"
+  generatedFileExtension = "ts"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("APP_DATABASE_CONNECTION_URL")
 }
 
@@ -28,12 +34,12 @@ model Account {
 
 model Session {
   id        String   @id @default(uuid())
-  token     String   @unique
   expiresAt DateTime
+  account   Account  @relation(fields: [accountId], references: [id])
+  accountId String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  accountId String
-  account   Account  @relation(fields: [accountId], references: [id])
 }
 
 model Customer {
@@ -68,7 +74,7 @@ model Admin {
 model Media {
   id        String   @id @default(uuid())
   fileName  String
-  fileKey   String
+  key       String
   mimeType  String
   size      Int
   createdAt DateTime @default(now())
@@ -88,7 +94,3 @@ model Country {
   currencyCode  String?
   population    Int?    @default(0)
 }
-
-// ------------------------------------------------------
-// Customer models
-// ------------------------------------------------------

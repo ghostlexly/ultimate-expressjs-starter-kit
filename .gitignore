@@ -6,6 +6,7 @@ tsconfig.tsbuildinfo
 # compiled output
 /dist
 /node_modules
+/src/generated
 
 # Logs
 logs
