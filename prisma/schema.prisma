@@ -24,9 +24,9 @@ enum Role {
 }
 
 model Account {
-  id      String    @id @default(uuid())
-  role    Role
-  session Session[]
+  id       String    @id @default(uuid())
+  role     Role
+  sessions Session[]
 
   customer Customer?
   admin    Admin?

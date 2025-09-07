@@ -43,30 +43,42 @@ class PdfService {
    * Generate a PDF from an HTML string
    * @param html - The HTML string to generate a PDF from
    */
-  htmlToPdf = async ({ html }: { html: string }) => {
-    // Launch browser
+  htmlToPdf = async ({
+    html,
+    footerHtml,
+  }: {
+    html: string;
+    footerHtml?: string;
+  }) => {
+    // -- Launch browser
     const context = await this.getContext();
     const page = await context.newPage();
 
-    // Uncomment to see the console logs from the page
-    // context.on("console", (msg) => console.log("PAGE LOG:", msg.text()));
-
-    // Set content and wait for loading
+    // -- Set content and wait for loading
     await page.setContent(html, { waitUntil: "load" });
 
-    // Generate PDF
+    // -- Wait for fonts to load
+    await page.evaluate(async () => {
+      // eslint-disable-next-line no-undef
+      await document.fonts.ready;
+    });
+
+    // -- Generate PDF
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: {
         top: "20px",
         right: "20px",
-        bottom: "20px",
+        bottom: "60px", // Increased bottom margin to accommodate footer
         left: "20px",
       },
       printBackground: true,
+      displayHeaderFooter: footerHtml ? true : false,
+      footerTemplate: footerHtml,
+      headerTemplate: "<div></div>", // Empty header template to avoid default header
     });
 
-    // Close page
+    // -- Close page
     await page.close();
 
     return pdfBuffer;

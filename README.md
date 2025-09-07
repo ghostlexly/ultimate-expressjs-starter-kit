@@ -111,90 +111,49 @@ npm run cli
 ```
 Project Root
 ├── core/                          # Core application logic and shared use cases
-│   └── use-cases/                 # Business use cases implemented in the app
+│   └── use-cases/                 # Contains pure business logic implementations
+|   └── event-handlers/           # Events that can be called
+│                                 # Independent of external frameworks/libraries
 │
-├── modules/                      # Feature-specific modules of the application
-│   └── cart/                      # Handles the cart feature functionality
-│       ├── controllers/           # Handles requests and response logic for the cart feature
-│       │   ├── cart.admin.controller.ts  # Controller for admin-specific cart actions
-│       │   └── cart.controller.ts        # General controller for cart actions
-│       ├── routes/                # Routing definitions for the cart feature
-│       │   ├── cart.admin.routes.ts      # Routes for admin cart actions
-│       │   └── cart.routes.ts            # Routes for general cart actions
-│       ├── validators/            # Validation logic for cart inputs
-│       │   ├── cart.admin.validator.ts   # Validator for admin-specific cart inputs
-│       │   └── cart.validator.ts         # Validator for general cart inputs
-│       ├── cart.listener.ts          # Event listeners related to the cart feature
-│       ├── cart.repository.ts        # Data access logic for cart-related operations
-│       └── cart.service.ts           # Business logic for the cart feature
+├── modules/                       # Modular feature-specific implementations
+│   └── cart/                     # Complete cart feature module
+│       ├── controllers/          # HTTP request handlers
+│       │   ├── cart.admin.controller.ts  # Admin-specific operations
+│       │   └── cart.controller.ts        # Public cart operations
+│       ├── routes/               # Route definitions with type-safe parameters
+│       │   ├── cart.admin.routes.ts      # Protected admin routes
+│       │   └── cart.routes.ts            # Public cart endpoints
+│       ├── validators/           # Input validation schemas
+│       │   ├── cart.admin.validators.ts  # Admin input validation
+│       │   └── cart.validators.ts        # Public cart validation
+│       ├── cart.listener.ts      # Event subscribers
+│       ├── test.config.ts        # Test configuration
+│       └── cart.service.ts       # Cart-specific business logic
 │
-├── infrastructure/                # Low-level system interactions and external integrations
-│   ├── cache/                    # Caching mechanisms
-│   │   └── redis/                # Redis integration for caching
-│   │       └── redis.ts
-│   ├── cron/                     # Scheduled tasks
-│   │   └── update-data.cron.ts      # Cron job for updating data
-│   ├── database/                 # Database-related utilities
-│   │   └── prisma.ts                # Prisma client setup and interactions
-│   ├── email/                    # Email-related integrations
-│   │   └── brevo/                # Integration with Brevo email service
-│   │       └── brevo.service.ts
-│   ├── events/                   # Event-driven programming utilities
-│   │   └── events.service.ts
-│   ├── payment/                  # Payment processing integrations
-│   │   └── mangopay/             # Integration with MangoPay payment service
-│   │       └── mangopay.service.ts
-│   ├── queue/                    # Task queues and job handling
-│   │   └── bull/                 # Integration with BullMQ queue service
-│   │       └── bullmq.ts
-│   └── storage/                  # File storage integrations
-│       └── s3/                   # Integration with Amazon S3 storage service
-│           └── s3.service.ts
+├── cli/                          # Command-line tools and utilities
+│   ├── cli.ts                    # CLI entry point with command registration
+│   └── commands/                 # Individual CLI command implementations
+│       └── create-admin-account.cli.ts
 │
-├── cli/                          # Command-line interface utilities
-│   ├── cli.ts                       # Entry point for CLI commands
-│   └── commands/                 # Individual CLI commands
-│       └── create-admin-account.cli.ts  # CLI command for creating admin accounts
-│
-├── presentation/                 # Presentation layer for handling middleware, guards, and routes
-│   ├── guards/                   # Access control logic
-│   │   ├── roles.guard.ts           # Guard for role-based access control
-│   │   └── sessions.guard.ts        # Guard for session-based access control
-│   ├── throttlers/               # Rate-limiting utilities
-│   │   ├── global.throttler.ts      # Global rate limiter
-│   │   └── strict.throttler.ts      # Strict rate limiter for sensitive routes
-│   ├── middlewares/              # Middleware logic for request/response handling
-│   └── routes.ts                    # Main route definitions for the app
-│
-└── shared/                       # Reusable utilities and components shared across the app
-    ├── exceptions/               # Custom exception classes
-    │   ├── http-exception.ts        # Base exception for HTTP errors
-    │   └── validation-exception.ts   # Exception for validation errors
-    ├── locales/                  # Localization files
-    │   └── zod/
-    │       └── fr.json              # French translation for Zod validation errors
-    ├── services/                 # Shared service logic
-    │   ├── pdf.service.ts           # Service for generating PDF files
-    │   └── files.service.ts         # Service for handling file-related operations
+└── common/                       # Reusable utilities and common functionality
+    ├── constants/                # Constants
+    ├── cron/                     # Cron jobs
+    ├── database/                 # Database utilities
+    ├── events/                   # Event handlers
+    ├── exceptions/               # Custom error handling
+    ├── guards/                   # Guards
+    ├── locales/                  # Internationalization resources
+    ├── middlewares/              # Middlewares
+    ├── queue/                    # Queue utilities
+    ├── services/                 # Common business services
+    ├── storage/                  # Storage utilities (S3, local, etc..)
+    ├── test/                     # Test utilities
+    ├── throttlers/               # Throttlers
     ├── transformers/             # Data transformation utilities
-    │   └── phone-number.transformer.ts  # Transformer for phone number formatting
-    ├── types/                    # Shared TypeScript type definitions
-    │   └── request.d.ts             # Custom types for HTTP requests
-    ├── utils/                    # General utility functions
-    │   ├── app-dir.ts               # Utility for resolving app directories
-    │   └── logger.ts                # Logger utility
-    ├── validators/               # Shared validation logic
-    │   ├── bic.validator.ts         # Validator for BIC codes
-    │   └── phone-number.validator.ts # Validator for phone numbers
-    ├── views/                    # Server-rendered views
-    │   └── invoices/
-    │       └── commission-invoice.ejs # EJS template for commission invoices
-    └── static/                   # Static assets for the application
-        └── assets/
-            ├── css/
-            │   └── output.css        # Compiled CSS styles
-            └── images/
-                └── logo.png          # Application logo
+    ├── types/                    # TypeScript type definitions
+    ├── utils/                    # Helper functions
+    ├── validators/               # Common validation rules
+    └── views/                    # Template files (EJS)
 ```
 
 # Modern TypeScript Project Structure 🏗️
@@ -228,44 +187,12 @@ modules/
       │   └── cart.routes.ts            # Public cart endpoints (/cart/)
       │
       ├── validators/              # Input validation schemas
-      │   ├── cart.admin.validator.ts   # Admin input validation (product management)
-      │   └── cart.validator.ts         # Public cart validation (item quantities, user data)
+      │   ├── cart.admin.validators.ts   # Admin input validation (product management)
+      │   └── cart.validators.ts         # Public cart validation (item quantities, user data)
       │
       ├── cart.listener.ts         # Event subscribers (order completed, stock updates)
-      ├── cart.repository.ts       # Data access patterns and persistence logic
+      ├── test.config.ts           # Test configuration
       └── cart.service.ts          # Cart-specific business logic implementation
-```
-
-## Infrastructure (`/infrastructure`)
-
-External service integrations and technical implementations.
-
-```
-infrastructure/
-  ├── cache/                # Caching layer implementations
-  │   └── redis/           # Redis caching service
-  │
-  ├── cron/                # Scheduled background tasks
-  │   └── update-data.cron.ts  # Periodic data synchronization
-  │
-  ├── database/            # Database connections and configurations
-  │   └── prisma.ts       # Prisma ORM client setup
-  │
-  ├── email/              # Email service implementations
-  │   └── brevo/          # Brevo email provider integration
-  │
-  ├── events/             # Event bus implementation
-  │   └── events.service.ts    # Event publishing/subscription
-  │
-  ├── payment/            # Payment gateway integrations
-  │   └── mangopay/       # MangoPay payment processing
-  │
-  ├── queue/              # Asynchronous job processing
-  │   └── bull/           # BullMQ implementation
-  │
-  └── storage/            # File storage implementations
-      └── s3/             # AWS S3 integration
-
 ```
 
 ## CLI (`/cli`)
@@ -276,48 +203,34 @@ Command-line tools and utilities.
 cli/
   ├── cli.ts                      # CLI entry point with command registration
   └── commands/                   # Individual CLI command implementations
-      └── create-admin-account.cli.ts  # Admin user creation utility
+      └── create-admin-account.cli.ts  # CLI command for creating admin accounts
 
 ```
 
-## Presentation (`/presentation`)
-
-Request/Response handling and security layers.
-
-```
-presentation/
-  ├── guards/              # Access control implementations
-  │   ├── roles.guard.ts        # Role-based authorization
-  │   └── sessions.guard.ts     # Session validation
-  │
-  ├── throttlers/          # Rate limiting implementations
-  │   ├── global.throttler.ts   # Default rate limits
-  │   └── strict.throttler.ts   # Enhanced protection for sensitive routes
-  │
-  ├── middlewares/         # Request processing middleware
-  └── routes.ts            # Global route registry
-
-```
-
-## Shared (`/shared`)
+## Common (`/common`)
 
 Reusable utilities and common functionality.
 
 ```
-shared/
-  ├── exceptions/          # Custom error handling
+common/
+  ├── constants/          # Constants
+  |── cron/               # Cron jobs
+  |── database/           # Database utilities
+  |── events/             # Event handlers
+  ├── exceptions/         # Custom error handling
+  ├── guards/             # Guards
   ├── locales/            # Internationalization resources
+  |── middlewares/        # Middlewares
+  |── queue/              # Queue utilities
   ├── services/           # Common business services
+  |── storage/            # Storage utilities (S3, local, etc..)
+  |── test/               # Test utilities
+  |── throttlers/         # Throttlers
   ├── transformers/       # Data transformation utilities
   ├── types/              # TypeScript type definitions
   ├── utils/              # Helper functions
   ├── validators/         # Common validation rules
   ├── views/              # Template files (EJS)
-  └── static/             # Public assets
-      ├── assets/
-      │   ├── css/           # Stylesheets
-      │   └── images/        # Image assets
-
 ```
 
 ### Key Benefits of This Structure 🎯
@@ -344,17 +257,19 @@ Controller -> Use-Cases -> Services -> Repositories
 
 - **Controller** : Receives requests and delegates to use-cases.
 - **Use-Case** : Executes a complete business scenario by orchestrating multiple services from different modules.
+- **Event-Handlers** : Handles events you can call from the services. The event-handlers can call use-cases. They are in _core/event-handlers_ folder.
 - **Service** : Provides specialized features (reusable).
 - **Repository** : Interacts directly with the database.
 
 ### **Who Can Import What?**
 
-| **Layer**      | **Allowed to Import**                     |
-| -------------- | ----------------------------------------- |
-| **Controller** | Use-Case, Service                         |
-| **Use-Case**   | Service, Repository                       |
-| **Service**    | Repository                                |
-| **Repository** | Models, Database Utilities (e.g., Prisma) |
+| **Layer**         | **Allowed to Import**                                |
+| ----------------- | ---------------------------------------------------- |
+| **Controller**    | Use-Case, Service                                    |
+| **Use-Case**      | Service, Repository, (and sometimes, other use-case) |
+| **Event-Handler** | Use-Case                                             |
+| **Service**       | Repository, Event-Handler                            |
+| **Repository**    | Models, Database Utilities (e.g., Prisma)            |
 
 1. **Controllers**
 
@@ -363,17 +278,17 @@ Controller -> Use-Cases -> Services -> Repositories
 
    Flow:
 
-   - Validates input
-   - Calls appropriate use-cases
+   - Validates input
+   - Calls appropriate use-cases
    - Returns responses
-   - Handles errors from the use-cases
+   - Handles errors from the use-cases
 
 ---
 
 1. **Use-Cases**
 
    - Can interact with **Services** and **Repositories**.
-   - **Why?** They orchestrate business rules but don’t deal with HTTP directly or low-level database logic.
+   - **Why?** They orchestrate business rules but don't deal with HTTP directly or low-level database logic.
 
    Flow:
 
@@ -391,13 +306,13 @@ Controller -> Use-Cases -> Services -> Repositories
 
 1. **Repositories**
    - Can only interact with **Models** or database tools.
-   - **Why?** They directly access the data layer and shouldn’t handle business logic.
+   - **Why?** They directly access the data layer and shouldn't handle business logic.
 
 ---
 
 ### Use-Cases files naming convention
 
-It’s a good thing that the files grows in numbers, it’s keep all concerns separated.
+It's a good thing that the files grows in numbers, it's keep all concerns separated.
 
 Good naming conventions help you quickly identify use-cases:
 
@@ -408,23 +323,24 @@ Good naming conventions help you quickly identify use-cases:
 
 ### Use-Cases vs Services
 
-Operations that are good candidates for use-cases:
+Operations that are good candidates for use-cases:
 
-- Complex business logic involving multiple steps
-- Operations requiring transaction management
-- Operations that coordinate multiple services
-- Operations with complex validation rules
-- Operations that emit multiple events
+- Complex business logic involving multiple steps
+- Operations requiring transaction management
+- Operations that coordinate multiple services
+- Operations with complex validation rules
+- Operations that emit multiple events
 
-Operations that should stay in the service:
+Operations that should stay in the service:
 
 - **Will be called in two or more use-cases**
 - **Operations that don't require coordination or other services**
-- Simple CRUD operations (create, update, delete…)
+- Simple CRUD operations (create, update, delete...)
 - Single-step operations
-- Internal utility methods
+- Internal utility methods
 
-**Use-Cases can’t call other Use-Cases**. If you want to call a function after your update or create crud operation, it’s better to add them into a service and call this service in your use-cases.
+**Use-Cases can't call other Use-Cases**. If you want to call a function after your update or create crud operation, it's better to add them into a service and call this service in your use-cases.
+If use-cases need to share functionality and you need to import one use-case into another, you may reference one from another. However, if this creates a circular dependency, extract the common logic into a third independent use-case that both can utilize.
 
 ## 🤝 Contributing
 

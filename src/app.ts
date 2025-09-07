@@ -74,7 +74,35 @@ const bootstrap = async () => {
 
   // Static assets
   // We are using them in the PDF views
-  app.use("/static", express.static(path.join(__dirname, "static")));
+  app.use(
+    "/api/static",
+    (req, res, next) => {
+      // Add CORS headers for static assets (needed for fonts in Playwright)
+      const origin = req.get("Origin");
+
+      // Allow null origin (Playwright/headless browsers) and specific domains
+      const allowedOrigins = [
+        "null", // Playwright when using setContent()
+        "http://localhost:3000", // Local development frontend
+        "http://backend:3000", // Internal Docker network (Playwright in same container)
+        "http://caddy", // Through Caddy reverse proxy
+        "https://dispomenage.fr", // Your production domain
+        // Add more allowed origins as needed
+      ];
+
+      if (origin && allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+      }
+
+      res.header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
+      next();
+    },
+    express.static(path.join(__dirname, "static"))
+  );
 
   // Routes
   app.use("/api", globalThrottler, apiRoutes);

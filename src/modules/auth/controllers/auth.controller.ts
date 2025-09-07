@@ -8,7 +8,7 @@ import { validateData } from "@/common/utils/validation";
 import {
   authRefreshTokenValidator,
   authSigninValidator,
-} from "../validators/auth.validator";
+} from "../validators/auth.validators";
 import { authConfig } from "../auth.config";
 
 export class AuthController {

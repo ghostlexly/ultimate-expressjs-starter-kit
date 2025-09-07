@@ -27,7 +27,7 @@ export const initializeJwtStrategy = async () => {
               admin: true,
               customer: true,
             },
-            where: { session: { some: { id: sessionId } } },
+            where: { sessions: { some: { id: sessionId } } },
           });
 
           if (!account) {

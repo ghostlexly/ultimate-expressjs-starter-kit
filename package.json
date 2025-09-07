@@ -15,7 +15,8 @@
     "madge": "madge . -c --ts-config ./tsconfig.json --extensions ts --warning",
     "format": "prettier --write \"src/**/*.ts\"",
     "build:css": "tailwindcss -i ./src/static/assets/css/input.css -o ./src/static/assets/css/output.css",
-    "test": "NODE_ENV=test APP_PORT=3001 jest --forceExit --runInBand --detectOpenHandles --testTimeout=60000"
+    "test": "NODE_ENV=test APP_PORT=3001 jest --forceExit --runInBand --detectOpenHandles --testTimeout=60000",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org lunisoft --project dispomenage-backend ./dist && sentry-cli sourcemaps upload --org lunisoft --project dispomenage-backend ./dist"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",
